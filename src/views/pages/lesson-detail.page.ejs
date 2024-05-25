@@ -1,0 +1,40 @@
+<form id="form" action="/lessones">
+    <input name="code" type="text" value="<%= data?.lesson?.code %>" placeholder="code..." <%= data?.lesson?.code && 'disabled' %> />
+    <input name="name" type="text" value="<%= data?.lesson?.name %>" placeholder="name..." />
+    <input name="note" type="text" value="<%= data?.lesson?.note %>" placeholder="note..." />
+    <select name="courseId">
+        <% for (const course of (data?.courses || [])) { %>
+            <option
+                    value="<%= course?._id %>"
+                    <%= data?.lesson?.courseId === data?.lesson?._id ? 'selected' : null %>
+            ><%= course?.code %></option>
+        <% } %>
+    </select>
+    <button type="submit">SUBMIT</button>
+</form>
+
+<input type="hidden" id="id" value="<%= data?.lesson?._id %>" />
+<input type="hidden" id="method" value="<%= data?.lesson?._id ? 'PUT' : 'POST' %>" />
+
+<script>
+  const method = document.getElementById('method').value;
+  const id = document.getElementById('id').value;
+  document.getElementById('form').addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    if (method === 'PUT') {
+      await axios.put(`http://localhost:5500/lessons/${id}`, formData);
+    }
+    else {
+      await axios.post('http://localhost:5500/lessons', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+      });
+    }
+
+    window.location.href = `/lessons`;
+  })
+</script>

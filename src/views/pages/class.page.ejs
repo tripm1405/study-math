@@ -1,0 +1,30 @@
+<button onClick="upsert('<%= data?.newId %>')">Tạo</button>
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for (const _class of (data?.classes || [])) { %>
+        <tr>
+            <td><%= _class?.code %></td>
+            <td>
+                <button onClick="upsert('<%= _class?._id %>')">CHI TIET</button>
+                <button onClick="del('<%= _class?._id %>')">XOA</button>
+            </td>
+        </tr>
+    <% } %>
+    </tbody>
+</table>
+
+<script>
+  function upsert(id) {
+    window.location.href = `/classes/${id}`;
+  }
+  async function del(id) {
+    await axios.delete(`http://localhost:5500/classes/${id}`);
+    location.reload()
+  }
+</script>
