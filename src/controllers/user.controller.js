@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 
 import UserModel from "#root/models/user.model.js";
 import ViewUtil from "#root/utils/view.util.js";
+import AuthUtil from "#root/utils/auth.util.js";
 
 dotenv.config();
 
@@ -36,7 +37,7 @@ export default {
     post: async (req, res) => {
         const { code, username, password, email, type, classIds } = req.body;
 
-        const passwordHash = await bcrypt.hash(password, 4);
+        const passwordHash = await bcrypt.hash(password, AuthUtil.BCRYPT_SALT);
 
         const user = await UserModel.create({
             code: code,

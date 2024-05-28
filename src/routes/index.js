@@ -14,6 +14,6 @@ Router.use('/classes', ClassRouter);
 Router.use('/courses', CourseRouter);
 Router.use('/lessons', LessonRouter);
 Router.use('/users', UserRouter);
-Router.use(CommonRoute);
+Router.use('/', CommonRoute);
 
 export default Router;

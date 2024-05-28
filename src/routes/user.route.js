@@ -4,9 +4,6 @@ import userController from "#root/controllers/user.controller.js";
 
 const Router = express.Router();
 
-Router.get('/sign-in', userController.getSignIn);
-Router.post('/sign-in', userController.postSignIn);
-Router.post('/sign-out', userController.postSignOut);
 Router.get('/:id', userController.getDetail);
 Router.put('/:id', userController.put);
 Router.delete('/:id', userController.delete);
