@@ -1,7 +1,10 @@
-import UserModel from "#root/models/user.model.js";
-
-import ViewUtil from "#root/utils/view.util.js";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+import UserModel from "#root/models/user.model.js";
+import ViewUtil from "#root/utils/view.util.js";
+
+dotenv.config();
 
 export default {
     get: async (req, res) => {
@@ -30,16 +33,15 @@ export default {
             },
         }));
     },
-    getSignIn: (req, res) => {
-        res.json({ result: '/sign-in' });
-    },
     post: async (req, res) => {
         const { code, username, password, email, type, classIds } = req.body;
+
+        const passwordHash = await bcrypt.hash(password, 4);
 
         const user = await UserModel.create({
             code: code,
             username: username,
-            password: password,
+            password: passwordHash,
             email: email,
             type: type,
             classIds: classIds,
@@ -52,12 +54,7 @@ export default {
             },
         });
     },
-    postSignIn: (req, res) => {
-        res.json({ result: '/sign-in' });
-    },
-    postSignOut: (req, res) => {
-        res.json({ result: '/sign-in' });
-    },
+    // KNote: update user will be remove
     put: async (req, res) => {
         const { id } = req?.params;
         const { username, password, email, type, classIds } = req.body;
