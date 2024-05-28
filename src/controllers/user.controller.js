@@ -60,7 +60,7 @@ export default {
     },
     put: async (req, res) => {
         const { id } = req?.params;
-        const { username, password, email, type } = req.body;
+        const { username, password, email, type, classIds } = req.body;
 
         const newUser = await UserModel.findByIdAndUpdate(id, {
             username: username,
