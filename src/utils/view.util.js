@@ -47,7 +47,7 @@ export default class ViewUtil {
       ...options,
       data: {
         menu: menu,
-        user: currentUser,
+        currentUser: currentUser,
         ...options.data,
       },
     };
