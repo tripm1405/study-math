@@ -1,46 +1,67 @@
 const menuItems = {
-  course: {
-    label: 'Khoá học',
-    link: '/courses',
+  home: {
+    label: 'Trang chủ',
+    link: '/home',
+    icon: 'fas fa-home',
   },
-  'class': {
-    label: 'Khoá học',
+  course: {
+    label: 'Khóa học',
     link: '/courses',
+    icon: 'fas fa-book',
   },
   lesson: {
-    label: 'Khoá học',
-    link: '/courses',
+    label: 'Bài học',
+    link: '/lessons',
+    icon: 'fas fa-chalkboard-teacher',
   },
-  user: {
-    label: 'Khoá học',
-    link: '/courses',
+  problem: {
+    label: 'Bài toán',
+    link: '/problems',
+    icon: 'fas fa-calculator',
   },
   block: {
-    label: 'Khoá học',
-    link: '/courses',
+    label: 'Khối',
+    link: '/blocks',
+    icon: 'fas fa-layer-group',
+  },
+  stats: {
+    label: 'Thống kê',
+    link: '/stats',
+    icon: 'fas fa-chart-bar',
+  },
+  users: {
+    label: 'Tài khoản',
+    link: '/users',
+    icon: 'fas fa-user',
   },
 };
 
 const currentUser = {
-  fullName: 'Full Name',
-  type: 'GiaoVien'
-}
+  fullName: 'Khả Vy',
+  type: 'GiaoVien',
+};
 
 export default class ViewUtil {
   static getOptions = (options, isManager = false) => {
     const menu = isManager
-        ? [
-          menuItems.course,
-          menuItems.class,
-          menuItems.lesson,
-          menuItems.user,
-          menuItems.block,
-        ]
-        : [
-          menuItems.course,
-          menuItems.class,
-          menuItems.lesson,
-        ];
+      ? [
+        menuItems.home,
+        menuItems.course,
+        menuItems.lesson,
+        menuItems.problem,
+        menuItems.block,
+        menuItems.stats,
+        menuItems.users,
+      ]
+      : [
+        menuItems.home,
+        menuItems.course,
+        menuItems.lesson,
+        menuItems.problem,
+        menuItems.block,
+        menuItems.stats,
+        menuItems.users,
+      ];
 
     return {
       layout: 'layouts/main.layout.ejs',

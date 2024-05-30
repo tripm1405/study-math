@@ -1,23 +1,35 @@
-<button onClick="upsert('<%= data?.newId %>')">Tạo</button>
 <table>
     <thead>
+        <h1>Quản lí tài khoản</h1>
     <tr>
-        <th></th>
-        <th></th>
+         <th scope="col">STT</th>
+            <th scope="col">Mã tài khoản</th>
+            <th scope="col">Email</th>
+            <th scope="col">Thời gian truy cập gần nhất</th>
+            <th scope="col">Số lần truy cập</th>
+            <th scope="col">Số bài toán đã tham gia</th>
+            <th scope="col">Hành động</th>
     </tr>
     </thead>
     <tbody>
     <% for (const user of (data?.users || [])) { %>
         <tr>
+            <th scope="row">1</th>
             <td><%= user?.code %></td>
+            <td><%= user?.email %></td>
+            <td>13/05/2024 20:53</td>
+            <td>50</td>
+            <td>2</td>
             <td>
-                <button onClick="upsert('<%= user?._id %>')">CHI TIET</button>
-                <button onClick="del('<%= user?._id %>')">XOA</button>
+                <a href="#" class="view-details" onClick="upsert('<%= user?._id %>')"
+                    ><i class="fas fa-edit"></i></a>
+                <a href="#" onClick="del('<%= user?._id %>')"><i class="fas fa-trash-alt"></i></a>
             </td>
         </tr>
     <% } %>
     </tbody>
 </table>
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo tài khoản</button>
 
 <script>
     function upsert(id) {
