@@ -1,1 +1,58 @@
-SignIn
+<link href="/styles/sign-in.style.css" rel="stylesheet">
+
+<div class="wrapper">
+  <h1>Study Math</h1>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+  <div><span class="dot"></span></div>
+</div>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+      <div class="card-login">
+        <div class="card-body">
+          <h3 class="card-title text-center">Đăng nhập</h3>
+          <form onsubmit="return redirectToHome(event)">
+            <div class="mb-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                <label for="email" class="form-label visually-hidden">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Email" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                <label for="password" class="form-label visually-hidden">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" placeholder="Mật khẩu" required>
+                <span class="input-group-text">
+                  <i class="fa fa-eye" id="togglePassword" onclick="togglePasswordVisibility();"></i>
+                </span>
+              </div>
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">Đăng nhập</button>
+            </div>
+            <div class="mt-3 text-center">
+              <a href="#">Quên mật khẩu?</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/scripts/sign-in.script.js"></script>

@@ -8,7 +8,7 @@ dotenv.config();
 export default {
   getSignIn: (req, res) => {
     res.render('pages/sign-in.page.ejs', ViewUtil.getOptions({
-      layout: false,
+      layout: 'layouts/main.layout.ejs',
     }));
   },
   postSignIn: async (req, res) => {
