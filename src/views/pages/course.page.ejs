@@ -42,8 +42,10 @@
           <td>13/05/2024 21:06</td>
           <td>50</td>
           <td>
-            <a href="#" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></a>
-            <a href="#" onClick="del('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></a>
+            <td>
+              <button class="btn btn-secondary" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-danger" onClick="deleteLesson('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
+            </td>
           </td>
         </tr>
     <% } %>

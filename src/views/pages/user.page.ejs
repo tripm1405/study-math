@@ -1,4 +1,4 @@
-<table>
+<table class="table table-striped mt-3">
     <thead>
         <h1>Quản lí tài khoản</h1>
     <tr>
@@ -21,16 +21,15 @@
             <td>50</td>
             <td>2</td>
             <td>
-                <a href="#" class="view-details" onClick="upsert('<%= user?._id %>')"
-                    ><i class="fas fa-edit"></i></a>
-                <a href="#" onClick="del('<%= user?._id %>')"><i class="fas fa-trash-alt"></i></a>
+                <button class="btn btn-secondary" onClick="upsert('<%= user?._id %>')"
+                    ><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger" onClick="del('<%= user?._id %>')"><i class="fas fa-trash-alt"></i></button>
             </td>
         </tr>
     <% } %>
     </tbody>
 </table>
 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo tài khoản</button>
-
 <script>
     function upsert(id) {
         window.location.href = `/users/${id}`;

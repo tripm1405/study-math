@@ -1,0 +1,98 @@
+/* styles.css */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', Arial, sans-serif;
+  }
+  
+  .d-flex {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #f8f9fa;
+    padding: 20px;
+  }
+  
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .welcome {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .nav-link i {
+    margin-right: 10px;
+  }
+  
+  .header {
+    width: 100%;
+    background-color: #6497a7;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    height: 80px;
+  }
+  
+  .header-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+  }
+  
+  .logo {
+    width: 70px;
+    height: 70px;
+    margin-right: 20px;
+  }
+  
+  .search-bar {
+    flex-grow: 1;
+    margin: 0 400px;
+  }
+  
+  .search-bar .form-control {
+    border-radius: 20px;
+    padding-left: 20px;
+  }
+  
+  .ml-auto {
+    margin-left: auto;
+  }
+  
+  .transparent-btn {
+    background: none;
+    border: none;
+    color: white;
+  }
+  
+  .dropdown-menu {
+    min-width: 150px;
+  }
+  
+  .dropdown-item {
+    cursor: pointer;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #e9ecef;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 60px;
+  }

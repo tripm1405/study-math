@@ -11,8 +11,10 @@
         <tr>
             <td><%= _class?.code %></td>
             <td>
-                <button onClick="upsert('<%= _class?._id %>')">CHI TIET</button>
-                <button onClick="del('<%= _class?._id %>')">XOA</button>
+              <td>
+                <button class="btn btn-secondary" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger" onClick="deleteLesson('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
+              </td>
             </td>
         </tr>
     <% } %>
