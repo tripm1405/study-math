@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-
 import ViewUtil from "#root/utils/view.util.js";
 import UserModel from "#root/models/user.model.js";
 
@@ -8,7 +7,7 @@ dotenv.config();
 export default {
   getSignIn: (req, res) => {
     res.render('pages/sign-in.page.ejs', ViewUtil.getOptions({
-      layout: 'layouts/main.layout.ejs',
+      layout: false,
     }));
   },
   postSignIn: async (req, res) => {

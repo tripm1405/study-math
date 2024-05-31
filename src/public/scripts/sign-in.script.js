@@ -14,7 +14,6 @@ function togglePasswordVisibility() {
 
 function redirectToHome(event) {
   event.preventDefault();
-  // Add form validation or authentication logic here if needed
   window.location.href = 'home.html';
   return false;
 }
