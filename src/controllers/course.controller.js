@@ -1,18 +1,35 @@
 import ViewUtil from "#root/utils/view.util.js";
 import mongoose from "mongoose";
 import CourseModel from "#root/models/course.model.js";
+import AuthUtil from "#root/utils/auth.util.js";
+import LessonModel from "#root/models/lesson.model.js";
 
 export default {
     get: async (req, res) => {
         const courses = await CourseModel.find({});
         const newId = new mongoose.Types.ObjectId();
 
-        res.render('pages/course.page.ejs', ViewUtil.getOptions({
-            data: {
-                courses: courses,
-                newId: newId,
-            },
-        }));
+        switch (AuthUtil.currentUser.type) {
+            default:
+            case AuthUtil.UserType.HocSinh: {
+                res.render('pages/students/course.page.ejs', ViewUtil.getOptions({
+                    data: {
+                        courses: courses,
+                        newId: newId,
+                    },
+                }));
+                return;
+            }
+            case AuthUtil.UserType.GiaoVien: {
+                res.render('pages/course.page.ejs', ViewUtil.getOptions({
+                    data: {
+                        courses: courses,
+                        newId: newId,
+                    },
+                }));
+                return;
+            }
+        }
     },
     getDetail: async (req, res) => {
         const { id } = req?.params;
@@ -23,11 +40,30 @@ export default {
 
         const course = await CourseModel.findById(id) || {};
 
-        res.render('pages/course-detail.page.ejs', ViewUtil.getOptions({
-            data: {
-                course: course,
-            },
-        }));
+        switch (AuthUtil.currentUser.type) {
+            default:
+            case AuthUtil.UserType.HocSinh: {
+                const lessons = await LessonModel.find({
+                    courseId: course?._id,
+                });
+
+                res.render('pages/students/course-detail.page.ejs', ViewUtil.getOptions({
+                    data: {
+                        course: course,
+                        lessons: lessons,
+                    },
+                }));
+                return;
+            }
+            case AuthUtil.UserType.GiaoVien: {
+                res.render('pages/course-detail.page.ejs', ViewUtil.getOptions({
+                    data: {
+                        course: course,
+                    },
+                }));
+                return;
+            }
+        }
     },
     post: async (req, res) => {
         const { code, name, note } = req.body;

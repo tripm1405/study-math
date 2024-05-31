@@ -1,3 +1,5 @@
+import AuthUtil from "#root/utils/auth.util.js";
+
 const menuItems = {
   home: {
     label: 'Trang chủ',
@@ -36,11 +38,6 @@ const menuItems = {
   },
 };
 
-const currentUser = {
-  fullName: 'Khả Vy',
-  type: 'GiaoVien',
-};
-
 export default class ViewUtil {
   static getOptions = (options, isManager = false) => {
     const menu = isManager
@@ -68,7 +65,7 @@ export default class ViewUtil {
       ...options,
       data: {
         menu: menu,
-        currentUser: currentUser,
+        currentUser: AuthUtil.currentUser,
         ...options.data,
       },
     };
