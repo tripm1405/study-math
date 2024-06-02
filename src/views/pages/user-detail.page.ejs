@@ -1,14 +1,101 @@
-<form id="form" action="/users">
-    <input name="code" type="text" value="<%= data?.user?.code %>" placeholder="code..." <%= data?.user?.code && 'disabled' %> />
-    <input name="username" type="text" value="<%= data?.user?.username %>" placeholder="username..." />
-    <input name="password" type="password" value="<%= data?.user?.password %>" placeholder="password..." />
-    <input name="email" type="email" value="<%= data?.user?.email %>" placeholder="email" />
-    <select name="type">
-        <option value="Teacher" selected="<%= data?.user?.type === 'Teacher' %>">Giáo viên</option>
-        <option value="Student" selected="<%= data?.user?.type === 'Student' %>">Học sinh</option>
-    </select>
-    <button type="submit">SUBMIT</button>
-</form>
+<div style="display: flex; justify-content: center;">
+    <div style="border: 1px solid #ccc; padding: 20px; border-radius: 10px; width: 500px; background-color: #f9f9f9;">
+        <form id="form" action="/users">
+            <h1 style="text-align: center; margin-bottom: 20px; color: #333;">Chi tiết tài khoản</h1>
+            <label for="code" style="display: block; margin-bottom: 5px; color: #333;">Mã tài khoản</label>
+            <input 
+                id="code"
+                name="code" 
+                type="text" 
+                value="<%= data?.user?.code %>" 
+                placeholder="Code..." 
+                <%= data?.user?.code && 'disabled' %> 
+                style="
+                    display: block; 
+                    margin-bottom: 10px; 
+                    padding: 10px; 
+                    border-radius: 5px; 
+                    border: 1px solid #ccc; 
+                    width: 100%; 
+                    box-sizing: border-box;
+                "
+            />
+            <label for="username" style="display: block; margin-bottom: 5px; color: #333;">Tên tài khoản</label>
+            <input 
+                id="username"
+                name="username" 
+                type="text" 
+                value="<%= data?.user?.username %>" 
+                placeholder="Username..." 
+                style="
+                    display: block; 
+                    margin-bottom: 10px; 
+                    padding: 10px; 
+                    border-radius: 5px; 
+                    border: 1px solid #ccc; 
+                    width: 100%; 
+                    box-sizing: border-box;
+                "
+            />
+            <label for="password" style="display: block; margin-bottom: 5px; color: #333;">Mật khẩu</label>
+            <input 
+                id="password"
+                name="password" 
+                type="password" 
+                value="<%= data?.user?.password %>" 
+                placeholder="Password..." 
+                style="
+                    display: block; 
+                    margin-bottom: 10px; 
+                    padding: 10px; 
+                    border-radius: 5px; 
+                    border: 1px solid #ccc; 
+                    width: 100%; 
+                    box-sizing: border-box;
+                "
+            />
+            <label for="email" style="display: block; margin-bottom: 5px; color: #333;">Email</label>
+            <input 
+                id="email"
+                name="email" 
+                type="email" 
+                value="<%= data?.user?.email %>" 
+                placeholder="Email" 
+                style="
+                    display: block; 
+                    margin-bottom: 10px; 
+                    padding: 10px; 
+                    border-radius: 5px; 
+                    border: 1px solid #ccc; 
+                    width: 100%; 
+                    box-sizing: border-box;
+                "
+            />
+            <label for="type" style="display: block; margin-bottom: 5px; color: #333;">Quyền truy cập</label>
+            <select id="type" name="type" style="
+                display: block; 
+                margin-bottom: 10px; 
+                padding: 10px; 
+                border-radius: 5px; 
+                border: 1px solid #ccc; 
+                width: 100%; 
+                box-sizing: border-box;
+            ">
+                <option value="Teacher" <%= data?.user?.type === 'Teacher' && 'selected' %>>Giáo viên</option>
+                <option value="Student" <%= data?.user?.type === 'Student' && 'selected' %>>Học sinh</option>
+            </select>
+            <button type="submit" style="
+                background-color: #4CAF50; 
+                color: white; 
+                padding: 10px 20px; 
+                border: none; 
+                border-radius: 5px; 
+                cursor: pointer; 
+                width: 100%;
+            ">Lưu</button>
+        </form>
+    </div>
+</div>
 
 <input type="hidden" id="id" value="<%= data?.user?._id %>" />
 <input type="hidden" id="method" value="<%= data?.user?._id ? 'PUT' : 'POST' %>" />
@@ -16,6 +103,7 @@
 <script>
     const method = document.getElementById('method').value;
     const id = document.getElementById('id').value;
+
     document.getElementById('form').addEventListener('submit', async event => {
         event.preventDefault();
 

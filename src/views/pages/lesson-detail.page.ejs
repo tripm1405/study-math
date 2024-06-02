@@ -1,17 +1,58 @@
-<form id="form" action="/lessones">
-    <input name="code" type="text" value="<%= data?.lesson?.code %>" placeholder="code..." <%= data?.lesson?.code && 'disabled' %> />
-    <input name="name" type="text" value="<%= data?.lesson?.name %>" placeholder="name..." />
-    <input name="note" type="text" value="<%= data?.lesson?.note %>" placeholder="note..." />
-    <select name="courseId">
-        <% for (const course of (data?.courses || [])) { %>
-            <option
-                    value="<%= course?._id %>"
-                    <%= data?.lesson?.courseId === data?.lesson?._id ? 'selected' : null %>
-            ><%= course?.code %></option>
-        <% } %>
-    </select>
-    <button type="submit">SUBMIT</button>
-</form>
+<div style="display: flex; justify-content: center;">
+  <div style="border: 1px solid #ccc; padding: 20px; border-radius: 10px; width: 500px; background-color: #f9f9f9;">
+    <form id="form" action="/lessons" style="margin-bottom: 20px;">
+      <h1 style="text-align: center; margin-bottom: 20px; color: #333;">Chi tiết bài học</h1>
+      <label for="code" style="display: block; margin-bottom: 5px; color: #333;">Mã bài học</label>
+      <input name="code" type="text" value="<%= data?.lesson?.code %>" placeholder="Mã bài học..." <%= data?.lesson?.code && 'disabled' %> style="
+      display: block; 
+      margin-bottom: 10px; 
+      padding: 10px; 
+      border-radius: 5px; 
+      border: 1px solid #ccc; 
+      width: 100%; 
+      box-sizing: border-box;
+  " />
+      <label for="name" style="display: block; margin-bottom: 5px; color: #333;">Tên bài học</label>
+      <input name="name" type="text" value="<%= data?.lesson?.name %>" placeholder="Tên bài học..." style="
+      display: block; 
+      margin-bottom: 10px; 
+      padding: 10px; 
+      border-radius: 5px; 
+      border: 1px solid #ccc; 
+      width: 100%; 
+      box-sizing: border-box;
+  " />
+      <label for="note" style="display: block; margin-bottom: 5px; color: #333;">Ghi chú</label>
+      <input name="note" type="text" value="<%= data?.lesson?.note %>" placeholder="Ghi chú..." style="
+      display: block; 
+      margin-bottom: 10px; 
+      padding: 10px; 
+      border-radius: 5px; 
+      border: 1px solid #ccc; 
+      width: 100%; 
+      box-sizing: border-box;
+  " />
+      <label for="courseId" style="display: block; margin-bottom: 5px; color: #333;">Mã khóa học</label>
+      <select name="courseId" style="
+      display: block; 
+      margin-bottom: 10px; 
+      padding: 10px; 
+      border-radius: 5px; 
+      border: 1px solid #ccc; 
+      width: 100%; 
+      box-sizing: border-box;
+  ">
+          <% for (const course of (data?.courses || [])) { %>
+              <option
+                  value="<%= course?._id %>"
+                  <%= data?.lesson?.courseId === course?._id ? 'selected' : '' %>
+              ><%= course?.code %></option>
+          <% } %>
+      </select>
+      <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; display: block; width: 100%;">Lưu</button>
+    </form>
+  </div>
+</div>
 
 <input type="hidden" id="id" value="<%= data?.lesson?._id %>" />
 <input type="hidden" id="method" value="<%= data?.lesson?._id ? 'PUT' : 'POST' %>" />
@@ -19,22 +60,23 @@
 <script>
   const method = document.getElementById('method').value;
   const id = document.getElementById('id').value;
+
   document.getElementById('form').addEventListener('submit', async event => {
-    event.preventDefault();
+      event.preventDefault();
 
-    const formData = new FormData(event.target);
+      const formData = new FormData(event.target);
 
-    if (method === 'PUT') {
-      await axios.put(`http://localhost:5500/lessons/${id}`, formData);
-    }
-    else {
-      await axios.post('http://localhost:5500/lessons', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-      });
-    }
+      if (method === 'PUT') {
+          await axios.put(`http://localhost:5500/lessons/${id}`, formData);
+      }
+      else {
+          await axios.post('http://localhost:5500/lessons', formData, {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              },
+          });
+      }
 
-    window.location.href = `/lessons`;
-  })
+      window.location.href = `/lessons`;
+  });
 </script>

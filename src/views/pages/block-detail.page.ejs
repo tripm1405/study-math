@@ -19,15 +19,19 @@
             </div>
         </div>
         <div>
-            <input name="code" type="text" id="code" value="<%= data?.block?.code %>" placeholder="Code..."/>
-            <input name="name" type="text" id="name" value="<%= data?.block?.name %>" placeholder="Name..."/>
+            <label for="code">Mã khối</label>
+            <input name="code" type="text" id="code" value="<%= data?.block?.code %>"/>
+            <label for="name">Tên khối</label>
+            <input name="name" type="text" id="name" value="<%= data?.block?.name %>"/>
             <input name="color" type="hidden" id="color" value="<%= data?.block?.color %>" placeholder="color..."/>
-            <input name="note" type="text" id="note" value="<%= data?.block?.note %>" placeholder="Note..."/>
+            <label for="note">Ghi chú</label>
+            <input name="note" type="text" id="note" value="<%= data?.block?.note %>"/>
             <div class="k-content">
                 <div class="k-message">
                     <% for (const args of (data?.argss || [])) { %>
                         <% for (const arg of (args || [])) { %>
                     <div class="k-arg">
+                        <label>Loại</label>
                         <select onchange="onTypeChange(event)" class="k-type">
                             <option value="field_label" <%= arg?.type === 'field_label' ? 'selected' : '' %>>Đoạn
                                 văn
@@ -40,6 +44,7 @@
                             </option>
                         </select>
                         <div class="k-label">
+                          <label>Văn bản</label>
                             <% if (arg?.type === 'field_label') { %>
                                 <input type="text" data-label="text" value="<%= arg?.text %>"/>
                             <% } %>

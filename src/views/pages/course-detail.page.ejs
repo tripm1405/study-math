@@ -1,9 +1,71 @@
-<form id="form" action="/courses">
-    <input name="code" type="text" value="<%= data?.course?.code %>" placeholder="code..." <%= data?.course?.code && 'disabled' %> />
-    <input name="name" type="text" value="<%= data?.course?.name %>" placeholder="name..." />
-    <input name="note" type="text" value="<%= data?.course?.note %>" placeholder="note..." />
-    <button type="submit">SUBMIT</button>
-</form>
+<div style="display: flex; justify-content: center;">
+  <div style="border: 1px solid #ccc; padding: 20px; border-radius: 10px; width: 500px; background-color: #f9f9f9;">
+      <form id="form" action="/courses">
+          <h1 style="text-align: center; margin-bottom: 20px; color: #333;">Chi tiết khóa học</h1>
+          <label for="code" style="display: block; margin-bottom: 5px; color: #333;">Mã khóa học</label>
+          <input 
+              id="code"
+              name="code" 
+              type="text" 
+              value="<%= data?.course?.code %>" 
+              placeholder="Code..." 
+              <%= data?.course?.code && 'disabled' %> 
+              style="
+                  display: block; 
+                  margin-bottom: 10px; 
+                  padding: 10px; 
+                  border-radius: 5px; 
+                  border: 1px solid #ccc; 
+                  width: 100%; 
+                  box-sizing: border-box;
+              "
+          />
+          <label for="name" style="display: block; margin-bottom: 5px; color: #333;">Tên khóa học</label>
+          <input 
+              id="name"
+              name="name" 
+              type="text" 
+              value="<%= data?.course?.name %>" 
+              placeholder="Tên khóa học..." 
+              style="
+                  display: block; 
+                  margin-bottom: 10px; 
+                  padding: 10px; 
+                  border-radius: 5px; 
+                  border: 1px solid #ccc; 
+                  width: 100%; 
+                  box-sizing: border-box;
+              "
+          />
+          <label for="note" style="display: block; margin-bottom: 5px; color: #333;">Ghi chú</label>
+          <input 
+              id="note"
+              name="note" 
+              type="text" 
+              value="<%= data?.course?.note %>" 
+              placeholder="Ghi chú..." 
+              style="
+                  display: block; 
+                  margin-bottom: 10px; 
+                  padding: 10px; 
+                  border-radius: 5px; 
+                  border: 1px solid #ccc; 
+                  width: 100%; 
+                  box-sizing: border-box;
+              "
+          />
+          <button type="submit" style="
+              background-color: #4CAF50; 
+              color: white; 
+              padding: 10px 20px; 
+              border: none; 
+              border-radius: 5px; 
+              cursor: pointer; 
+              width: 100%;
+          ">Lưu</button>
+      </form>
+  </div>
+</div>
 
 <input type="hidden" id="id" value="<%= data?.course?._id %>" />
 <input type="hidden" id="method" value="<%= data?.course?._id ? 'PUT' : 'POST' %>" />
@@ -11,22 +73,23 @@
 <script>
   const method = document.getElementById('method').value;
   const id = document.getElementById('id').value;
+
   document.getElementById('form').addEventListener('submit', async event => {
-    event.preventDefault();
+      event.preventDefault();
 
-    const formData = new FormData(event.target);
+      const formData = new FormData(event.target);
 
-    if (method === 'PUT') {
-      await axios.put(`http://localhost:5500/courses/${id}`, formData);
-    }
-    else {
-      await axios.post('http://localhost:5500/courses', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-      });
-    }
+      if (method === 'PUT') {
+          await axios.put(`http://localhost:5500/courses/${id}`, formData);
+      }
+      else {
+          await axios.post('http://localhost:5500/courses', formData, {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              },
+          });
+      }
 
-    window.location.href = `/courses`;
+      window.location.href = `/courses`;
   })
 </script>
