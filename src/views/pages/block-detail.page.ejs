@@ -1,7 +1,10 @@
 <style>
-    .test {
-        color: red;
-    }
+  input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      box-sizing: border-box;
+  }
 </style>
 
 <div class="w-100 h-100 row">
@@ -11,9 +14,8 @@
     <div class="col-4 d-flex flex-column gap-3">
         <div>
             <div>
-                <button onclick="review()">REVIEW</button>
-                <!--                <button onclick="result()">RESULT</button>-->
-                <button onclick="submit()">SUBMIT</button>
+              <button onclick="review()" style="background-color: rgb(248, 97, 213); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-search"></i> XEM LẠI</button>
+              <button onclick="submit()" style="background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-paper-plane"></i> NỘP BÀI</button>
             </div>
         </div>
         <div>
@@ -64,13 +66,15 @@
                                         <button onclick="removeOption(event)">BỎ LỰA CHỌN</button>
                                     </div>
                                 <% } %>
-                                <button onclick="insertOption(event)">THÊM LỰA CHỌN</button>
-                            <% } %>
-                            <button onclick="removeField(event)">BỎ BIẾN</button>
+                                <button onclick="insertOption(event)" style="background-color: blue; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-plus"></i> THÊM LỰA CHỌN
+                              </button>
+                              
+                              <% } %>
+                              <button onclick="removeField(event)" style="background-color: red; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-trash-alt"></i> BỎ BIẾN </button>
+                              <button onclick="insertField(event)"  style="background-color: blue; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-plus"></i> THÊM BIẾN</button>
                         </div>
                         <% } %>
                         <% } %>
-                        <button onclick="insertField(event)">THÊM BIẾN</button>
                     </div>
                 </div>
             </div>

@@ -10,6 +10,6 @@ export default class AuthUtil {
   };
   static currentUser = {
     fullName: 'Khả Vy',
-    type: AuthUtil.UserType.HocSinh,
+    type: AuthUtil.UserType.GiaoVien,
   };
 }

@@ -35,17 +35,15 @@
         <tr>
           <td><%= _class?.code %></td>
           <th scope="row">1</th>
-          <td>K01</td>
-          <td>Ôn tập các số đến 100</td>
-          <td>Nguyễn Anh</td>
-          <td>13/05/2024 20:53</td>
-          <td>13/05/2024 21:06</td>
-          <td>50</td>
+            <td>K01</td>
+            <td>Ôn tập các số đến 100</td>
+            <td>Nguyễn Anh</td>
+            <td>13/05/2024 20:53</td>
+            <td>13/05/2024 21:06</td>
+            <td>50</td>
           <td>
-            <td>
-              <button class="btn btn-secondary" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
-              <button class="btn btn-danger" onClick="deleteLesson('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
-            </td>
+            <button class="btn btn-secondary" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-danger" onClick="deleteLesson('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
           </td>
         </tr>
     <% } %>
