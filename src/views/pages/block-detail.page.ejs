@@ -1,11 +1,13 @@
 <style>
-  input[type="text"], input[type="number"], select {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      box-sizing: border-box;
-  }
+    input[type="text"], input[type="number"], select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        box-sizing: border-box;
+    }
 </style>
+
+<%= JSON.stringify(data) %>
 
 <div class="w-100 h-100 row">
     <div class="h-100 col-8 border">
@@ -14,8 +16,14 @@
     <div class="col-4 d-flex flex-column gap-3">
         <div>
             <div>
-              <button onclick="review()" style="background-color: rgb(248, 97, 213); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-search"></i> XEM LẠI</button>
-              <button onclick="submit()" style="background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-paper-plane"></i> NỘP BÀI</button>
+                <button onclick="review()"
+                        style="background-color: rgb(248, 97, 213); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-search"></i> XEM LẠI
+                </button>
+                <button onclick="submit()"
+                        style="background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-paper-plane"></i> NỘP BÀI
+                </button>
             </div>
         </div>
         <div>
@@ -30,55 +38,72 @@
                 <div class="k-message">
                     <% for (const args of (data?.argss || [])) { %>
                         <% for (const arg of (args || [])) { %>
-                    <div class="k-arg">
-                        <label>Loại</label>
-                        <select onchange="onTypeChange(event)" class="k-type">
-                            <option value="field_label" <%= arg?.type === 'field_label' ? 'selected' : '' %>>Đoạn
-                                văn
-                            </option>
-                            <option value="field_number" <%= arg?.type === 'field_number' ? 'selected' : '' %>>Nhập
-                                số
-                            </option>
-                            <option value="field_dropdown" <%= arg?.type === 'field_dropdown' ? 'selected' : '' %>>
-                                Lựa chọn
-                            </option>
-                        </select>
-                        <div class="k-label">
-                          <label>Văn bản</label>
-                            <% if (arg?.type === 'field_label') { %>
-                                <input type="text" data-label="text" value="<%= arg?.text %>"/>
-                            <% } %>
-                            <% if (arg?.type === 'field_number') { %>
-                                <input type="text" data-label="name" placeholder="Tên biến..."
-                                       value="<%= arg?.name %>"/>
-                                <input type="number" data-label="value" placeholder="Giá trị mặc định..."
-                                       value="<%= arg?.value %>"/>
-                                <input type="number" data-label="min" placeholder="Giá trị tối thiểu..."
-                                       value="<%= arg?.min %>"/>
-                                <input type="number" data-label="max" placeholder="Giá trị tối đa..."
-                                       value="<%= arg?.max %>"/>
-                            <% } %>
-                            <% if (arg?.type === 'field_dropdown') { %>
-                                <input type="text" data-label="name" placeholder="Tên biến..."
-                                       value="<%= arg?.name %>"/>
-                                <div>Các lựa chọn</div>
-                                <% for (const option of arg?.options || []) { %>
-                                    <div data-label="option">
-                                        <input type="text" data-label="label" placeholder="Tên..."
-                                               value="<%= option?.[0] %>"/>
-                                        <input type="text" data-label="value" placeholder="Giá trị..."
-                                               value="<%= option?.[1] %>"/>
-                                        <button onclick="removeOption(event)">BỎ LỰA CHỌN</button>
+                            <div class="k-arg">
+                                <label>Loại</label>
+                                <select onchange="onTypeChange(event)" class="k-type">
+                                    <option value="field_label" <%= arg?.type === 'field_label' ? 'selected' : '' %>>Đoạn
+                                        văn
+                                    </option>
+                                    <option value="field_number" <%= arg?.type === 'field_number' ? 'selected' : '' %>>Nhập
+                                        số
+                                    </option>
+                                    <option value="field_dropdown" <%= arg?.type === 'field_dropdown' ? 'selected' : '' %>>
+                                        Lựa chọn
+                                    </option>
+                                </select>
+                                <div class="k-label">
+                                    <label>Văn bản</label>
+                                    <% if (arg?.type === 'field_label') { %>
+                                        <input type="text" data-label="text" value="<%= arg?.text %>"/>
+                                    <% } %>
+                                    <% if (arg?.type === 'field_number') { %>
+                                        <input type="text" data-label="name" placeholder="Tên biến..."
+                                               value="<%= arg?.name %>"/>
+                                        <input type="number" data-label="value" placeholder="Giá trị mặc định..."
+                                               value="<%= arg?.value %>"/>
+                                        <input type="number" data-label="min" placeholder="Giá trị tối thiểu..."
+                                               value="<%= arg?.min %>"/>
+                                        <input type="number" data-label="max" placeholder="Giá trị tối đa..."
+                                               value="<%= arg?.max %>"/>
+                                    <% } %>
+                                    <% if (arg?.type === 'field_dropdown') { %>
+                                        <input type="text" data-label="name" placeholder="Tên biến..."
+                                               value="<%= arg?.name %>"/>
+                                        <div>Các lựa chọn</div>
+                                        <% for (const option of arg?.options || []) { %>
+                                            <div data-label="option">
+                                                <input type="text" data-label="label" placeholder="Tên..."
+                                                       value="<%= option?.[0] %>"/>
+                                                <input type="text" data-label="value" placeholder="Giá trị..."
+                                                       value="<%= option?.[1] %>"/>
+
+                                                <button onclick="removeOption(event)"
+                                                        style="background-color: red; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                                    <i class="fas fa-trash-alt"></i> BỎ LỰA CHỌN
+                                                </button>
+                                            </div>
+                                        <% } %>
+                                        <button onclick="insertOption(event)"
+                                                style="background-color: blue; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-plus"></i> THÊM LỰA CHỌN
+                                        </button>
+
+                                    <% } %>
+                                    <div>
+                                        <button onclick="removeField(event)"
+                                                style="background-color: red; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-trash-alt"></i> BỎ BIẾN
+                                        </button>
                                     </div>
+                                </div>
                                 <% } %>
-                                <button onclick="insertOption(event)" style="background-color: blue; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-plus"></i> THÊM LỰA CHỌN
-                              </button>
-                              
-                              <% } %>
-                              <button onclick="removeField(event)" style="background-color: red; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-trash-alt"></i> BỎ BIẾN </button>
-                              <button onclick="insertField(event)"  style="background-color: blue; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"><i class="fas fa-plus"></i> THÊM BIẾN</button>
-                        </div>
-                        <% } %>
+                            </div>
+                            <div>
+                                <button onclick="insertField(event)"
+                                        style="background-color: blue; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                    <i class="fas fa-plus"></i> THÊM BIẾN
+                                </button>
+                            </div>
                         <% } %>
                     </div>
                 </div>
