@@ -56,11 +56,11 @@
         </button>
         <div class="dropdown">
           <button class="btn dropdown-toggle transparent-btn" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            <%= data.currentUser.fullName %>
+            <%= currentUser?.fullName %>
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
             <li><a class="dropdown-item" href="#" id="info">Thông tin cá nhân</a></li>
-            <li><a class="dropdown-item" href="#" id="logout">Đăng xuất</a></li>
+            <li><a class="dropdown-item" href="/sign-out" id="logout">Đăng xuất</a></li>
           </ul>
         </div>
       </div>
@@ -69,9 +69,9 @@
   <div class="d-flex">
     <nav class="sidebar">
       <div class="sidebar-content">
-        <div class="welcome">Xin chào, <%= data.currentUser.fullName %></div>
+        <div class="welcome">Xin chào, <%= currentUser?.fullName %></div>
         <ul class="nav flex-column">
-          <% data.menu.forEach(item => { %>
+          <% menus.forEach(item => { %>
             <li class="nav-item">
               <a class="nav-link" href="<%= item.link %>">
                 <i class="<%= item.icon %>"></i> <%= item.label %>

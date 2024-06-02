@@ -9,18 +9,18 @@ export default {
         const lessons = await LessonModel.find({});
         const newId = new mongoose.Types.ObjectId();
 
-        switch (AuthUtil.currentUser.type) {
+        switch (res.locals.currentUser?.type) {
             default:
-            case AuthUtil.UserType.HocSinh: {
+            case AuthUtil.UserType.Student: {
                 res.render('pages/students/lesson.page.ejs', ViewUtil.getOptions({
                     data: {
                         lessons: lessons,
-                        newId: newId,
                     },
                 }));
                 return;
             }
-            case AuthUtil.UserType.GiaoVien: {
+            case AuthUtil.UserType.Admin:
+            case AuthUtil.UserType.Teacher: {
                 res.render('pages/lesson.page.ejs', ViewUtil.getOptions({
                     data: {
                         lessons: lessons,
@@ -41,9 +41,9 @@ export default {
         const lesson = await LessonModel.findById(id) || {};
         const courses = await CourseModel.find({}) || [];
 
-        switch (AuthUtil.currentUser.type) {
+        switch (res.locals.currentUser?.type) {
             default:
-            case AuthUtil.UserType.HocSinh: {
+            case AuthUtil.UserType.Student: {
                 // get questions
 
                 res.render('pages/students/lesson-detail.page.ejs', ViewUtil.getOptions({
@@ -54,7 +54,8 @@ export default {
                 }));
                 return;
             }
-            case AuthUtil.UserType.GiaoVien: {
+            case AuthUtil.UserType.Admin:
+            case AuthUtil.UserType.Teacher: {
                 res.render('pages/lesson-detail.page.ejs', ViewUtil.getOptions({
                     data: {
                         lesson: lesson,

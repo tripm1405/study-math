@@ -39,33 +39,30 @@ const menuItems = {
 };
 
 export default class ViewUtil {
-  static getOptions = (options, isManager = false) => {
-    const menu = isManager
-      ? [
-        menuItems.home,
-        menuItems.course,
-        menuItems.lesson,
-        menuItems.problem,
-        menuItems.block,
-        menuItems.stats,
-        menuItems.users,
-      ]
-      : [
-        menuItems.home,
-        menuItems.course,
-        menuItems.lesson,
-        menuItems.problem,
-        menuItems.block,
-        menuItems.stats,
-        menuItems.users,
-      ];
+  static menus = {
+    manager: [
+      menuItems.home,
+      menuItems.course,
+      menuItems.lesson,
+      menuItems.problem,
+      menuItems.block,
+      menuItems.stats,
+      menuItems.users,
+    ],
+    student: [
+      menuItems.home,
+      menuItems.course,
+      menuItems.lesson,
+      menuItems.problem,
+      menuItems.stats,
+    ],
+  }
 
+  static getOptions = (options, isManager = false) => {
     return {
       layout: 'layouts/main.layout.ejs',
       ...options,
       data: {
-        menu: menu,
-        currentUser: AuthUtil.currentUser,
         ...options.data,
       },
     };

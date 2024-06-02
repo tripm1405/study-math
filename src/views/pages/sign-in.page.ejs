@@ -31,19 +31,19 @@
   <div class="card-login">
     <div class="card-body">
       <h3 class="card-title text-center">Đăng nhập</h3>
-      <form onsubmit="return redirectToHome(event)">
+      <form action="/sign-in" method="POST">
         <div class="mb-3">
           <div class="input-group">
-            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-            <label for="email" class="form-label visually-hidden">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Email" required>
+            <span class="input-group-text"><i class="fa fa-user"></i></span>
+            <label for="email" class="form-label visually-hidden">Tài khoản</label>
+            <input name="username" type="text" class="form-control" id="email" placeholder="Tài khoản..." required>
           </div>
         </div>
         <div class="mb-3">
           <div class="input-group">
             <span class="input-group-text"><i class="fa fa-lock"></i></span>
             <label for="password" class="form-label visually-hidden">Mật khẩu</label>
-            <input type="password" class="form-control" id="password" placeholder="Mật khẩu" required>
+            <input name="password" type="password" class="form-control" id="password" placeholder="Mật khẩu..." required>
             <span class="input-group-text">
               <i class="fa fa-eye" id="togglePassword" onclick="togglePasswordVisibility();"></i>
             </span>

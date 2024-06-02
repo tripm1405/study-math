@@ -7,15 +7,16 @@ import LessonRouter from '#root/routes/lesson.route.js';
 import UserRouter from '#root/routes/user.route.js';
 import CommonRoute from "#root/routes/common.route.js";
 import BlockRoute from "#root/routes/block.route.js";
+import AuthMiddleware from "#root/middlewares/auth.middleware.js";
 
 const Router = express.Router();
 
-Router.use('/test', TestRouter);
-Router.use('/classes', ClassRouter);
-Router.use('/courses', CourseRouter);
-Router.use('/lessons', LessonRouter);
-Router.use('/users', UserRouter);
-Router.use('/blocks', BlockRoute);
+Router.use('/test', AuthMiddleware.checkSingedIn, TestRouter);
+Router.use('/classes', AuthMiddleware.checkSingedIn, ClassRouter);
+Router.use('/courses', AuthMiddleware.checkSingedIn, CourseRouter);
+Router.use('/lessons', AuthMiddleware.checkSingedIn, LessonRouter);
+Router.use('/users', AuthMiddleware.checkSingedIn, UserRouter);
+Router.use('/blocks', AuthMiddleware.checkSingedIn, BlockRoute);
 Router.use('/', CommonRoute);
 
 export default Router;

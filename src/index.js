@@ -1,5 +1,6 @@
 import express from 'express';
 import expressEjsLayouts from 'express-ejs-layouts';
+import cookieParser from 'cookie-parser';
 import { dirname } from 'path';
 import {fileURLToPath} from 'url';
 import dotenv from "dotenv";
@@ -32,6 +33,7 @@ app.use(expressEjsLayouts);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(multer({ dest: 'uploads/' }).array());
+app.use(cookieParser());
 
 app.use(Router);
 

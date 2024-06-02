@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+import bcrypt from 'bcryptjs';
+
 import ViewUtil from "#root/utils/view.util.js";
 import UserModel from "#root/models/user.model.js";
 
@@ -6,6 +8,11 @@ dotenv.config();
 
 export default {
   getSignIn: (req, res) => {
+    if (req?.cookies?.user) {
+      res.redirect('/');
+      return;
+    }
+
     res.render('pages/sign-in.page.ejs', ViewUtil.getOptions({
       layout: false,
     }));
@@ -28,14 +35,18 @@ export default {
       return;
     }
 
-    res.cookie('user', username, {
+    res.cookie('user', {
+      username: user?.username,
+      type: user?.type,
+    }, {
       httpOnly: true
     }, {
       signed: true
     });
     res.redirect('/');
   },
-  postSignOut: (req, res) => {
-    res.json({ result: '/sign-in' });
+  getSignOut: (req, res) => {
+    res.cookie('user', '', {httpOnly: true}, {signed: true});
+    res.redirect('/sign-in');
   },
 }

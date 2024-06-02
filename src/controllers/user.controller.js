@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from 'bcryptjs';
 import dotenv from "dotenv";
 
 import UserModel from "#root/models/user.model.js";
@@ -9,7 +10,9 @@ dotenv.config();
 
 export default {
     get: async (req, res) => {
-        const users = await UserModel.find({});
+        const users = await UserModel.find({
+            type: { $ne: 'Admin' }
+        });
         const newId = new mongoose.Types.ObjectId();
 
         res.render('pages/user.page.ejs', ViewUtil.getOptions({
