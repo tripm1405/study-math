@@ -6,7 +6,14 @@ const schema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  name: {
+    type: String,
+    unique: true,
+  },
   content: {
+    type: String,
+  },
+  note: {
     type: String,
   },
   createdById: {
