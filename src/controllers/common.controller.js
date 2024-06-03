@@ -85,4 +85,9 @@ export default {
     res.cookie('user', '', {httpOnly: true}, {signed: true});
     res.redirect('/sign-in');
   },
+  getNotFound: (req, res) => {
+    res.render('pages/not-found.page.ejs', ViewUtil.getOptions({
+      layout: false,
+    }));
+  }
 }

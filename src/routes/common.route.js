@@ -10,5 +10,6 @@ Router.get('/sign-in', commonController.getSignIn);
 Router.post('/sign-in', commonController.postSignIn);
 Router.get('/sign-out', AuthMiddleware.checkSingedIn, commonController.getSignOut);
 Router.get('/', AuthMiddleware.checkSingedIn, commonController.getHome);
+Router.use(commonController.getNotFound);
 
 export default Router;
