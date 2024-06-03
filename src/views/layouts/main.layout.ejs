@@ -48,7 +48,9 @@
     <div class="header-content">
       <img src="/images/logo.png" alt="Study Math Logo" class="logo" width="100px" height="100px">
       <div class="search-bar">
-        <input type="text" class="form-control" placeholder="Tìm kiếm">
+        <form action="/search" method="GET">
+          <input name="search" type="text" value="<%= data?.search %>" class="form-control" placeholder="Tìm kiếm...">
+        </form>
       </div>
       <div class="ml-auto d-flex align-items-center">
         <button class="btn transparent-btn" type="button">

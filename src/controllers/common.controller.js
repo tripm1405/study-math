@@ -3,10 +3,46 @@ import bcrypt from 'bcryptjs';
 
 import ViewUtil from "#root/utils/view.util.js";
 import UserModel from "#root/models/user.model.js";
+import CourseModel from "#root/models/course.model.js";
 
 dotenv.config();
 
 export default {
+  getHome: async (req, res) => {
+    const problems = await CourseModel.find({});
+
+    res.render('pages/home.page.ejs', ViewUtil.getOptions({
+      data: {
+        problems: problems,
+      },
+    }));
+  },
+  getSearch: async (req, res ) => {
+    const { search } = req.query;
+
+    const regex = new RegExp(search, 'i');
+
+    const courses = await CourseModel.find({
+      code: {$regex: regex},
+    });
+
+    const lessons = await CourseModel.find({
+      code: {$regex: regex},
+    });
+
+    const problems = await CourseModel.find({
+      code: {$regex: regex},
+    });
+
+    res.render('pages/search.page.ejs', ViewUtil.getOptions({
+      data: {
+        search: search,
+        courses: courses,
+        lessons: lessons,
+        problems: problems,
+      },
+    }));
+  },
   getSignIn: (req, res) => {
     if (req?.cookies?.user) {
       res.redirect('/');
