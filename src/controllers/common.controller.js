@@ -91,5 +91,10 @@ export default {
     res.render('pages/not-found.page.ejs', ViewUtil.getOptions({
       layout: false,
     }));
-  }
+  },
+  getStatistics: async (req, res) => {
+    res.render('pages/statistics.page.ejs', ViewUtil.getOptions({
+      data: {},
+    }));
+  },
 }

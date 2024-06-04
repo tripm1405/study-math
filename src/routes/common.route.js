@@ -5,6 +5,7 @@ import AuthMiddleware from "#root/middlewares/auth.middleware.js";
 
 const Router = express.Router();
 
+Router.get('/statistics', AuthMiddleware.checkSingedIn, commonController.getStatistics);
 Router.get('/search', AuthMiddleware.checkSingedIn, commonController.getSearch);
 Router.get('/sign-in', commonController.getSignIn);
 Router.post('/sign-in', commonController.postSignIn);
