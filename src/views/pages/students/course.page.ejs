@@ -64,3 +64,15 @@
         <div class="course-info">👥 79</div>
     </div>
 </div>
+
+<%= JSON.stringify(data)%>
+<% for (const course of (data?.courses || [])) { %>
+    <div onclick="detail('<%= course._id %>')"><%= course.code %></div>
+<% } %>
+
+<script>
+    function detail(id) {
+        console.log('Hello', id);
+        window.location.href = `/courses/${id}`;
+    }
+</script>
