@@ -44,6 +44,10 @@
         <div class="course-title">Lớp 1 - Nguyễn Anh</div>
         <div class="course-info">Ngày tạo: 20/04/2024</div>
         <div class="course-info">👥 50</div>
+        <%= JSON.stringify(data)%>
+        <% for (const course of (data?.courses || [])) { %>
+            <div onclick="detail('<%= course._id %>')"><%= course.code %></div>
+        <% } %>
     </div>
     <div class="course-card">
         <img src="/images/img2.png" alt="Lớp 1 - Cao Ngân">
@@ -72,7 +76,6 @@
 
 <script>
     function detail(id) {
-        console.log('Hello', id);
         window.location.href = `/courses/${id}`;
     }
 </script>
