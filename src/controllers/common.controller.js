@@ -4,12 +4,14 @@ import bcrypt from 'bcryptjs';
 import ViewUtil from "#root/utils/view.util.js";
 import UserModel from "#root/models/user.model.js";
 import CourseModel from "#root/models/course.model.js";
+import LessonModel from "#root/models/lesson.model.js";
+import QuestionModel from "#root/models/question.model.js";
 
 dotenv.config();
 
 export default {
   getHome: async (req, res) => {
-    const problems = await CourseModel.find({});
+    const problems = await QuestionModel.find({});
 
     res.render('pages/home.page.ejs', ViewUtil.getOptions({
       data: {
@@ -26,11 +28,11 @@ export default {
       code: {$regex: regex},
     });
 
-    const lessons = await CourseModel.find({
+    const lessons = await LessonModel.find({
       code: {$regex: regex},
     });
 
-    const problems = await CourseModel.find({
+    const problems = await QuestionModel.find({
       code: {$regex: regex},
     });
 
