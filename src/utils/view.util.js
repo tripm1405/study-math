@@ -3,7 +3,7 @@ import AuthUtil from "#root/utils/auth.util.js";
 const menuItems = {
   home: {
     label: 'Trang chủ',
-    link: '/home',
+    link: '/',
     icon: 'fas fa-home',
   },
   course: {
