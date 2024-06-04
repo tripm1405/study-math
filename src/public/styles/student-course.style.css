@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.course-container {
+    display: flex;
+    gap: 20px;
+}
+.course-card {
+    width: 150px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    text-align: center;
+}
+.course-card:nth-child(1) {
+    background-color: #fffbcc;
+}
+.course-card:nth-child(2) {
+    background-color: #ccf2ff;
+}
+.course-card img {
+    width: 100%;
+    border-radius: 10px;
+}
+.course-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0 5px 0;
+}
+.course-info {
+    font-size: 14px;
+    color: #555;
+}

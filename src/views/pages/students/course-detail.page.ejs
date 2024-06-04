@@ -1,1 +1,69 @@
-<%= JSON.stringify(data)%>
+<style>
+    .lesson-container {
+        display: flex;
+        gap: 20px;
+    }
+    .lesson-card {
+        width: 300px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        text-align: left;
+    }
+    .lesson-card:nth-child(1) {
+        background-color: #fde1e1;
+    }
+    .lessson-card:nth-child(2) {
+        background-color: #ccf2ff;
+    }
+    .lesson-card:nth-child(3) {
+        background-color: #f6f7c2;
+    }
+    .lesson-card:nth-child(4) {
+        background-color: #e3ffd7;
+    }
+    .lesson-card img {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .lesson-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 10px 0 5px 0;
+    }
+    .lesson-info, .lesson-teacher {
+        font-size: 14px;
+        color: #555;
+    }
+</style>
+<h1>Chi tiết khóa học</h1>
+<div href="/courses-details" class="lesson-container">
+    <div class="lesson-card">
+        <img src="/images/img5.png" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Các số tự nhiên</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+    <div class="lesson-card">
+        <img src="/images/img6.png" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Phép dư</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+    <div class="lesson-card">
+        <img src="/images/img7.png" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Số chẵn, số lẻ</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+    <div class="lesson-card">
+        <img src="/images/img8.jpg" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">So sánh</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+</div>

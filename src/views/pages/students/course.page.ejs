@@ -1,1 +1,66 @@
-<%= JSON.stringify(data)%>
+<style>
+    .course-container {
+        display: flex;
+        gap: 20px;
+    }
+    .course-card {
+        width: 300px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        text-align: left;
+        cursor: pointer;
+    }
+    .course-card:nth-child(1) {
+        background-color: #fffbcc;
+    }
+    .course-card:nth-child(2) {
+        background-color: #ccf2ff;
+    }
+    .course-card:nth-child(3) {
+        background-color: #edd5f8;
+    }
+    .course-card:nth-child(4) {
+        background-color: #e3ffd7;
+    }
+    .course-card img {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .course-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 10px 0 5px 0;
+    }
+    .course-info {
+        font-size: 14px;
+        color: #555;
+    }
+</style>
+<h1>Các khóa học</h1>
+<div class="course-container">
+    <div class="course-card">
+        <img src="/images/img1.jpg" alt="Lớp 1 - Nguyễn Anh">
+        <div class="course-title">Lớp 1 - Nguyễn Anh</div>
+        <div class="course-info">Ngày tạo: 20/04/2024</div>
+        <div class="course-info">👥 50</div>
+    </div>
+    <div class="course-card">
+        <img src="/images/img2.png" alt="Lớp 1 - Cao Ngân">
+        <div class="course-title">Lớp 1 - Cao Ngân</div>
+        <div class="course-info">Ngày tạo: 20/04/2024</div>
+        <div class="course-info">👥 12</div>
+    </div>
+    <div class="course-card">
+        <img src="/images/img3.png" alt="Lớp 2 - Cao Ngân">
+        <div class="course-title">Lớp 2 - Cao Ngân</div>
+        <div class="course-info">Ngày tạo: 30/04/2024</div>
+        <div class="course-info">👥 39</div>
+    </div>
+    <div class="course-card">
+        <img src="/images/img4.png" alt="Lớp 2 - Nguyễn Anh">
+        <div class="course-title">Lớp 2 - Nguyễn Anh</div>
+        <div class="course-info">Ngày tạo: 30/04/2024</div>
+        <div class="course-info">👥 79</div>
+    </div>
+</div>
