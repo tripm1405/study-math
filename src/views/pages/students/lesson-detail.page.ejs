@@ -1,1 +1,85 @@
-<%= JSON.stringify(data)%>
+<style>
+    .lesson-container {
+        display: flex;
+        gap: 20px;
+    }
+    .lesson-card {
+        width: 300px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        text-align: left;
+    }
+    .lesson-card:nth-child(1) {
+        background-color: #fde1e1;
+    }
+    .lessson-card:nth-child(2) {
+        background-color: #ccf2ff;
+    }
+    .lesson-card:nth-child(3) {
+        background-color: #f6f7c2;
+    }
+    .lesson-card:nth-child(4) {
+        background-color: #e3ffd7;
+    }
+    .lesson-card img {
+        width: 100%;
+        border-radius: 10px;
+        height: 250px;
+    }
+    .lesson-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 10px 0 5px 0;
+    }
+    .lesson-info, .lesson-teacher {
+        font-size: 14px;
+        color: #555;
+    }
+    .level{
+        background-color: #DEFFCF;
+        color: #40FF8C;
+        padding: 3px 15px;
+        border-radius: 10px;
+        border-color: #40FF8C;
+        border: 2px;
+        border-style: dashed;
+    }
+</style>
+<div style="justify-content:space-between; display:flex">
+    <h1>Số tự nhiên</h1>
+    <div>
+        <label>Mức độ:</label>
+        <label class="level">Dễ</label> 
+    </div>
+</div>
+<div href="/lessons-details" class="lesson-container">
+    <div class="lesson-card">
+        <img src="/images/img10.png" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Tổng các số tự nhiên</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+    <div class="lesson-card">
+        <img src="/images/img11.jpeg" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Hiệu các số tự nhiên</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+    <div class="lesson-card">
+        <img src="/images/img12.jpeg" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Tích các số tự nhiên</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+    <div class="lesson-card">
+        <img src="/images/img14.png" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Thương các số tự nhiên</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+</div>

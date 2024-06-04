@@ -39,15 +39,36 @@
 </style>
 <h1>Các khóa học</h1>
 <div class="course-container">
-    <% for (const course of (data?.courses || [])) { %>
-        <div onclick="detail('<%= course?._id %>')" class="course-card">
-            <img src="/images/img1.jpg" alt="Lớp 1 - Nguyễn Anh" />
-            <div class="course-title"><%= course?.name %></div>
-            <div class="course-info"><%= course?.createdAt %></div>
-            <div class="course-info"><%= course?.userAmount %></div> <!-- Sau sẽ có -->
-        </div>
-    <% } %>
+    <div onclick="detail('665e9ce8e548fdc00786b96a')" class="course-card">
+        <img src="/images/img1.jpg" alt="Lớp 1 - Nguyễn Anh">
+        <div class="course-title">Lớp 1 - Nguyễn Anh</div>
+        <div class="course-info">Ngày tạo: 20/04/2024</div>
+        <div class="course-info">👥 50</div>
+    </div>
+    <div onclick="detail('665e9ce8e548fdc00786b96a')" class="course-card">
+        <img src="/images/img2.png" alt="Lớp 1 - Cao Ngân">
+        <div class="course-title">Lớp 1 - Cao Ngân</div>
+        <div class="course-info">Ngày tạo: 20/04/2024</div>
+        <div class="course-info">👥 12</div>
+    </div>
+    <div onclick="detail('665e9ce8e548fdc00786b96a')" class="course-card">
+        <img src="/images/img3.png" alt="Lớp 2 - Cao Ngân">
+        <div class="course-title">Lớp 2 - Cao Ngân</div>
+        <div class="course-info">Ngày tạo: 30/04/2024</div>
+        <div class="course-info">👥 39</div>
+    </div>
+    <div onclick="detail('665e9ce8e548fdc00786b96a')" class="course-card">
+        <img src="/images/img4.png" alt="Lớp 2 - Nguyễn Anh">
+        <div class="course-title">Lớp 2 - Nguyễn Anh</div>
+        <div class="course-info">Ngày tạo: 30/04/2024</div>
+        <div class="course-info">👥 79</div>
+    </div>
 </div>
+
+<!-- <%= JSON.stringify(data)%>
+<% for (const course of (data?.courses || [])) { %>
+    <div onclick="detail('<%= course._id %>')"><%= course.code %></div>
+<% } %> -->
 
 <script>
     function detail(id) {

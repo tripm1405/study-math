@@ -9,6 +9,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 10px;
         text-align: left;
+        cursor: pointer;
     }
     .lesson-card:nth-child(1) {
         background-color: #fde1e1;
@@ -36,30 +37,30 @@
         color: #555;
     }
 </style>
-<h1>Các khóa học</h1>
-<div href="/courses-details" class="lesson-container">
-    <div class="lesson-card">
+<h1>Các bài học</h1>
+<div href="/lessons-details" class="lesson-container">
+    <div onclick="detail('665190d0e9990e1c6af80ef8')" class="lesson-card">
         <img src="/images/img5.png" alt="Lớp 1 - Nguyễn Anh">
-        <div class="lesson-title">Các số tự nhiên</div>
+        <div class="lesson-title">Số tự nhiên</div>
         <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
         <div class="lesson-info">Ngày tạo: 20/04/2024</div>
         <div class="lesson-info">👥 50</div>
     </div>
-    <div class="lesson-card">
+    <div onclick="detail('665190d0e9990e1c6af80ef8')" class="lesson-card">
         <img src="/images/img6.png" alt="Lớp 1 - Nguyễn Anh">
         <div class="lesson-title">Phép dư</div>
         <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
         <div class="lesson-info">Ngày tạo: 20/04/2024</div>
         <div class="lesson-info">👥 50</div>
     </div>
-    <div class="lesson-card">
+    <div onclick="detail('665190d0e9990e1c6af80ef8')" class="lesson-card">
         <img src="/images/img7.png" alt="Lớp 1 - Nguyễn Anh">
         <div class="lesson-title">Số chẵn, số lẻ</div>
         <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
         <div class="lesson-info">Ngày tạo: 20/04/2024</div>
         <div class="lesson-info">👥 50</div>
     </div>
-    <div class="lesson-card">
+    <div onclick="detail('665190d0e9990e1c6af80ef8')" class="lesson-card">
         <img src="/images/img8.jpg" alt="Lớp 1 - Nguyễn Anh">
         <div class="lesson-title">So sánh</div>
         <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
@@ -67,3 +68,13 @@
         <div class="lesson-info">👥 50</div>
     </div>
 </div>
+<%= JSON.stringify(data)%>
+<% for (const lesson of (data?.lessons || [])) { %>
+    <div onclick="detail('<%= lesson._id %>')"><%= lesson.code %></div>
+<% } %>
+
+<script>
+    function detail(id) {
+        window.location.href = `/lessons/${id}`;
+    }
+</script>

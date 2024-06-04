@@ -69,14 +69,14 @@
     </div>
   </header>
   <div class="d-flex">
-    <nav class="sidebar">
+    <nav class="sidebar" style="background-color:#fff8f3">
       <div class="sidebar-content">
         <div class="welcome">Xin chào, <%= currentUser?.fullName %></div>
         <ul class="nav flex-column">
           <% menus.forEach(item => { %>
             <li class="nav-item">
               <a class="nav-link" href="<%= item.link %>">
-                <i class="<%= item.icon %>"></i> <%= item.label %>
+                <i class="<%= item.icon %>" ></i> <%= item.label %>
               </a>
             </li>
           <% }); %>
