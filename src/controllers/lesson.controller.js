@@ -6,8 +6,21 @@ import AuthUtil from "#root/utils/auth.util.js";
 
 export default {
     get: async (req, res) => {
-        const lessons = await LessonModel.find({});
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = 10;
+        const totalUsers = await LessonModel.countDocuments({ type: { $ne: 'Admin' } });
+        const totalPages = Math.ceil(totalLessons / pageSize);
+
+        const lessons = await LessonModel.find({})
+            .skip((page - 1) * pageSize)
+            .limit(pageSize);
+
         const newId = new mongoose.Types.ObjectId();
+
+        const paginatedLessons = lessons.map((lesson, index) => ({
+            ...lesson.toObject(),
+            index: (page - 1) * pageSize + index + 1
+        }));
 
         switch (res.locals.currentUser?.type) {
             default:
@@ -15,6 +28,8 @@ export default {
                 res.render('pages/students/lesson.page.ejs', ViewUtil.getOptions({
                     data: {
                         lessons: lessons,
+                        totalPages: totalPages, 
+                        currentPage: page,
                     },
                 }));
                 return;
@@ -25,6 +40,8 @@ export default {
                     data: {
                         lessons: lessons,
                         newId: newId,
+                        totalPages: totalPages, 
+                        currentPage: page,
                     },
                 }));
                 return;

@@ -1,41 +1,72 @@
-<table class="table table-striped mt-3">
-    <thead>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lí tài khoản</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="container">
         <h1>Quản lí tài khoản</h1>
-    <tr>
-         <th scope="col">STT</th>
-            <th scope="col">Mã tài khoản</th>
-            <th scope="col">Email</th>
-            <th scope="col">Thời gian truy cập gần nhất</th>
-            <th scope="col">Số lần truy cập</th>
-            <th scope="col">Số bài toán đã tham gia</th>
-            <th scope="col">Hành động</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% for (const user of (data?.users || [])) { %>
-        <tr>
-            <th scope="row">1</th>
-            <td><%= user?.code %></td>
-            <td><%= user?.email %></td>
-            <td>13/05/2024 20:53</td>
-            <td>50</td>
-            <td>2</td>
-            <td>
-                <button class="btn btn-secondary" onClick="upsert('<%= user?._id %>')"
-                    ><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger" onClick="del('<%= user?._id %>')"><i class="fas fa-trash-alt"></i></button>
-            </td>
-        </tr>
-    <% } %>
-    </tbody>
-</table>
-<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo tài khoản</button>
-<script>
-    function upsert(id) {
-        window.location.href = `/users/${id}`;
-    }
-    async function del(id) {
-        await axios.delete(`http://localhost:5500/users/${id}`);
-        location.reload()
-    }
-</script>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Mã tài khoản</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Truy cập gần nhất</th>
+                    <th scope="col">Số lần truy cập</th>
+                    <th scope="col">Số bài toán đã tham gia</th>
+                    <th scope="col">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.users.forEach((user) => { %>
+                    <tr>
+                        <th scope="row"><%= user.index %></th>
+                        <td><%= user.code %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.lastAccess %></td>
+                        <td><%= user.accessCount %></td>
+                        <td><%= user.participatedProblems %></td>
+                        <td>
+                            <button class="btn btn-secondary" onClick="upsert('<%= user._id %>')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger" onClick="del('<%= user._id %>')"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+                </li>
+                <% for(let i = 1; i <= data.totalPages; i++) { %>
+                    <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data.newId %>')">Tạo tài khoản</button>
+    </div>
+
+    <script>
+        function upsert(id) {
+            window.location.href = `/users/${id}`;
+        }
+
+        async function del(id) {
+            await axios.delete(`http://localhost:5500/users/${id}`);
+            location.reload();
+        }
+    </script>
+</body>
+</html>

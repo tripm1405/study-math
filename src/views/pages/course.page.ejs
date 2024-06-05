@@ -48,6 +48,21 @@
     <% } %>
     </tbody>
 </table>
+<nav>
+  <ul class="pagination">
+      <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+          <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+      </li>
+      <% for(let i = 1; i <= data.totalPages; i++) { %>
+          <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          </li>
+      <% } %>
+      <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+          <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+      </li>
+  </ul>
+</nav>
 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khóa học</button>
 
 <script>

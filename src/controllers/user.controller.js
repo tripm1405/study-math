@@ -10,25 +10,47 @@ dotenv.config();
 
 export default {
     get: async (req, res) => {
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = 10;
+        const totalUsers = await UserModel.countDocuments({ type: { $ne: 'Admin' } });
+        const totalPages = Math.ceil(totalUsers / pageSize);
+
         const users = await UserModel.find({
             type: { $ne: 'Admin' }
-        });
+        })
+        .skip((page - 1) * pageSize)
+        .limit(pageSize);
+
+        const paginatedUsers = users.map((user, index) => ({
+            ...user.toObject(),
+            index: (page - 1) * pageSize + index + 1
+        }));
+
+        const data = {
+            users: paginatedUsers,
+            totalPages: totalPages,
+            currentPage: page,
+            newId: new mongoose.Types.ObjectId().toString()
+        };
+
         const newId = new mongoose.Types.ObjectId();
 
         res.render('pages/user.page.ejs', ViewUtil.getOptions({
             data: {
                 users: users,
                 newId: newId,
+                totalPages: totalPages, 
+                currentPage: page,
             },
         }));
     },
+    
     getDetail: async (req, res) => {
         const { id } = req?.params;
         if (!id) return res.json({
             success: false,
             id: id,
         });
-
         const user = await UserModel.findById(id) || {};
 
         res.render('pages/user-detail.page.ejs', ViewUtil.getOptions({

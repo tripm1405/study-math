@@ -6,7 +6,19 @@ import LessonModel from "#root/models/lesson.model.js";
 
 export default {
     get: async (req, res) => {
-        const courses = await CourseModel.find({});
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = 10;
+        const totalCourses = await CourseModel.countDocuments({ type: { $ne: 'Admin' } });
+        const totalPages = Math.ceil(totalCourses / pageSize);
+
+        const courses = await CourseModel.find({})
+        .skip((page - 1) * pageSize)
+        .limit(pageSize);
+
+        const paginatedCourses = courses.map((course, index) => ({
+            ...course.toObject(),
+            index: (page - 1) * pageSize + index + 1
+        }));
         const newId = new mongoose.Types.ObjectId();
 
         switch (res.locals.currentUser?.type) {
@@ -16,6 +28,8 @@ export default {
                     data: {
                         courses: courses,
                         newId: newId,
+                        totalPages: totalPages, 
+                        currentPage: page,
                     },
                 }));
                 return;
@@ -26,6 +40,8 @@ export default {
                     data: {
                         courses: courses,
                         newId: newId,
+                        totalPages: totalPages,
+                        currentPage: page,
                     },
                 }));
                 return;
