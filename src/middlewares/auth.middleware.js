@@ -9,11 +9,12 @@ export default {
       return;
     }
 
-    const {username, type} = await UserModel.findOne({
+    const {_id, username, type} = await UserModel.findOne({
       username: req?.cookies?.user?.username,
     });
 
     res.locals.currentUser = {
+      _id: _id,
       username: username,
       fullName: username,
       type: type,

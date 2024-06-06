@@ -16,9 +16,9 @@ const menuItems = {
     link: '/lessons',
     icon: 'fas fa-chalkboard-teacher',
   },
-  problem: {
+  question: {
     label: 'Bài toán',
-    link: '/problems',
+    link: '/questions',
     icon: 'fas fa-calculator',
   },
   block: {
@@ -31,9 +31,9 @@ const menuItems = {
     link: '/users',
     icon: 'fas fa-user',
   },
-  stats: {
+  statistics: {
     label: 'Thống kê',
-    link: '/stats',
+    link: '/statistics',
     icon: 'fas fa-chart-bar',
   },
   class: {
@@ -51,16 +51,16 @@ export default class ViewUtil {
       menuItems.home,
       menuItems.course,
       menuItems.lesson,
-      menuItems.problem,
+      menuItems.question,
       menuItems.block,
-      menuItems.stats,
+      menuItems.statistics,
     ],
     student: [
       menuItems.home,
       menuItems.course,
       menuItems.lesson,
-      menuItems.problem,
-      menuItems.stats,
+      menuItems.question,
+      menuItems.statistics,
     ],
   }
 

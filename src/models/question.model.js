@@ -16,11 +16,15 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.LESSON,
   },
-  answerIds: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: ModelNameConstant.ANSWER,
-  }],
-  createdByIs: {
+  answers: [new mongoose.Schema({
+    content: {
+      type: String,
+    },
+    score: {
+      type: Number,
+    },
+  })],
+  createdById: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
   },

@@ -8,7 +8,7 @@ export default {
         const classes = await ClassModel.find({});
         const newId = new mongoose.Types.ObjectId();
 
-        res.render('pages/class.page.ejs', ViewUtil.getOptions({
+        res.render('pages/managers/class.page.ejs', ViewUtil.getOptions({
             data: {
                 classes: classes,
                 newId: newId,
@@ -25,7 +25,7 @@ export default {
         const _class = await ClassModel.findById(id) || {};
         const users = await UserModel.find({});
 
-        res.render('pages/class-detail.page.ejs', ViewUtil.getOptions({
+        res.render('pages/managers/class-detail.page.ejs', ViewUtil.getOptions({
             data: {
                 class: _class,
                 users: users,
@@ -40,6 +40,7 @@ export default {
             name: name,
             note: note,
             userIds: userIds,
+            createdById: res?.locals?.currentUser?._id,
         });
 
         res.json({

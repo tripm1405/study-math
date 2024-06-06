@@ -52,7 +52,7 @@ export default {
 
         const newId = new mongoose.Types.ObjectId();
 
-        res.render('pages/user.page.ejs', ViewUtil.getOptions({
+        res.render('pages/managers/user.page.ejs', ViewUtil.getOptions({
             data: {
                 users: users,
                 newId: newId,
@@ -70,7 +70,7 @@ export default {
         });
         const user = await UserModel.findById(id) || {};
 
-        res.render('pages/user-detail.page.ejs', ViewUtil.getOptions({
+        res.render('pages/managers/user-detail.page.ejs', ViewUtil.getOptions({
             data: {
                 user: user,
             },
@@ -88,6 +88,7 @@ export default {
             email: email,
             type: type,
             classIds: classIds,
+            createdById: res?.locals?.currentUser?._id,
         });
 
         res.json({

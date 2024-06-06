@@ -36,7 +36,7 @@ export default {
             }
             case AuthUtil.UserType.Admin:
             case AuthUtil.UserType.Teacher: {
-                res.render('pages/lesson.page.ejs', ViewUtil.getOptions({
+                res.render('pages/managers/lesson.page.ejs', ViewUtil.getOptions({
                     data: {
                         lessons: lessons,
                         newId: newId,
@@ -73,7 +73,7 @@ export default {
             }
             case AuthUtil.UserType.Admin:
             case AuthUtil.UserType.Teacher: {
-                res.render('pages/lesson-detail.page.ejs', ViewUtil.getOptions({
+                res.render('pages/managers/lesson-detail.page.ejs', ViewUtil.getOptions({
                     data: {
                         lesson: lesson,
                         courses: courses,
@@ -91,6 +91,7 @@ export default {
             name: name,
             note: note,
             courseId: courseId,
+            createdById: res?.locals?.currentUser?._id,
         });
 
         res.json({

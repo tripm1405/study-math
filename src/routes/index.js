@@ -15,6 +15,7 @@ Router.use('/test', AuthMiddleware.checkSingedIn, TestRouter);
 Router.use('/classes', AuthMiddleware.checkSingedIn, ClassRouter);
 Router.use('/courses', AuthMiddleware.checkSingedIn, CourseRouter);
 Router.use('/lessons', AuthMiddleware.checkSingedIn, LessonRouter);
+Router.use('/questions', AuthMiddleware.checkSingedIn, BlockRoute);
 Router.use('/users', AuthMiddleware.checkSingedIn, UserRouter);
 Router.use('/blocks', AuthMiddleware.checkSingedIn, BlockRoute);
 Router.use('/', CommonRoute);

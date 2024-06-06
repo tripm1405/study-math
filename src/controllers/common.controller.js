@@ -11,11 +11,11 @@ dotenv.config();
 
 export default {
   getHome: async (req, res) => {
-    const problems = await QuestionModel.find({});
+    const questions = await CourseModel.find({});
 
     res.render('pages/home.page.ejs', ViewUtil.getOptions({
       data: {
-        problems: problems,
+        questions: questions,
       },
     }));
   },
@@ -32,7 +32,7 @@ export default {
       code: {$regex: regex},
     });
 
-    const problems = await QuestionModel.find({
+    const questions = await QuestionModel.find({
       code: {$regex: regex},
     });
 
@@ -41,7 +41,7 @@ export default {
         search: search,
         courses: courses,
         lessons: lessons,
-        problems: problems,
+        questions: questions,
       },
     }));
   },

@@ -7,7 +7,7 @@ export default {
     const blocks = await BlockModel.find({});
     const newId = new mongoose.Types.ObjectId();
 
-    res.render('pages/block.page.ejs', ViewUtil.getOptions({
+    res.render('pages/managers/block.page.ejs', ViewUtil.getOptions({
       data: {
         blocks: blocks,
         newId: newId,
@@ -23,7 +23,6 @@ export default {
     });
 
     const block = await BlockModel.findById(id) || {};
-    console.log('block', block);
 
     const blockContent = (() => {
       try {
@@ -44,9 +43,8 @@ export default {
     const argss = Object.keys(blockContent).filter(e => e.includes('args')).map((e, i) => {
       return blockContent[`args${i}`];
     });
-    console.log('argss', argss);
 
-    res.render('pages/block-detail.page.ejs', ViewUtil.getOptions({
+    res.render('pages/managers/block-detail.page.ejs', ViewUtil.getOptions({
       data: {
         block: block,
         argss: argss,
@@ -56,13 +54,12 @@ export default {
   post: async (req, res) => {
     const { code, name, content, note } = req.body;
 
-    console.log('req.body', req.body)
-
     const block = await BlockModel.create({
       code: code,
       name: name,
       content: content,
       note: note,
+      createdById: res?.locals?.currentUser?._id,
     });
 
     res.json({
