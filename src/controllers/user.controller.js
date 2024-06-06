@@ -15,11 +15,28 @@ export default {
         const totalUsers = await UserModel.countDocuments({ type: { $ne: 'Admin' } });
         const totalPages = Math.ceil(totalUsers / pageSize);
 
-        const users = await UserModel.find({
-            type: { $ne: 'Admin' }
-        })
-        .skip((page - 1) * pageSize)
-        .limit(pageSize);
+        const filter = (() => {
+            switch (res.locals.currentUser?.type) {
+                case AuthUtil.UserType.Admin: {
+                    return {
+                        type: { $ne: 'Admin', },
+                    };
+                }
+                default:
+                case AuthUtil.UserType.Teacher: {
+                    return {
+                        $and: [
+                            { type: { $ne: AuthUtil.UserType.Admin } },
+                            { type: { $eq: AuthUtil.UserType.Student } }
+                        ],
+                    };
+                }
+            }
+        })();
+
+        const users = await UserModel.find(filter)
+            .skip((page - 1) * pageSize)
+            .limit(pageSize);
 
         const paginatedUsers = users.map((user, index) => ({
             ...user.toObject(),

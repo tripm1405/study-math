@@ -3,7 +3,7 @@ import AuthUtil from "#root/utils/auth.util.js";
 const menuItems = {
   home: {
     label: 'Trang chủ',
-    link: '/home',
+    link: '/',
     icon: 'fas fa-home',
   },
   course: {
@@ -26,28 +26,34 @@ const menuItems = {
     link: '/blocks',
     icon: 'fas fa-layer-group',
   },
+  users: {
+    label: 'Tài khoản',
+    link: '/users',
+    icon: 'fas fa-user',
+  },
   stats: {
     label: 'Thống kê',
     link: '/stats',
     icon: 'fas fa-chart-bar',
   },
-  users: {
-    label: 'Tài khoản',
-    link: '/users',
-    icon: 'fas fa-user',
+  class: {
+    label: 'Lớp',
+    link: '/classes',
+    icon: 'fas fa-chalkboard-teacher',
   },
 };
 
 export default class ViewUtil {
   static menus = {
     manager: [
+      menuItems.users,
+      menuItems.class,
       menuItems.home,
       menuItems.course,
       menuItems.lesson,
       menuItems.problem,
       menuItems.block,
       menuItems.stats,
-      menuItems.users,
     ],
     student: [
       menuItems.home,

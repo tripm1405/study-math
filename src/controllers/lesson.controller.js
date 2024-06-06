@@ -8,7 +8,7 @@ export default {
     get: async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const pageSize = 10;
-        const totalUsers = await LessonModel.countDocuments({ type: { $ne: 'Admin' } });
+        const totalLessons = await LessonModel.countDocuments({ type: { $ne: 'Admin' } });
         const totalPages = Math.ceil(totalLessons / pageSize);
 
         const lessons = await LessonModel.find({})
