@@ -2,6 +2,7 @@
     <thead>
     <tr>
       <h1>Quản lí khối</h1>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khối</button>
         <th>STT</th>
         <th>Tên khối</th>
         <th>Người tạo</th>
@@ -24,7 +25,6 @@
     <% } %>
     </tbody>
 </table>
-<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khối</button>
 
 <script>
   function upsert(id) {

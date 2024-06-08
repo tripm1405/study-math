@@ -1,69 +1,66 @@
-<table>
-    <thead>
-    <tr>
-      <h1>Quản lí khóa học</h1>
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="active-courses-tab" data-bs-toggle="tab" data-bs-target="#active-courses" type="button" role="tab" aria-controls="active-courses" aria-selected="true">Khóa học đang mở</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="completed-courses-tab" data-bs-toggle="tab" data-bs-target="#completed-courses" type="button" role="tab" aria-controls="completed-courses" aria-selected="false">Khóa học đã kết thúc</button>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="active-courses" role="tabpanel" aria-labelledby="active-courses-tab">
-          <table class="table table-striped mt-3">
-            <thead>
-              <tr>
-                <th scope="col">STT</th>
-                <th scope="col">Mã khóa học</th>
-                <th scope="col">Tên khóa học</th>
-                <th scope="col">Giáo viên</th>
-                <th scope="col">Thời gian tạo</th>
-                <th scope="col">Thời gian kết thúc</th>
-                <th scope="col">Số người đã tham gia</th>
-                <th scope="col">Hành động</th>
-              </tr>
-            </thead>
-        </div>
+<div class="h-100 w-100">
+  <h1>Quản lí khóa học</h1>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khóa học</button>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="active-courses-tab" data-bs-toggle="tab" data-bs-target="#active-courses" type="button" role="tab" aria-controls="active-courses" aria-selected="true">Khóa học đang mở
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="completed-courses-tab" data-bs-toggle="tab" data-bs-target="#completed-courses" type="button" role="tab" aria-controls="completed-courses" aria-selected="false">Khóa học đã kết thúc</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="active-courses" role="tabpanel" aria-labelledby="active-courses-tab">
+        <table class="table table-striped mt-3">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">Mã khóa học</th>
+              <th scope="col">Tên khóa học</th>
+              <th scope="col">Giáo viên</th>
+              <th scope="col">Thời gian tạo</th>
+              <th scope="col">Thời gian kết thúc</th>
+              <th scope="col">Số người đã tham gia</th>
+              <th scope="col">Hành động</th>
+            </tr>
+          </thead>       
+          <tbody>
+          <% for (const _class of (data?.courses || [])) { %>
+            <tr>
+              <td>1</td>
+              <td><%= _class?.code %></td>
+              <td>Ôn tập các số đến 100</td>
+              <td>Nguyễn Anh</td>
+              <td>13/05/2024 20:53</td>
+              <td>13/05/2024 21:06</td>
+              <td>50</td>
+              <td>
+                <button class="btn btn-secondary" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger" onClick="deleteLesson('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
+              </td>
+            </tr>
+          <% } %>
+          </tbody>
+        </table>
       </div>
-  </div>
-    </tr>
-    </thead>
-    <tbody>
-    <% for (const _class of (data?.courses || [])) { %>
-        <tr>
-          <td>1</td>
-          <td><%= _class?.code %></td>
-          <td>Ôn tập các số đến 100</td>
-          <td>Nguyễn Anh</td>
-          <td>13/05/2024 20:53</td>
-          <td>13/05/2024 21:06</td>
-          <td>50</td>
-          <td>
-            <button class="btn btn-secondary" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-danger" onClick="deleteLesson('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
-          </td>
-        </tr>
-    <% } %>
-    </tbody>
-</table>
+    </div>
+</div>
 <nav>
   <ul class="pagination">
-      <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-          <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-      </li>
-      <% for(let i = 1; i <= data.totalPages; i++) { %>
-          <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-          </li>
-      <% } %>
-      <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-          <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-      </li>
+    <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+        <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+    </li>
+    <% for(let i = 1; i <= data.totalPages; i++) { %>
+        <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+    <% } %>
+    <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+        <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+    </li>
   </ul>
 </nav>
-<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khóa học</button>
 
 <script>
   function upsert(id) {
