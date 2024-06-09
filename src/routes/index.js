@@ -10,6 +10,7 @@ import CommonRoute from "#root/routes/common.route.js";
 import QuestionRouter from "#root/routes/question.route.js";
 import BlockRouter from "#root/routes/block.route.js";
 import AuthMiddleware from "#root/middlewares/auth.middleware.js";
+import ResolutionRouter from "#root/routes/resolution.route.js";
 
 const Router = express.Router();
 
@@ -19,6 +20,7 @@ Router.use('/classes', AuthMiddleware.checkSingedIn, ClassRouter);
 Router.use('/courses', AuthMiddleware.checkSingedIn, CourseRouter);
 Router.use('/lessons', AuthMiddleware.checkSingedIn, LessonRouter);
 Router.use('/questions', AuthMiddleware.checkSingedIn, QuestionRouter);
+Router.use('/resolutions', AuthMiddleware.checkSingedIn, ResolutionRouter);
 Router.use('/users', AuthMiddleware.checkSingedIn, UserRouter);
 Router.use('/blocks', AuthMiddleware.checkSingedIn, BlockRouter);
 Router.use('/', CommonRoute);

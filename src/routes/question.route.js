@@ -4,6 +4,9 @@ import questionController from "#root/controllers/question.controller.js";
 
 const Router = express.Router();
 
+
+Router.get('/:id/solve', questionController.getSolve);
+Router.post('/:id/solve', questionController.postSolve);
 Router.get('/:id', questionController.getDetail);
 Router.put('/:id', questionController.put);
 Router.delete('/:id', questionController.delete);

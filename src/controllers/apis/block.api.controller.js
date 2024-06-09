@@ -12,9 +12,16 @@ export default {
       questionId,
     } = req?.query;
 
-    const filter = {};
-    if (questionId) {
-      filter.questionId = questionId;
+    let filter = {};
+    if (questionId === null) {
+      filter = {
+        questionId: undefined,
+      }
+    }
+    else if (questionId) {
+      filter = {
+        questionId: questionId,
+      }
     }
 
     const blocks = await BlockModel.find(filter).lean();

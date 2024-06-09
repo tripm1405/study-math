@@ -1,1 +1,9 @@
+<button onclick="onSolve('<%= data?.question?._id %>')">LÀM BÀI</button>
+
+<script>
+    function onSolve(id) {
+        window.location.href = `/questions/${id}/solve`;
+    }
+</script>
+
 <%= JSON.stringify(data) %>

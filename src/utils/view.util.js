@@ -22,6 +22,11 @@ const menuItems = {
     link: '/questions',
     icon: 'fas fa-calculator',
   },
+  resolution: {
+    label: 'Chấm điểm',
+    link: '/resolutions',
+    icon: 'fas fa-calculator',
+  },
   block: {
     label: 'Khối',
     link: '/blocks',
@@ -78,6 +83,7 @@ export default class ViewUtil {
       menuItems.course,
       menuItems.lesson,
       menuItems.question,
+      menuItems.resolution,
       menuItems.block,
       menuItems.statistics,
     ],

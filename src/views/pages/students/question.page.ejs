@@ -1,1 +1,15 @@
+<div class="w-full h-full">
+    <% for (const question of data?.questions || []) { %>
+        <div onclick="onDetail('<%= question?._id %>')" style="cursor: pointer;">
+            <%= question?.code %>
+        </div>
+    <% } %>
+</div>
+
+<script>
+    function onDetail(id) {
+      window.location.href = `/questions/${id}`;
+    }
+</script>
+
 <%= JSON.stringify(data) %>

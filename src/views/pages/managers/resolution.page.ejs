@@ -1,0 +1,32 @@
+<div class="w-full h-full">
+    <table>
+        <thead>
+        <tr>
+            <th>Bài toán</th>
+            <th>Học sinh</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for (const resolution of data?.resolutions || []) { %>
+        <tr onclick="onDetail('<%= resolution?._id %>')">
+            <td>
+                <%= resolution?.questionId %>
+            </td>
+            <td>
+                <%= resolution?.createdById %>
+            </td>
+            <td>
+                <button class="btn btn-secondary" onClick="onDetail('<%= resolution?._id %>')"><i class="fas fa-edit"></i></button>
+            </td>
+        </tr>
+        <% } %>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function onDetail(id) {
+        window.location.href = `/resolutions/${id}`;
+    }
+</script>

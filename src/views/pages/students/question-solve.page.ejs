@@ -1,0 +1,69 @@
+<div class="w-full h-full">
+    <div class="w-full d-flex" style="height: max-content;">
+        <div style="width: 400px; height: max-content;">
+            <div class="w-full" style="height: 400px;">
+                <div id="solve-workspace" style="height: 100%; width: 100%;"></div>
+            </div>
+        </div>
+
+        <div>
+            ABC
+        </div>
+    </div>
+
+    <div>
+        <button onclick="submit()">SUBMIT</button>
+    </div>
+</div>
+
+<input name="questionId" type="hidden" value="<%= data?.question?._id %>" />
+
+<script>
+  const questionIdInput = document.querySelector('input[name="questionId"]');
+  let solveWorkspace;
+
+  init();
+
+  async function submit() {
+    const formData = new FormData();
+    const content = Blockly.serialization.workspaces.save?.(solveWorkspace);
+    formData.set('content', JSON.stringify(content));
+    await axios.post(`/questions/${questionIdInput?.value}/solve`, formData);
+
+    window.location.href = `/questions/${questionIdInput.value}`;
+  }
+
+  async function init() {
+    const blocks = await initBlocks();
+
+    for (const block of blocks) {
+      Blockly.Blocks[block.type] = {
+        init: function () {
+          this.jsonInit(block);
+        }
+      };
+    }
+
+    const questionRes = await axios.get(`/api/questions/${questionIdInput?.value}`);
+    const question = questionRes?.data?.result?.question;
+    const toolboxContents = question?.toolbox?.blocks?.blocks?.map(block => {
+      return {
+        kind: 'block',
+        type: block.type,
+      }
+    }) || [];
+
+    solveWorkspace = Blockly.inject(document.getElementById('solve-workspace'), {
+      toolbox: {
+        contents: toolboxContents,
+      },
+    })
+
+    Blockly.serialization.workspaces.load(question?.blocksDefault, solveWorkspace);
+  }
+
+  async function initBlocks() {
+    const blocksRes = await axios.get('/api/blocks');
+    return blocksRes?.data?.result?.blocks || [];
+  }
+</script>

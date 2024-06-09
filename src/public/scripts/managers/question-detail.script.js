@@ -20,8 +20,8 @@ function submit() {
     formData.set('code', codeInput.value);
     formData.set('name', nameInput.value);
     formData.set('note', noteInput.value);
-    formData.set('blocksDefault', JSON.stringify(blocksDefault?.blocks || {}));
-    formData.set('toolbox', JSON.stringify(toolbox?.block || {}));
+    formData.set('blocksDefault', JSON.stringify(blocksDefault || {}));
+    formData.set('toolbox', JSON.stringify(toolbox || {}));
 
     if (idInput.value) {
       axios.put(`/questions/${idInput?.value}`, formData);
@@ -30,7 +30,7 @@ function submit() {
       axios.post('/questions', formData);
     }
 
-    window.location.href = '/questions';
+    // window.location.href = '/questions';
   }
   catch {
     alert('error');
@@ -96,7 +96,11 @@ async function initBlocks() {
   })();
 
   const blocksGlobal = await (async () => {
-    const blocksRes = await axios.get('/api/blocks');
+    const blocksRes = await axios.get('/api/blocks', {
+      params: {
+        questionId: null,
+      },
+    });
     return blocksRes?.data?.result?.blocks || [];
   })();
 

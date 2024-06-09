@@ -35,6 +35,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(multer({ dest: `${rootPath}/uploads` }).any());
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+  const {
+    method,
+    url,
+    body,
+    query,
+  } = req;
+
+  console.log({
+    method,
+    url,
+    body,
+    query,
+  });
+
+  next();
+});
+
 app.use(Router);
 
 app.listen(PORT, () => {
