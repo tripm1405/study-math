@@ -89,7 +89,6 @@
                                               style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
                                           <i class="fas fa-plus"></i> THÊM LỰA CHỌN
                                       </button>
-
                                   <% } %>
                                   <div>
                                       <button onclick="removeField(event)"
@@ -174,7 +173,10 @@ function insertOption(event) {
       <div data-label="option">
           <input type="text" data-label="label" placeholder="Tên..." />
           <input type="text" data-label="value" placeholder="Giá trị..." />
-          <button onclick="removeOption(event)">BỎ LỰA CHỌN</button>
+          <button onclick="removeOption(event)"
+                  style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+              <i class="fas fa-trash-alt"></i> BỎ LỰA CHỌN
+          </button>
       </div>
   `);
 }
@@ -264,8 +266,10 @@ function initRenderArg() {
               <input type="text" data-label="label" placeholder="Tên..." />
               <input type="text" data-label="value" placeholder="Giá trị..." />
           </div>
-          <button onclick="insertOption(event)">THÊM LỰA CHỌN</button>
-      `;
+          <button onclick="insertOption(event)"
+                  style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+              <i class="fas fa-plus"></i> THÊM LỰA CHỌN
+          </button>      `;
     },
   };
 }
