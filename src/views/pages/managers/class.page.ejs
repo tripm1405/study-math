@@ -1,51 +1,32 @@
-<style>
-  .btn:hover {
-      background-color:aquamarine; 
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
-    }
-</style>
-<div style="justify-content:space-between; display:flex">
-  <h1>Quản lí lớp học</h1>
-  <button class="btn btn-primary" 
-      style="background-color:#008080; border:none; color: white; padding: 5px 10px; text-align: center; font-size: 18px; margin: 4px 2px; cursor: pointer; border-radius: 12px; transition: background-color 0.3s, box-shadow 0.3s;"
-      data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo lớp học
-  </button>
-</div>
-<table class="table">
-  <thead>
-      <tr>
-          <th>STT</th>
-          <th>Mã lớp</th>
-          <th>Tên lớp</th>
-          <th>Giáo viên</th>
-          <th>Số học sinh</th>
-          <th>Hành động</th>
-      </tr>
-  </thead>
-  <tbody>
-      <% for (const _class of (data?.classes || [])) { %>
-          <tr>
-              <td><%= _class?.index %></td>
-              <td><%= _class?.code %></td>
-              <td><%= _class?.name %></td>
-              <td><%= _class?.teacher %></td>
-              <td><%= _class?.studentsCount %></td>
+<button onClick="upsert('<%= data?.newId %>')">Tạo</button>
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for (const _class of (data?.classes || [])) { %>
+        <tr>
+            <td><%= _class?.code %></td>
+            <td>
               <td class="align-middle">
-                  <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-danger btn-sm" onClick="del('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
+                <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
               </td> 
-          </tr>
-      <% } %>
-  </tbody>
+            </td>
+        </tr>
+    <% } %>
+    </tbody>
 </table>
 
 <script>
   function upsert(id) {
-      window.location.href = `/classes/${id}`;
+    window.location.href = `/classes/${id}`;
   }
-
   async function del(id) {
-      await axios.delete(`http://localhost:5500/classes/${id}`);
-      location.reload();
+    await axios.delete(`http://localhost:5500/classes/${id}`);
+    location.reload()
   }
 </script>
