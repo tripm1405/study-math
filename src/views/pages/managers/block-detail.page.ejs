@@ -15,12 +15,12 @@
         <div>
             <div>
                 <button onclick="review()"
-                        style="background-color: rgb(248, 97, 213); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                        style="background-color: rgb(248, 97, 213); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
                     <i class="fas fa-search"></i> XEM LẠI
                 </button>
                 <button onclick="submit()"
-                        style="background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
-                    <i class="fas fa-paper-plane"></i> NỘP BÀI
+                        style="background-color: green; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-paper-plane"></i> LƯU
                 </button>
             </div>
         </div>
@@ -76,20 +76,20 @@
                                                        value="<%= option?.[1] %>"/>
 
                                                 <button onclick="removeOption(event)"
-                                                        style="background-color: red; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                                        style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
                                                     <i class="fas fa-trash-alt"></i> BỎ LỰA CHỌN
                                                 </button>
                                             </div>
                                         <% } %>
                                         <button onclick="insertOption(event)"
-                                                style="background-color: blue; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                                style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
                                             <i class="fas fa-plus"></i> THÊM LỰA CHỌN
                                         </button>
 
                                     <% } %>
                                     <div>
                                         <button onclick="removeField(event)"
-                                                style="background-color: red; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                                style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
                                             <i class="fas fa-trash-alt"></i> BỎ BIẾN
                                         </button>
                                     </div>
@@ -98,7 +98,7 @@
                             </div>
                             <div>
                                 <button onclick="insertField(event)"
-                                        style="background-color: blue; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                        style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
                                     <i class="fas fa-plus"></i> THÊM BIẾN
                                 </button>
                             </div>
@@ -199,7 +199,10 @@
             <div class="k-label">
                 <input type="text" data-label="text"/>
             </div>
-            <button onclick="removeField(event)">BỎ BIẾN</button>
+            <button onclick="removeField(event)"
+                    style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                <i class="fas fa-trash-alt"></i> BỎ BIẾN
+            </button>
         </div>
     `);
   }
