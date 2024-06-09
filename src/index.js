@@ -32,7 +32,7 @@ app.use(express.static(`${rootPath}/public`));
 app.use(expressEjsLayouts);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(multer({ dest: `${rootPath}/uploads` }).any());
+app.use(multer({ dest: 'uploads/' }).array());
 app.use(cookieParser());
 
 app.use(Router);

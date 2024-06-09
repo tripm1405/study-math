@@ -1,31 +1,16 @@
 import mongoose from "mongoose";
 import ViewUtil from "#root/utils/view.util.js";
 import QuestionModel from "#root/models/question.model.js";
-import AuthUtil from "#root/utils/auth.util.js";
-import CourseModel from "#root/models/course.model.js";
-import LessonModel from "#root/models/lesson.model.js";
-import BlockModel from "#root/models/block.model.js";
 
 export default {
   get: async (req, res) => {
-    const page = parseInt(req?.query?.page) || 1;
-
-    const total = await QuestionModel.countDocuments();
-    const paging = ViewUtil.Paging.getPaging({
-      total: total,
-      currentPage: page,
-    });
+    const questions = await QuestionModel.find({});
     const newId = new mongoose.Types.ObjectId();
-    const questions = await QuestionModel.find({})
-      .skip((page - 1) * paging.pageSize)
-      .limit(paging.pageSize);
 
-    const prefixView = ViewUtil.getPrefixView(res.locals.currentUser?.type);
-    res.render(`${prefixView}/question.page.ejs`, ViewUtil.getOptions({
+    res.render('pages/managers/question.page.ejs', ViewUtil.getOptions({
       data: {
         questions: questions,
         newId: newId,
-        ...paging,
       },
     }));
   },
@@ -37,28 +22,19 @@ export default {
     });
 
     const question = await QuestionModel.findById(id) || {};
-    const lessons = await LessonModel.find({});
-    const blocks = await BlockModel.find({
-      questionId: new mongoose.Types.ObjectId(id),
-    });
 
-    const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question-detail.page.ejs`;
-    res.render(view, ViewUtil.getOptions({
+    res.render('pages/managers/question-detail.page.ejs', ViewUtil.getOptions({
       data: {
         question: question,
-        blocks: blocks,
-        lessons: lessons,
       },
     }));
   },
   post: async (req, res) => {
-    const { code, name, result, blocksDefault, toolbox, lessonId, answers } = req.body;
+    const { code, name, result, lessonId, answers } = req.body;
 
     const question = await QuestionModel.create({
       code: code,
       name: name,
-      blocksDefault: blocksDefault,
-      toolbox: toolbox,
       result: result,
       lessonId: lessonId,
       answers: answers,
@@ -74,13 +50,11 @@ export default {
   },
   put: async (req, res) => {
     const { id } = req?.params;
-    const { name, result, blocksDefault, toolbox, lessonId, answers } = req.body;
+    const { name, result, lessonId, answers } = req.body;
 
     const question = await QuestionModel.findByIdAndUpdate(id,{
       name: name,
       result: result,
-      blocksDefault: blocksDefault,
-      toolbox: toolbox,
       lessonId: lessonId,
       answers: answers,
     });

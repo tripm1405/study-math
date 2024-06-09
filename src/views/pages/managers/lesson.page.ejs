@@ -35,10 +35,10 @@
                             <td>13/05/2024 20:53</td>
                             <td>13/05/2024 21:06</td>
                             <td>50</td>
-                            <td>
-                                <button class="btn btn-secondary" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger" onClick="deleteLesson('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
-                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
+                            </td> 
                         </tr>
                     <% } %>
                     </tbody>
@@ -70,7 +70,7 @@
     window.location.href = `/lessons/${id}`;
   }
   async function deleteLesson(id) {
-    await axios.delete(`/lessons/${id}`);
+    await axios.delete(`http://localhost:5500/lessons/${id}`);
     location.reload();
   }
 </script>

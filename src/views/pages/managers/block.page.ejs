@@ -1,86 +1,37 @@
-<h1>Quản lí khối</h1>
-
-<!--<button class="btn btn-primary" onClick="upsert('<%= data?.newId %>')">Tạo khối</button>-->
-<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-modal">IMPORT</button>
-<button class="btn btn-primary" onClick="onExport()">EXPORT</button>
 <table class="table table-striped mt-3">
     <thead>
     <tr>
+      <h1>Quản lí khối</h1>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khối</button>
         <th>STT</th>
-        <th>Mã</th>
+        <th>Tên khối</th>
         <th>Người tạo</th>
         <th>Ngày tạo</th>
-        <th></th>
+        <th>Hành động</th>
     </tr>
     </thead>
     <tbody>
     <% for (const block of (data?.blocks || [])) { %>
         <tr>
-            <td>1</td>
-            <td><%= block?.type %></td>
-            <td>Minh Trí</td>
-            <td>13/05/2024 20:53</td>
-            <td>
-                <button class="btn btn-secondary" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-danger" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i>
-                </button>
-            </td>
+          <td>1</td>
+          <td><%= block?.code %></td>
+          <td>Minh Trí</td>
+          <td>13/05/2024 20:53 </td>
+          <td class="align-middle">
+            <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
+          </td>        
         </tr>
     <% } %>
     </tbody>
 </table>
 
-<div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form onsubmit="onImport(event)">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Import khối</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input name="file" type="file"/>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
-                    <button type="submit" class="btn btn-primary">SUBMIT</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
 <script>
   function upsert(id) {
     window.location.href = `/blocks/${id}`;
   }
-
   async function del(id) {
     await axios.delete(`http://localhost:5500/blocks/${id}`);
     location.reload()
-  }
-
-  async function onImport(event) {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-    try {
-      const res = await axios.post('/api/blocks/import', formData);
-
-      if (!res?.data?.success) {
-        alert('fail');
-        return;
-      }
-
-      window.location.reload();
-    } catch {
-      alert('error');
-    }
-  }
-
-  function onExport() {
-    alert('Chill');
   }
 </script>

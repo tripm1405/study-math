@@ -22,10 +22,10 @@
                     <td><%= user.lastAccess %></td>
                     <td><%= user.accessCount %></td>
                     <td><%= user.participatedProblems %></td>
-                    <td>
-                        <button class="btn btn-secondary" onClick="upsert('<%= user._id %>')"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger" onClick="del('<%= user._id %>')"><i class="fas fa-trash-alt"></i></button>
-                    </td>
+                    <td class="align-middle">
+                        <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
+                    </td> 
                 </tr>
             <% }) %>
         </tbody>

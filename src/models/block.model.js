@@ -2,35 +2,19 @@ import mongoose from "mongoose";
 import ModelNameConstant from "#root/models/model-name.constant.js";
 
 const schema = new mongoose.Schema({
-  type: {
+  code: {
     type: String,
     unique: true,
   },
-  output: {
-    type: String, // ['Number']
-  },
-  color: {
+  name: {
     type: String,
+    unique: true,
   },
-  previousStatement: {
-    type: String, // ['Action']
-  },
-  nextStatement: {
-    type: String, // ['Account']
-  },
-  // {
-  //   [`message${Number}`]: String,
-  //   [`args{Number}`]: {},
-  // }
   content: {
     type: String,
   },
-  tooltip: {
+  note: {
     type: String,
-  },
-  questionId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: ModelNameConstant.QUESTION,
   },
   createdById: {
     type: mongoose.Schema.Types.ObjectId,
