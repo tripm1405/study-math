@@ -1,13 +1,13 @@
 import express from 'express';
 
-import lessonController from "#root/controllers/lesson.controller.js";
+import questionController from "#root/controllers/question.controller.js";
 
 const Router = express.Router();
 
-Router.get('/:id', lessonController.getDetail);
-Router.put('/:id', lessonController.put);
-Router.delete('/:id', lessonController.delete);
-Router.get('/', lessonController.get);
-Router.post('/', lessonController.post);
+Router.get('/:id', questionController.getDetail);
+Router.put('/:id', questionController.put);
+Router.delete('/:id', questionController.delete);
+Router.get('/', questionController.get);
+Router.post('/', questionController.post);
 
 export default Router;

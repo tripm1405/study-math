@@ -1,4 +1,5 @@
 import AuthUtil from "#root/utils/auth.util.js";
+import LessonModel from "#root/models/lesson.model.js";
 
 const menuItems = {
   home: {
@@ -44,6 +45,31 @@ const menuItems = {
 };
 
 export default class ViewUtil {
+  static Paging = class {
+    static size = 10;
+
+    static getPaging(paging) {
+      const {
+        pageSize,
+        total,
+        currentPage,
+      } = {
+        pageSize: ViewUtil.Paging.size,
+        currentPage: 1,
+        ...paging,
+      };
+
+      const totalPages = Math.ceil(total / pageSize);
+
+      return {
+        pageSize: pageSize,
+        total: total,
+        totalPages: totalPages,
+        currentPage: currentPage,
+      };
+    }
+  };
+
   static menus = {
     manager: [
       menuItems.users,
@@ -62,7 +88,7 @@ export default class ViewUtil {
       menuItems.question,
       menuItems.statistics,
     ],
-  }
+  };
 
   static getOptions = (options, isManager = false) => {
     return {
@@ -72,5 +98,18 @@ export default class ViewUtil {
         ...options.data,
       },
     };
+  }
+
+  static getPrefixView(type) {
+    switch (type) {
+      default:
+      case AuthUtil.UserType.Student: {
+        return 'pages/students';
+      }
+      case AuthUtil.UserType.Admin:
+      case AuthUtil.UserType.Teacher: {
+        return 'pages/managers';
+      }
+    }
   }
 }

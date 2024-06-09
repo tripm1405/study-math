@@ -1,0 +1,1 @@
+{"_id":"66646b45a825af8b7c9aa543","type":"NumberInput","output":"Number","createdAt":"2024-06-08T14:31:33.585Z","updatedAt":"2024-06-08T14:31:33.585Z","__v":0,"message0":"%1 %2","args0":[{"type":"field_number","name":"a"},{"type":"field_number","name":"b"}]}

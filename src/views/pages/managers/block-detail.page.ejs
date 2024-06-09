@@ -16,322 +16,225 @@
 </style>
 
 <div class="w-100 h-100 row">
-  <div class="h-100 col-8 border">
-      <div id="block" style="height: 100%; width: 100%;"></div>
-  </div>
-  <div class="col-4 d-flex flex-column gap-3">
-      <div>
-          <div style="display: flex; justify-content:space-between">
-              <button onclick="review()"
-                      style="background-color: rgb(248, 97, 213); color: white; border: none; padding: 5px 14px; border-radius: 5px; cursor: pointer;">
-                  <i class="fas fa-search"></i> XEM LẠI
-              </button>
-              <button onclick="submit()"
-                      style="background-color: green; color: white; border: none; padding: 5px 14px; border-radius: 5px; cursor: pointer;">
-                  <i class="fas fa-paper-plane"></i> LƯU
-              </button>
-              <button onclick="insertField(event)"
-                      style="background-color: blue; color: white; border: none; padding: 5px 14px; border-radius: 5px; cursor: pointer;">
-                  <i class="fas fa-plus"></i> THÊM BIẾN
-              </button>
-          </div>
-      </div>
-      <div>
-          <label for="code">Mã khối</label>
-          <input name="code" type="text" id="code" value="<%= data?.block?.code %>"/>
-          <label for="name">Tên khối</label>
-          <input name="name" type="text" id="name" value="<%= data?.block?.name %>"/>
-          <input name="color" type="hidden" id="color" value="<%= data?.block?.color %>" placeholder="color..."/>
-          <label for="note">Ghi chú</label>
-          <input name="note" type="text" id="note" value="<%= data?.block?.note %>"/>
-          <div id="field-container" class="k-content">
-              <div class="k-message">
-                  <% for (const args of (data?.argss || [])) { %>
-                      <% for (const arg of (args || [])) { %>
-                          <div class="k-arg">
-                              <label>Loại</label>
-                              <select onchange="onTypeChange(event)" class="k-type">
-                                  <option value="field_label" <%= arg?.type === 'field_label' ? 'selected' : '' %>>Đoạn
-                                      văn
-                                  </option>
-                                  <option value="field_number" <%= arg?.type === 'field_number' ? 'selected' : '' %>>Nhập
-                                      số
-                                  </option>
-                                  <option value="field_dropdown" <%= arg?.type === 'field_dropdown' ? 'selected' : '' %>>
-                                      Lựa chọn
-                                  </option>
-                              </select>
-                              <div class="k-label">
-                                  <label>Văn bản</label>
-                                  <% if (arg?.type === 'field_label') { %>
-                                      <input type="text" data-label="text" value="<%= arg?.text %>"/>
-                                  <% } %>
-                                  <% if (arg?.type === 'field_number') { %>
-                                      <input type="text" data-label="name" placeholder="Tên biến..."
-                                             value="<%= arg?.name %>"/>
-                                      <input type="number" data-label="value" placeholder="Giá trị mặc định..."
-                                             value="<%= arg?.value %>"/>
-                                      <input type="number" data-label="min" placeholder="Giá trị tối thiểu..."
-                                             value="<%= arg?.min %>"/>
-                                      <input type="number" data-label="max" placeholder="Giá trị tối đa..."
-                                             value="<%= arg?.max %>"/>
-                                  <% } %>
-                                  <% if (arg?.type === 'field_dropdown') { %>
-                                      <input type="text" data-label="name" placeholder="Tên biến..."
-                                             value="<%= arg?.name %>"/>
-                                      <div class="add-option-container">
-                                        <div>Các lựa chọn</div>
-                                          <button onclick="insertOption(event)" style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-                                            <i class="fas fa-plus"></i> THÊM LỰA CHỌN
-                                          </button>
-                                      </div>                                      <% for (const option of arg?.options || []) { %>
-                                        <div data-label="option">
-                                          <input type="text" data-label="label" placeholder="Tên..."
-                                                  value="<%= option?.[0] %>"/>
-                                          <input type="text" data-label="value" placeholder="Giá trị..."
-                                                  value="<%= option?.[1] %>"/>
-                                          <button onclick="removeOption(event)"
-                                                  style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-                                            <i class="fas fa-trash-alt"></i> BỎ LỰA CHỌN
-                                          </button>
-                                        </div>
-                                      <% } %>
-                                  <% } %>
-                                  <div>
-                                      <button onclick="removeField(event)"
-                                              style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-                                          <i class="fas fa-trash-alt"></i> BỎ BIẾN
-                                      </button>
-                                  </div>
-                              </div>
-                              <% } %>
-                          </div>
-                      <% } %>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="h-100 col-8 border">
+        <div id="block" style="height: 100%; width: 100%;"></div>
+    </div>
+    <div class="col-4 d-flex flex-column gap-3">
+        <div>
+            <div>
+                <button onclick="review()" class="btn btn-primary">
+                    <i class="fas fa-search"></i> XEM LẠI
+                </button>
+<!--                <button onclick="submit()"-->
+<!--                        style="background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">-->
+<!--                    <i class="fas fa-paper-plane"></i> NỘP BÀI-->
+<!--                </button>-->
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-modal">IMPORT</button>
+                <button class="btn btn-primary" onClick="onExport()">EXPORT</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<input type="hidden" id="id" value="<%= data?.block?._id %>"/>
-<input type="hidden" id="method" value="<%= data?.block?._id ? 'PUT' : 'POST' %>"/>
+<div class="modal fade" id="import-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form onsubmit="onImport(event)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Import khối</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input name="file" type="file"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
+                    <button type="submit" class="btn btn-primary">SUBMIT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-<script src="/scripts/k-blocks/number-solid.block.script.js"></script>
-<script src="/scripts/k-blocks/number-select.block.script.js"></script>
-<script src="/scripts/k-blocks/number-input.block.script.js"></script>
+<input name="id" type="hidden" value="<%= data?.block?._id %>"/>
+<input name="method" type="hidden" value="<%= data?.block?._id ? 'PUT' : 'POST' %>"/>
+
+<script src="/scripts/managers/block-detail.script.js"></script>
 <script>
-const method = document.getElementById('method').value;
-const id = document.getElementById('id').value;
-const codeInput = document.getElementById('code');
-const nameInput = document.getElementById('name');
-const colorInput = document.getElementById('color');
-const noteInput = document.getElementById('note');
-const contentDiv = document.querySelector('.k-content')
-
-const renderArg = initRenderArg();
-const workspace = initWorkspace();
-
-function review() {
-  const block = {
-    ...getBlock(),
-    type: 'review',
-  };
-
-  Blockly.Blocks['review'] = {
-    init: function () {
-      this.jsonInit(block);
-    }
-  };
-
-  const xml = Blockly.Xml.workspaceToDom(workspace);
-  workspace.clear();
-  Blockly.Xml.domToWorkspace(xml, workspace);
-  workspace.refreshToolboxSelection();
-}
-
-function result() {
-  const code = javascript.javascriptGenerator.workspaceToCode(workspace);
-  console.log('result:', code);
-}
-
-async function submit() {
-  const formData = new FormData();
-  formData.append('code', codeInput?.value);
-  formData.append('name', nameInput?.value);
-  formData.append('content', JSON.stringify(getBlock()));
-  formData.append('note', noteInput?.value);
-
-  if (method === 'PUT') {
-    await axios.put(`http://localhost:5500/blocks/${id}`, formData);
-  } else {
-    await axios.post('http://localhost:5500/blocks', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-    });
-  }
-
-  window.location.href = `/blocks`;
-}
-
-function insertOption(event) {
-  const optionContainer = event.target.parentNode;
-  const newOption = document.createElement('div');
-  newOption.setAttribute('data-label', 'option');
-  newOption.innerHTML = `
-    <input type="text" data-label="label" placeholder="Tên..." />
-    <input type="text" data-label="value" placeholder="Giá trị..." />
-    <button onclick="removeOption(event)"
-      style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-      <i class="fas fa-trash-alt"></i> BỎ LỰA CHỌN
-    </button>
-  `;
-  optionContainer.appendChild(newOption);
-}
-
-function removeOption(event) {
-  event.target.parentElement.remove();
-}
-
-function insertField(event) {
-  document.getElementById('field-container').insertAdjacentHTML('beforeend', `
-      <div class="k-arg">
-          <select onchange="onTypeChange(event)" class="k-type">
-              <option value="field_label">Đoạn văn</option>
-              <option value="field_number">Nhập số</option>
-              <option value="field_dropdown">Lựa chọn</option>
-          </select>
-          <div class="k-label">
-              <input type="text" data-label="text"/>
-          </div>
-          <button onclick="removeField(event)"
-                  style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-              <i class="fas fa-trash-alt"></i> BỎ BIẾN
-          </button>
-      </div>
-  `);
-  document.getElementById('field-container').insertAdjacentHTML('beforeend', fieldHtml);
-}
-
-function removeField(event) {
-  event.target.parentElement.remove();
-}
-
-function onTypeChange(event) {
-  event.target.parentElement.querySelector('.k-label').innerHTML = renderArg[event.target.value]();
-}
-
-function initWorkspace() {
-  const block = {
-    ...getBlock(),
-    "type": 'review',
-  };
-
-  Blockly.Blocks['review'] = {
-    init: function () {
-      this.jsonInit(block);
-    }
-  };
-
-  const workspace = Blockly.inject(document.getElementById('block'));
-
-  Blockly.serialization.workspaces.load({
-    "blocks": {
-      "languageVersion": 0,
-      "blocks": [
-        {
-          "type": "review",
-          "id": "EZc9ZtF|FwJ|89%mxWji",
-          "x": 170,
-          "y": 190
-        }
-      ]
-    }
-  }, workspace);
-
-  return workspace;
-}
-
-function initRenderArg() {
-  return {
-    ['field_label']: argNode => {
-      return `
-          <input type="text" data-label="text" />
-      `;
-    },
-    ['field_number']: argNode => {
-      return `
-          <input type="text" data-label="name" placeholder="Tên biến..." />
-          <input type="number" data-label="value" placeholder="Giá trị mặc định..." />
-          <input type="number" data-label="min" placeholder="Giá trị tối thiểu..." />
-          <input type="number" data-label="max" placeholder="Giá trị tối đa..." />
-      `;
-    },
-    field_dropdown: () => {
-      return `
-        <input type="text" data-label="name" placeholder="Tên biến..." />
-        <div class="add-option-container">
-          <div>Các lựa chọn</div>
-          <button onclick="insertOption(event)" style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-            <i class="fas fa-plus"></i> THÊM LỰA CHỌN
-          </button>
-        </div>
-        <div data-label="option">
-          <input type="text" data-label="label" placeholder="Tên..." />
-          <input type="text" data-label="value" placeholder="Giá trị..." />
-        </div>
-      `;
-    },
-  };
-}
-
-function getBlock() {
-  const type = nameInput?.value;
-  const color = colorInput?.value;
-  const note = noteInput?.value;
-  const content = [...contentDiv.querySelectorAll('.k-message')].reduce((result, element, index) => {
-    const args = [...element.querySelectorAll('.k-arg')].map(argElement => {
-      const typeNode = argElement.querySelector('.k-type');
-      const labelNode = argElement.querySelector('.k-label');
-      const labels = [...labelNode.querySelectorAll(':scope > [data-label]')].reduce((acc, labelElement) => {
-        const label = labelElement.getAttribute('data-label');
-        if (label === 'option') {
-          return {
-            ...acc,
-            options: [
-              ...acc?.options || [],
-              [
-                labelElement.querySelector('[data-label="label"]').value,
-                labelElement.querySelector('[data-label="value"]').value,
-              ],
-            ]
-          };
-        }
-        return {
-          ...acc,
-          [label]: labelElement.value,
-        };
-      }, {});
-      return {
-        type: typeNode.value,
-        ...labels,
-      };
-    });
-
-    return {
-      ...result,
-      [`message${index}`]: args.reduce((str, arg, idx) => idx === 0 ? '%1' : `${str} %${idx + 1}`, ''),
-      [`args${index}`]: args,
-    };
-  }, {});
-
-  return {
-    type,
-    ...content,
-    output: 'Number',
-    colour: color,
-    tooltip: note,
-  };
-}
+  // const id = document.getElementById('id').value;
+  // const codeInput = document.getElementById('code');
+  // const nameInput = document.getElementById('name');
+  // const colorInput = document.getElementById('color');
+  // const noteInput = document.getElementById('note');
+  // const contentDiv = document.querySelector('.k-content')
+  //
+  // const renderArg = initRenderArg();
+  //
+  // function review() {
+  //   const block = {
+  //     ...getBlock(),
+  //     type: 'review',
+  //   };
+  //
+  //   Blockly.Blocks['review'] = {
+  //     init: function () {
+  //       this.jsonInit(block);
+  //     }
+  //   };
+  //
+  //   const xml = Blockly.Xml.workspaceToDom(workspace);
+  //   workspace.clear();
+  //   Blockly.Xml.domToWorkspace(xml, workspace);
+  //   workspace.refreshToolboxSelection();
+  // }
+  //
+  // function result() {
+  //   const code = javascript.javascriptGenerator.workspaceToCode(workspace);
+  //   console.log('result:', code);
+  // }
+  //
+  // async function submit() {
+  //   const formData = new FormData();
+  //   formData.append('code', codeInput?.value);
+  //   formData.append('name', nameInput?.value);
+  //   formData.append('content', JSON.stringify(getBlock()));
+  //   formData.append('note', noteInput?.value);
+  //
+  //   if (method === 'PUT') {
+  //     await axios.put(`http://localhost:5500/blocks/${id}`, formData);
+  //   } else {
+  //     await axios.post('http://localhost:5500/blocks', formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data'
+  //       },
+  //     });
+  //   }
+  //
+  //   window.location.href = `/blocks`;
+  //
+  //   // const state = Blockly?.serialization?.workspaces?.save?.(workspace);
+  //   // console.log('submit:', state);
+  // }
+  //
+  // function insertOption(event) {
+  //   event.target.insertAdjacentHTML('beforebegin', `
+  //       <div data-label="option">
+  //           <input type="text" data-label="label" placeholder="Tên..." />
+  //           <input type="text" data-label="value" placeholder="Giá trị..." />
+  //           <button onclick="removeOption(event)">BỎ LỰA CHỌN</button>
+  //       </div>
+  //   `);
+  // }
+  //
+  // function removeOption(event) {
+  //   event.target.parentElement.remove();
+  // }
+  //
+  // function insertField(event) {
+  //   event.target.insertAdjacentHTML('beforebegin', `
+  //       <div class="k-arg">
+  //           <select onchange="onTypeChange(event)" class="k-type">
+  //               <option value="field_label">Đoạn văn</option>
+  //               <option value="field_number">Nhập số</option>
+  //               <option value="field_dropdown">Lựa chọn</option>
+  //           </select>
+  //           <div class="k-label">
+  //               <input type="text" data-label="text"/>
+  //           </div>
+  //           <button onclick="removeField(event)">BỎ BIẾN</button>
+  //       </div>
+  //   `);
+  // }
+  //
+  // function removeField(event) {
+  //   event.target.parentElement.remove();
+  // }
+  //
+  // function onTypeChange(event) {
+  //   event.target.parentElement.querySelector('.k-label').innerHTML = renderArg[event.target.value]();
+  // }
+  //
+  // function initRenderArg() {
+  //   return {
+  //     ['field_label']: argNode => {
+  //       return `
+  //           <input type="text" data-label="text" />
+  //       `;
+  //     },
+  //     ['field_number']: argNode => {
+  //       return `
+  //           <input type="text" data-label="name" placeholder="Tên biến..." />
+  //           <input type="number" data-label="value" placeholder="Giá trị mặc định..." />
+  //           <input type="number" data-label="min" placeholder="Giá trị tối thiểu..." />
+  //           <input type="number" data-label="max" placeholder="Giá trị tối đa..." />
+  //       `;
+  //     },
+  //     ['field_dropdown']: argNode => {
+  //       return `
+  //           <input type="text" data-label="name" placeholder="Tên biến..." />
+  //           <div>Các lựa chọn</div>
+  //           <div data-label="option">
+  //               <input type="text" data-label="label" placeholder="Tên..." />
+  //               <input type="text" data-label="value" placeholder="Giá trị..." />
+  //           </div>
+  //           <button onclick="insertOption(event)">THÊM LỰA CHỌN</button>
+  //       `;
+  //     },
+  //   };
+  // }
+  //
+  // function getBlock() {
+  //   const type = nameInput?.value;
+  //   const color = colorInput?.value;
+  //   const note = noteInput?.value;
+  //   const content = [...contentDiv.querySelectorAll('.k-message')].reduce((r, e, index) => {
+  //     console.log('e', e);
+  //     const args = [...e.querySelectorAll('.k-arg')].map(e1 => {
+  //       console.log('e1', e1);
+  //       const typeNode = e1.querySelector('.k-type');
+  //       const labelNode = e1.querySelector('.k-label');
+  //
+  //       const labels = [...labelNode.querySelectorAll(':scope > [data-label]')].reduce((r, e2) => {
+  //         const label = e2.getAttribute('data-label');
+  //
+  //         switch (label) {
+  //           case 'option': {
+  //             return {
+  //               ...r,
+  //               options: [
+  //                 ...r?.options || [],
+  //                 [e2.querySelector('[data-label="label"]').value, e2.querySelector('[data-label="value"]').value],
+  //               ],
+  //             }
+  //           }
+  //           default: {
+  //             return {
+  //               ...r,
+  //               [label]: e2.value,
+  //             }
+  //           }
+  //         }
+  //       }, {});
+  //
+  //       return {
+  //         type: typeNode.value,
+  //         ...labels,
+  //       }
+  //     });
+  //
+  //     return {
+  //       ...r,
+  //       [`message${index}`]: args.reduce((r, c, i) => i === 0 ? '%1' : `${r} %${i + 1}`, ''),
+  //       [`args${index}`]: args,
+  //     }
+  //   }, {});
+  //
+  //   return {
+  //     "type": type,
+  //     ...content,
+  //     "output": "Number",
+  //     "colour": color,
+  //     "tooltip": note,
+  //   };
+  // }
 </script>
