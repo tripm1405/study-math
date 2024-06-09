@@ -1,18 +1,53 @@
-<form id="form" action="/classes">
-    <input name="code" type="text" value="<%= data?.class?.code %>" placeholder="code..." <%= data?.class?.code && 'disabled' %> />
-    <input name="name" type="text" value="<%= data?.class?.name %>" placeholder="name..." />
-    <input name="note" type="text" value="<%= data?.class?.note %>" placeholder="note..." />
-    <select name="users[]" class="js-select2" multiple style="width: 200px;">
-        <% for (const user of (data?.users || [])) { %>
-            <option
-                    value="<%= user?._id %>"
-                    <%= data?.class?.users?.includes(user?._id) ? 'selected' : null %>
-            ><%= user?.code %></option>
-            <%= JSON.stringify(user)%>
-        <% } %>
-    </select>
-    <button type="submit">SUBMIT</button>
-</form>
+<div style="display: flex; justify-content: center;">
+    <div style="border: 1px solid #ccc; padding: 20px; border-radius: 10px; width: 500px; background-color: #f9f9f9;">
+        <form id="form" action="/classes">
+            <h1 style="text-align: center; margin-bottom: 20px; color: #333;">Chi tiết lớp học</h1>
+            <div class="mb-3">
+                <label for="code" class="form-label">Mã lớp</label>
+                <input
+                        id="code"
+                        name="code"
+                        type="text"
+                        value="<%= data?.class?.code %>"
+                        placeholder="Nhập mã lớp..."
+                        <%= data?.class?.code && 'disabled' %>
+                        class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Tên lớp</label>
+                <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        value="<%= data?.class?.name %>"
+                        placeholder="Nhập tên lớp..."
+                        class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="note" class="form-label">Ghi chú</label>
+                <input
+                        id="note"
+                        name="note"
+                        type="text"
+                        value="<%= data?.class?.note %>"
+                        placeholder="Nhập ghi chú..."
+                        class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="users" class="form-label">Danh sách học sinh</label>
+                <select name="users[]" id="users" class="form-select js-select2" multiple style="width: 100%;">
+                    <% for (const user of (data?.users || [])) { %>
+                        <option value="<%= user?._id %>" <%= data?.class?.users?.includes(user?._id) ? 'selected' : null %>><%= user?.code %></option>
+                    <% } %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Lưu</button>
+        </form>
+    </div>
+</div>
 
 <input type="hidden" id="id" value="<%= data?.class?._id %>" />
 <input type="hidden" id="method" value="<%= data?.class?._id ? 'PUT' : 'POST' %>" />
@@ -27,8 +62,7 @@
 
     if (method === 'PUT') {
       await axios.put(`http://localhost:5500/classes/${id}`, formData);
-    }
-    else {
+    } else {
       await axios.post('http://localhost:5500/classes', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -37,5 +71,5 @@
     }
 
     window.location.href = `/classes`;
-  })
+  });
 </script>

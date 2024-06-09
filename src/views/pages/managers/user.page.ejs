@@ -28,10 +28,10 @@
                 <td><%= user.lastAccess %></td>
                 <td><%= user.accessCount %></td>
                 <td><%= user.participatedProblems %></td>
-                <td class="align-middle">
-                    <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i
+                <td>
+                    <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= user._id %>')"><i
                                 class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i
+                    <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
                                 class="fas fa-trash-alt"></i></button>
                 </td>
             </tr>
@@ -61,7 +61,7 @@
   }
 
   async function del(id) {
-    await axios.delete(`http://localhost:5500/users/${id}`);
+    await axios.delete(`/users/${id}`);
     location.reload();
   }
 </script>

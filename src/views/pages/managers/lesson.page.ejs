@@ -55,9 +55,9 @@
                             <td><%= lesson.endAt %></td>
                             <td><%= lesson.participants %></td>
                             <td class="align-middle">
-                                <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i
+                                <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= lesson._id %>')"><i
                                             class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i
+                                <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= lesson._id %>')"><i
                                             class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
