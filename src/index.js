@@ -41,6 +41,7 @@ app.use((req, res, next) => {
     url,
     body,
     query,
+    files,
   } = req;
 
   console.log({
@@ -48,6 +49,7 @@ app.use((req, res, next) => {
     url,
     body,
     query,
+    files: files?.map(file => file?.fieldname),
   });
 
   next();

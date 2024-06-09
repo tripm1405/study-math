@@ -30,7 +30,7 @@ function submit() {
       axios.post('/questions', formData);
     }
 
-    // window.location.href = '/questions';
+    window.location.href = '/questions';
   }
   catch {
     alert('error');

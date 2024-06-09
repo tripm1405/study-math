@@ -17,8 +17,7 @@ export default {
       filter = {
         questionId: undefined,
       }
-    }
-    else if (questionId) {
+    } else if (questionId) {
       filter = {
         questionId: questionId,
       }
@@ -29,11 +28,11 @@ export default {
     res.json(ApiUtil.JsonRes({
       data: {
         blocks: blocks.map(block => {
-            return {
-              ...block,
-              ...BlocklyUtil.parseContent({ block: block }),
-            }
-          })
+          return {
+            ...block,
+            ...BlocklyUtil.parseContent({block: block}),
+          }
+        })
           .filter(block => block != null),
       },
     }));
@@ -49,7 +48,7 @@ export default {
       data: {
         block: {
           ...block,
-          ...BlocklyUtil.parseContent({ block: block }),
+          ...BlocklyUtil.parseContent({block: block}),
         },
       },
     }))
@@ -67,12 +66,13 @@ export default {
     const blockStr = fs.readFileSync(file.path, {
       encoding: 'utf8',
     });
-    await fs.unlink(file.path, () => {});
-    const block = BlocklyUtil.parse({ block: blockStr });
+    await fs.unlink(file.path, () => {
+    });
+    const block = BlocklyUtil.parse({block: blockStr});
 
     const newBlock = await BlockModel.findByIdAndUpdate(id, {
       ...block,
-      content: BlocklyUtil.stringifyContent({ block: block }),
+      content: BlocklyUtil.stringifyContent({block: block}),
     });
 
     res.json(ApiUtil.JsonRes({
@@ -90,7 +90,7 @@ export default {
     res.json(ApiUtil.JsonRes({
       data: {
         ...block,
-        ...BlocklyUtil.parseContent({ block: block }),
+        ...BlocklyUtil.parseContent({block: block}),
         content: undefined,
       },
     }));
@@ -106,13 +106,13 @@ export default {
       encoding: 'utf8',
     });
 
-    fs.unlink(file?.path);
+    fs.unlink(file?.path, () => {
+    });
 
     const blocks = (() => {
       try {
         return JSON.parse(fileData);
-      }
-      catch {
+      } catch {
         return [];
       }
     })();
@@ -131,6 +131,34 @@ export default {
     res.json(ApiUtil.JsonRes())
   },
   exportList: async (req, res) => {
+    const {
+      questionId,
+    } = req?.query;
 
+    let filter = {};
+    if (questionId === null) {
+      filter = {
+        questionId: undefined,
+      }
+    } else if (questionId) {
+      filter = {
+        questionId: questionId,
+      }
+    }
+
+    const blocks = await BlockModel.find(filter).lean();
+
+    res.setHeader('Content-disposition', 'attachment; filename= block.json');
+    res.json(ApiUtil.JsonRes({
+      data: blocks.map(block => {
+        return {
+          ...block,
+          ...BlocklyUtil.parseContent({
+            block: block
+          }),
+          content: undefined,
+        };
+      }),
+    }));
   },
 }

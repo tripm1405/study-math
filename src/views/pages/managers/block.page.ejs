@@ -85,7 +85,18 @@
     }
   }
 
-  function onExport() {
-    alert('Chill');
+  async function onExport() {
+    const fileRes = await axios.get(`/api/blocks/export`, {
+      params: {
+        questionId: null,
+      }
+    });
+    console.log('fileRes?.data?.result', fileRes?.data?.result);
+    const type = fileRes.headers['content-type'];
+    const blob = new Blob([JSON.stringify(fileRes?.data?.result)], { type: type, encoding: 'UTF-8' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'block.json';
+    link.click();
   }
 </script>
