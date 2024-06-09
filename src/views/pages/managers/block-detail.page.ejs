@@ -5,6 +5,14 @@
       margin: 5px 0;
       box-sizing: border-box;
   }
+
+  .add-option-container {
+    align-items: center;
+  }
+
+  .add-option-container button {
+    margin-top: 10px;
+  }
 </style>
 
 <div class="w-100 h-100 row">
@@ -13,17 +21,17 @@
   </div>
   <div class="col-4 d-flex flex-column gap-3">
       <div>
-          <div>
+          <div style="display: flex; justify-content:space-between">
               <button onclick="review()"
-                      style="background-color: rgb(248, 97, 213); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                      style="background-color: rgb(248, 97, 213); color: white; border: none; padding: 5px 14px; border-radius: 5px; cursor: pointer;">
                   <i class="fas fa-search"></i> XEM LẠI
               </button>
               <button onclick="submit()"
-                      style="background-color: green; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                      style="background-color: green; color: white; border: none; padding: 5px 14px; border-radius: 5px; cursor: pointer;">
                   <i class="fas fa-paper-plane"></i> LƯU
               </button>
               <button onclick="insertField(event)"
-                      style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                      style="background-color: blue; color: white; border: none; padding: 5px 14px; border-radius: 5px; cursor: pointer;">
                   <i class="fas fa-plus"></i> THÊM BIẾN
               </button>
           </div>
@@ -71,24 +79,23 @@
                                   <% if (arg?.type === 'field_dropdown') { %>
                                       <input type="text" data-label="name" placeholder="Tên biến..."
                                              value="<%= arg?.name %>"/>
-                                      <div>Các lựa chọn</div>
-                                      <% for (const option of arg?.options || []) { %>
-                                          <div data-label="option">
-                                              <input type="text" data-label="label" placeholder="Tên..."
-                                                     value="<%= option?.[0] %>"/>
-                                              <input type="text" data-label="value" placeholder="Giá trị..."
-                                                     value="<%= option?.[1] %>"/>
-
-                                              <button onclick="removeOption(event)"
-                                                      style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-                                                  <i class="fas fa-trash-alt"></i> BỎ LỰA CHỌN
-                                              </button>
-                                          </div>
+                                      <div class="add-option-container">
+                                        <div>Các lựa chọn</div>
+                                          <button onclick="insertOption(event)" style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-plus"></i> THÊM LỰA CHỌN
+                                          </button>
+                                      </div>                                      <% for (const option of arg?.options || []) { %>
+                                        <div data-label="option">
+                                          <input type="text" data-label="label" placeholder="Tên..."
+                                                  value="<%= option?.[0] %>"/>
+                                          <input type="text" data-label="value" placeholder="Giá trị..."
+                                                  value="<%= option?.[1] %>"/>
+                                          <button onclick="removeOption(event)"
+                                                  style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-trash-alt"></i> BỎ LỰA CHỌN
+                                          </button>
+                                        </div>
                                       <% } %>
-                                      <button onclick="insertOption(event)"
-                                              style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-                                          <i class="fas fa-plus"></i> THÊM LỰA CHỌN
-                                      </button>
                                   <% } %>
                                   <div>
                                       <button onclick="removeField(event)"
@@ -169,16 +176,18 @@ async function submit() {
 }
 
 function insertOption(event) {
-  event.target.insertAdjacentHTML('beforebegin', `
-      <div data-label="option">
-          <input type="text" data-label="label" placeholder="Tên..." />
-          <input type="text" data-label="value" placeholder="Giá trị..." />
-          <button onclick="removeOption(event)"
-                  style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-              <i class="fas fa-trash-alt"></i> BỎ LỰA CHỌN
-          </button>
-      </div>
-  `);
+  const optionContainer = event.target.parentNode;
+  const newOption = document.createElement('div');
+  newOption.setAttribute('data-label', 'option');
+  newOption.innerHTML = `
+    <input type="text" data-label="label" placeholder="Tên..." />
+    <input type="text" data-label="value" placeholder="Giá trị..." />
+    <button onclick="removeOption(event)"
+      style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+      <i class="fas fa-trash-alt"></i> BỎ LỰA CHỌN
+    </button>
+  `;
+  optionContainer.appendChild(newOption);
 }
 
 function removeOption(event) {
@@ -202,6 +211,7 @@ function insertField(event) {
           </button>
       </div>
   `);
+  document.getElementById('field-container').insertAdjacentHTML('beforeend', fieldHtml);
 }
 
 function removeField(event) {
@@ -258,18 +268,20 @@ function initRenderArg() {
           <input type="number" data-label="max" placeholder="Giá trị tối đa..." />
       `;
     },
-    ['field_dropdown']: argNode => {
+    field_dropdown: () => {
       return `
-          <input type="text" data-label="name" placeholder="Tên biến..." />
+        <input type="text" data-label="name" placeholder="Tên biến..." />
+        <div class="add-option-container">
           <div>Các lựa chọn</div>
-          <div data-label="option">
-              <input type="text" data-label="label" placeholder="Tên..." />
-              <input type="text" data-label="value" placeholder="Giá trị..." />
-          </div>
-          <button onclick="insertOption(event)"
-                  style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-              <i class="fas fa-plus"></i> THÊM LỰA CHỌN
-          </button>      `;
+          <button onclick="insertOption(event)" style="background-color: blue; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+            <i class="fas fa-plus"></i> THÊM LỰA CHỌN
+          </button>
+        </div>
+        <div data-label="option">
+          <input type="text" data-label="label" placeholder="Tên..." />
+          <input type="text" data-label="value" placeholder="Giá trị..." />
+        </div>
+      `;
     },
   };
 }
@@ -278,54 +290,48 @@ function getBlock() {
   const type = nameInput?.value;
   const color = colorInput?.value;
   const note = noteInput?.value;
-  const content = [...contentDiv.querySelectorAll('.k-message')].reduce((r, e, index) => {
-    console.log('e', e);
-    const args = [...e.querySelectorAll('.k-arg')].map(e1 => {
-      console.log('e1', e1);
-      const typeNode = e1.querySelector('.k-type');
-      const labelNode = e1.querySelector('.k-label');
-
-      const labels = [...labelNode.querySelectorAll(':scope > [data-label]')].reduce((r, e2) => {
-        const label = e2.getAttribute('data-label');
-
-        switch (label) {
-          case 'option': {
-            return {
-              ...r,
-              options: [
-                ...r?.options || [],
-                [e2.querySelector('[data-label="label"]').value, e2.querySelector('[data-label="value"]').value],
+  const content = [...contentDiv.querySelectorAll('.k-message')].reduce((result, element, index) => {
+    const args = [...element.querySelectorAll('.k-arg')].map(argElement => {
+      const typeNode = argElement.querySelector('.k-type');
+      const labelNode = argElement.querySelector('.k-label');
+      const labels = [...labelNode.querySelectorAll(':scope > [data-label]')].reduce((acc, labelElement) => {
+        const label = labelElement.getAttribute('data-label');
+        if (label === 'option') {
+          return {
+            ...acc,
+            options: [
+              ...acc?.options || [],
+              [
+                labelElement.querySelector('[data-label="label"]').value,
+                labelElement.querySelector('[data-label="value"]').value,
               ],
-            }
-          }
-          default: {
-            return {
-              ...r,
-              [label]: e2.value,
-            }
-          }
+            ]
+          };
         }
+        return {
+          ...acc,
+          [label]: labelElement.value,
+        };
       }, {});
-
       return {
         type: typeNode.value,
         ...labels,
-      }
+      };
     });
 
     return {
-      ...r,
-      [`message${index}`]: args.reduce((r, c, i) => i === 0 ? '%1' : `${r} %${i + 1}`, ''),
+      ...result,
+      [`message${index}`]: args.reduce((str, arg, idx) => idx === 0 ? '%1' : `${str} %${idx + 1}`, ''),
       [`args${index}`]: args,
-    }
+    };
   }, {});
 
   return {
-    "type": type,
+    type,
     ...content,
-    "output": "Number",
-    "colour": color,
-    "tooltip": note,
+    output: 'Number',
+    colour: color,
+    tooltip: note,
   };
 }
 </script>
