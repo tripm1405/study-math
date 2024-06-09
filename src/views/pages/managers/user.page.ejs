@@ -1,6 +1,11 @@
 <div class="h-100 w-100">
-    <h1>Quản lí tài khoản</h1>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data.newId %>')">Tạo tài khoản</button>
+    <div style="justify-content:space-between; display:flex">
+        <h1>Quản lí tài khoản</h1>
+        <button class="btn btn-primary" 
+                style="background-color:#008080; border:none; color: white; padding: 5px 10px; text-align: center; font-size: 18px; margin: 4px 2px; cursor: pointer; border-radius: 12px; transition: background-color 0.3s, box-shadow 0.3s;"
+                data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo tài khoản
+        </button>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -22,9 +27,9 @@
                     <td><%= user.lastAccess %></td>
                     <td><%= user.accessCount %></td>
                     <td><%= user.participatedProblems %></td>
-                    <td class="align-middle">
-                        <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
+                    <td>
+                        <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= user._id %>')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i class="fas fa-trash-alt"></i></button>
                     </td> 
                 </tr>
             <% }) %>

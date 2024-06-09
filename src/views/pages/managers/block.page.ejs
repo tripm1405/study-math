@@ -1,8 +1,19 @@
+<style>
+  .btn:hover {
+      background-color:aquamarine; 
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+    }
+</style>
 <table class="table table-striped mt-3">
     <thead>
     <tr>
-      <h1>Quản lí khối</h1>
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khối</button>
+      <div style="justify-content:space-between; display:flex">
+        <h1>Quản lí khối</h1>
+        <button class="btn btn-primary" 
+            style="background-color:#008080; border:none; color: white; padding: 5px 10px; text-align: center; font-size: 18px; margin: 4px 2px; cursor: pointer; border-radius: 12px; transition: background-color 0.3s, box-shadow 0.3s;"
+            data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khối
+        </button>
+      </div>
         <th>STT</th>
         <th>Tên khối</th>
         <th>Người tạo</th>

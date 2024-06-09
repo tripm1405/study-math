@@ -39,21 +39,21 @@ const menuItems = {
   class: {
     label: 'Lớp',
     link: '/classes',
-    icon: 'fas fa-chalkboard-teacher',
+    icon: 'fas fa-school',
   },
 };
 
 export default class ViewUtil {
   static menus = {
     manager: [
-      menuItems.users,
-      menuItems.class,
       menuItems.home,
       menuItems.course,
       menuItems.lesson,
       menuItems.question,
       menuItems.block,
       menuItems.statistics,
+      menuItems.users,
+      menuItems.class,
     ],
     student: [
       menuItems.home,
