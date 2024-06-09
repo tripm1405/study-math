@@ -1,0 +1,104 @@
+<div class="w-full h-full">
+    <h1>Quản lí bài toán</h1>
+
+    <div class="w-full">
+        <div>
+            <input name="code" type="text" value="<%= data?.question?.code %>" placeholder="Mã..." />
+        </div>
+        <div>
+            <input name="name" type="text" value="<%= data?.question?.name %>" placeholder="Tên..." />
+        </div>
+        <div>
+            <select name="lessonId">
+                <% for (const lesson of data?.lessons || []) { %>
+                    <option value="<%= lesson?._id %>"><%= lesson?.code %></option>
+                <% } %>
+            </select>
+        </div>
+        <div>
+            <input name="note" type="text" value="<%= data?.question?.note %>" placeholder="Ghi chú..." />
+        </div>
+    </div>
+
+    <div class="w-full">
+        <div class="w-full d-flex"  style="height: max-content;">
+            <div style="width: 400px; height: max-content;">
+                <h3>Khối mặc định</h3>
+                <div class="w-full" style="height: 400px;">
+                    <div id="blockly-workspace-default" style="height: 100%; width: 100%;"></div>
+                </div>
+                <h3>Khối sử dụng</h3>
+                <div class="w-full" style="height: 400px;">
+                    <div id="blockly-workspace-toolbox" style="height: 100%; width: 100%;"></div>
+                </div>
+            </div>
+
+            <div>
+                <input type="text" />
+            </div>
+        </div>
+    </div>
+
+    <% if (data?.question?._id) { %>
+        <div class="w-full">
+            <h3>Quản lí khối</h3>
+
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-block-modal">IMPORT</button>
+            <button class="btn btn-primary" onClick="onExportBlock()">EXPORT</button>
+            <table class="table table-striped mt-3">
+                <thead>
+                <tr>
+                    <th>Mã</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for (const block of (data?.blocks || [])) { %>
+                    <tr>
+                        <td><%= block?.code %></td>
+                        <td>
+                            <button class="btn btn-secondary" onClick="onUpsertBlock('<%= block?._id %>')"><i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger" onClick="onDelBlock('<%= block?._id %>')"><i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+
+            <div class="modal fade" id="import-block-modal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form onsubmit="onImportBlock(event)">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Import khối</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input name="file" type="file"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
+                                <button type="submit" class="btn btn-primary">SUBMIT</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/scripts/managers/question-detail-block.script.js"></script>
+    <% } %>
+
+    <div>
+        <button onclick="submit()">SUBMIT</button>
+    </div>
+</div>
+
+<input name="id" type="hidden" value="<%= data?.question?._id %>" />
+
+<script src="/scripts/managers/question-detail.script.js"></script>
+<script>
+
+</script>

@@ -1,0 +1,58 @@
+<div class="h-100 w-100">
+    <h1>Quản lí bài toán</h1>
+    <button class="btn btn-primary" onClick="upsert('<%= data?.newId %>')">Tạo bài toán</button>
+    <div>
+        <table class="table table-striped mt-3">
+            <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã bài toán</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for (const question of (data?.questions || [])) { %>
+                <tr>
+                    <td>1</td>
+                    <td><%= question?.code %></td>
+                    <td>
+                        <button class="btn btn-secondary" onClick="upsert('<%= question?._id %>')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" onClick="deleteLesson('<%= question?._id %>')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <nav>
+        <ul class="pagination">
+            <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+            </li>
+            <% for(let i = 1; i <= data.totalPages; i++) { %>
+                <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                </li>
+            <% } %>
+            <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+    <%= JSON.stringify(data) %>
+</div>
+
+<script>
+  function upsert(id) {
+    window.location.href = `/questions/${id}`;
+  }
+  async function del(id) {
+    await axios.delete(`/questions/${id}`);
+    location.reload()
+  }
+</script>

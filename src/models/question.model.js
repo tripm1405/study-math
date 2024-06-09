@@ -12,6 +12,15 @@ const schema = new mongoose.Schema({
   result: {
     type: String,
   },
+  blocksDefault: {
+    type: String,
+  },
+  toolbox: {
+    type: String,
+  },
+  level: {
+    type: String, // ['Easy', 'Normal', 'Hard']
+  },
   lessonId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.LESSON,

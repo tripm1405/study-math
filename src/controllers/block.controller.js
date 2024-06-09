@@ -22,7 +22,7 @@ export default {
       id: id,
     });
 
-    const block = await BlockModel.findById(id) || {};
+    const block = await BlockModel.findById(id);
 
     const blockContent = (() => {
       try {

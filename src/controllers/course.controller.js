@@ -12,8 +12,8 @@ export default {
         const totalPages = Math.ceil(totalCourses / pageSize);
 
         const courses = await CourseModel.find({})
-        .skip((page - 1) * pageSize)
-        .limit(pageSize);
+            .skip((page - 1) * pageSize)
+            .limit(pageSize);
 
         const paginatedCourses = courses.map((course, index) => ({
             ...course.toObject(),
