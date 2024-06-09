@@ -1,3 +1,10 @@
+<style>
+    .btn:hover {
+        background-color:aquamarine;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+</style>
+
 <h1>Quản lí khối</h1>
 
 <!--<button class="btn btn-primary" onClick="upsert('<%= data?.newId %>')">Tạo khối</button>-->
@@ -20,11 +27,9 @@
             <td><%= block?.type %></td>
             <td>Minh Trí</td>
             <td>13/05/2024 20:53</td>
-            <td>
-                <button class="btn btn-secondary" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-danger" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i>
-                </button>
+            <td class="align-middle">
+                <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
             </td>
         </tr>
     <% } %>

@@ -1,17 +1,35 @@
+<style>
+    .btn:hover {
+        background-color: aquamarine;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+</style>
 <div class="h-100 w-100">
-    <h1>Quản lí bài học</h1>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo bài học</button>
+    <div style="justify-content:space-between; display:flex">
+        <h1>Quản lí bài học</h1>
+        <button class="btn btn-primary"
+                style="background-color:#008080; border:none; color: white; padding: 5px 10px; text-align: center; font-size: 18px; margin: 4px 2px; cursor: pointer; border-radius: 12px; transition: background-color 0.3s, box-shadow 0.3s;"
+                data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo bài học
+        </button>
+    </div>
     <div>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="active-courses-tab" data-bs-toggle="tab" data-bs-target="#active-courses" type="button" role="tab" aria-controls="active-courses" aria-selected="true">Bài học đang mở</button>
+                <button class="nav-link active" id="active-courses-tab" data-bs-toggle="tab"
+                        data-bs-target="#active-courses" type="button" role="tab" aria-controls="active-courses"
+                        aria-selected="true">Bài học đang mở
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="completed-courses-tab" data-bs-toggle="tab" data-bs-target="#completed-courses" type="button" role="tab" aria-controls="completed-courses" aria-selected="false">Bài học đã kết thúc</button>
+                <button class="nav-link" id="completed-courses-tab" data-bs-toggle="tab"
+                        data-bs-target="#completed-courses" type="button" role="tab" aria-controls="completed-courses"
+                        aria-selected="false">Bài học đã kết thúc
+                </button>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="active-courses" role="tabpanel" aria-labelledby="active-courses-tab">
+            <div class="tab-pane fade show active" id="active-courses" role="tabpanel"
+                 aria-labelledby="active-courses-tab">
                 <table class="table table-striped mt-3">
                     <thead>
                     <tr>
@@ -26,18 +44,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (const _class of (data?.lessons || [])) { %>
+                    <% let index = 1; %>
+                    <% for (const lesson of (data?.lessons || [])) { %>
                         <tr>
-                            <th scope="row">1</th>
-                            <td>B01</td>
-                            <td>Ôn tập các số đến 100</td>
-                            <td>Nguyễn Anh</td>
-                            <td>13/05/2024 20:53</td>
-                            <td>13/05/2024 21:06</td>
-                            <td>50</td>
-                            <td>
-                                <button class="btn btn-secondary" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger" onClick="deleteLesson('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
+                            <th scope="row"><%= index++ %></th>
+                            <td><%= lesson.code %></td>
+                            <td><%= lesson.name %></td>
+                            <td><%= lesson.teacher %></td>
+                            <td><%= lesson.createdAt %></td>
+                            <td><%= lesson.endAt %></td>
+                            <td><%= lesson.participants %></td>
+                            <td class="align-middle">
+                                <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i
+                                            class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i
+                                            class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
                     <% } %>
@@ -49,28 +70,34 @@
 </div>
 
 <nav>
-  <ul class="pagination">
-      <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-          <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-      </li>
-      <% for(let i = 1; i <= data.totalPages; i++) { %>
-          <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-          </li>
-      <% } %>
-      <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-          <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-      </li>
-  </ul>
+    <ul class="pagination">
+        <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+            <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+        </li>
+        <% for(let i = 1; i <= data.totalPages; i++) { %>
+            <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+        <% } %>
+        <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+            <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+        </li>
+    </ul>
 </nav>
-
 
 <script>
   function upsert(id) {
     window.location.href = `/lessons/${id}`;
   }
+
   async function deleteLesson(id) {
     await axios.delete(`/lessons/${id}`);
     location.reload();
   }
 </script>
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
