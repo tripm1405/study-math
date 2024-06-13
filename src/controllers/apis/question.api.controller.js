@@ -4,10 +4,12 @@ import BlockModel from "#root/models/block.model.js";
 import ApiUtil from "#root/utils/api.util.js";
 import QuestionModel from "#root/models/question.model.js";
 import LessonModel from "#root/models/lesson.model.js";
+import AnswerModel from "#root/models/answer.model.js";
+import CommonUtil from "#root/utils/common.util.js";
 
 export default {
   get: async (req, res) => {
-    const { id } = req?.params;
+    const {id} = req?.params;
     if (!id) return res.json({
       success: false,
       id: id,
@@ -45,5 +47,81 @@ export default {
         answers: answers
       }
     }))
-  }
+  },
+  getAnswer: async (req, res) => {
+    const {
+      answerId,
+    } = req.params;
+
+    const answer = await AnswerModel.findById(answerId).lean();
+
+    res.json(ApiUtil.JsonRes({
+      data: {
+        answer: {
+          ...answer,
+          content: CommonUtil.jsonParse(answer?.content, {}),
+        },
+      },
+    }))
+  },
+  postAnswer: async (req, res) => {
+    const {
+      id,
+    } = req.params;
+    const {
+      code,
+      name,
+      content,
+      score,
+      note,
+    } = req.body;
+
+    const answer = await AnswerModel.create({
+      code: code,
+      name: name,
+      content: CommonUtil.jsonStringify(content, null),
+      score: score,
+      note: note,
+      questionId: id,
+    });
+
+    res.json(ApiUtil.JsonRes({
+      data: {
+        answer: answer
+      },
+    }));
+  },
+  putAnswer: async (req, res) => {
+    const {
+      answerId,
+    } = req.params;
+    const {
+      name,
+      content,
+      score,
+      note,
+    } = req.body;
+
+    const answer = await AnswerModel.findByIdAndUpdate(answerId, {
+      name: name,
+      content: CommonUtil.jsonStringify(content, null),
+      score: score,
+      note: note,
+    });
+
+    res.json(ApiUtil.JsonRes({
+      data: {
+        answer: answer
+      },
+    }))
+  },
+  delAnswer: async (req, res) => {
+    const {
+      answerId,
+    } = req.params;
+
+    await AnswerModel.findByIdAndDelete(answerId);
+
+    res.json(ApiUtil.JsonRes());
+  },
 }

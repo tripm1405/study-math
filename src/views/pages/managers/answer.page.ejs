@@ -18,7 +18,7 @@
                 <td><%= answer?.name %></td>
                 <td><%= answer?.score %></td>
                 <td>
-                    <div class="w-full h-full d-flex">
+                    <div class="w-full h-full d-flex gap-1">
                         <button class="btn btn-secondary btn-sm" onClick="detail('<%= answer?._id %>')"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-danger btn-sm" onClick="del('<%= answer?._id %>')"><i class="fas fa-trash-alt"></i></button>
                     </div>
@@ -38,8 +38,9 @@
   }
 
   async function del(id) {
+    const questionId = document.querySelector('input[name="questionId"]')?.value;
     try {
-      await axios.delete(`/api/answers/${id}`);
+      await axios.delete(`/api/questions/${questionId}/answers/${id}`);
       location.reload();
     }
     catch {

@@ -6,6 +6,9 @@ const schema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  name: {
+    type: String,
+  },
   content: {
     type: String,
     required : true,
@@ -13,6 +16,9 @@ const schema = new mongoose.Schema({
   score: {
     type: Number,
     required : true,
+  },
+  note: {
+    type: String,
   },
   questionId: {
     type: mongoose.Schema.Types.ObjectId,

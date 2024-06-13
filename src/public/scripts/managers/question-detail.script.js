@@ -185,47 +185,6 @@ async function onExportBlock() {
   link.click();
 }
 
-async function loadAnswers() {
-  const id = document.querySelector('input[name="id"]')?.value;
-  const answersRes = await axios.get(`/api/questions/${id}/answers`);
-  answers = answersRes?.data?.result?.answers;
-}
-
-async function addAnswer() {
-  // await loadAnswers();
-  const configAnswerModal = document.querySelector('#config-answer-modal');
-  const configAnswerModalBody = configAnswerModal.querySelector('.modal-body');
-  const scoreInput = document.createElement('input');
-  scoreInput.setAttribute('type', 'number');
-  scoreInput.setAttribute('min', '0');
-  scoreInput.setAttribute('max', '10');
-  scoreInput.setAttribute('value', '10');
-  const removeButton = document.createElement('button');
-  removeButton.classList.add('btn');
-  removeButton.classList.add('btn-sm');
-  removeButton.classList.add('btn-danger');
-  removeButton.textContent = 'XÓA ĐÁP ÁN';
-  const workspaceDiv = document.createElement('div');
-  workspaceDiv.style.height = '400px';
-  workspaceDiv.style.width = '400px';
-  const wrapperDiv = document.createElement('div');
-  wrapperDiv.classList.add('w-full');
-  wrapperDiv.style.height = 'max-content';
-  wrapperDiv.insertAdjacentElement('beforeend', scoreInput);
-  wrapperDiv.insertAdjacentElement('beforeend', removeButton);
-  wrapperDiv.insertAdjacentElement('beforeend', workspaceDiv);
-  removeButton.addEventListener('click', () => {
-    wrapperDiv.remove();
-  });
-  configAnswerModalBody.insertAdjacentElement('beforeend', wrapperDiv);
-  answers = [...(answers || []), {
-    data: {},
-    scoreInput: scoreInput,
-    workspace: initWorkspace({ node: workspaceDiv }),
-  }];
-  await loadToolbox();
-}
-
 function onConfigAnswers() {
   const id = document.querySelector('input[name="id"]')?.value;
   window.location.href = `/questions/${id}/answers`;

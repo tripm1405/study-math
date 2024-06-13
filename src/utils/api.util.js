@@ -3,15 +3,18 @@ export default class ApiUtil {
     const {
       success,
       data,
+      errors,
     } = {
       success: true,
       data: {},
+      errors: {},
       ...props,
     };
 
     return {
       success,
       result: data,
+      errors: errors,
     };
   }
 }

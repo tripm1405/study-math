@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import multer from 'multer';
 
 import Router from '#root/routes/index.js';
+import ApiUtil from "#root/utils/api.util.js";
 
 dotenv.config();
 
@@ -44,6 +45,11 @@ app.use((req, res, next) => {
     files,
   } = req;
 
+  if (url === '/favicon.ico') {
+    next();
+    return;
+  }
+
   console.log({
     method,
     url,
@@ -56,6 +62,23 @@ app.use((req, res, next) => {
 });
 
 app.use(Router);
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  if (err.name === 'ValidationError') {
+    res.json(ApiUtil.JsonRes({
+      success: false,
+      errors: err?.errors?.content,
+    }));
+
+    return;
+  }
+
+  res.json(ApiUtil.JsonRes({
+    success: false,
+    errors: 'Server error!',
+  }));
+})
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);

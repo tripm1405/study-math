@@ -29,6 +29,7 @@
     <%= JSON.stringify(data) %>
 </div>
 
+<input name="id" type="hidden" value="<%= data?.answer?._id %>" />
 <input name="questionId" type="hidden" value="<%= data?.questionId %>" />
 
 <script>
@@ -41,6 +42,9 @@
 
   // init async
   (async () => {
+    const questionId = document.querySelector('input[name="questionId"]')?.value;
+    const id = document.querySelector('input[name="id"]')?.value;
+
     await loadBlocks();
 
     workspace = initWorkspace({
@@ -48,6 +52,18 @@
     });
 
     loadToolbox();
+
+    // init workspace
+    await (async () => {
+      if (questionId && id) {
+        const answerRes = await axios.get(`/api/questions/${questionId}/answers/${id}`);
+        if (!answerRes?.data?.result?.answer?.content) {
+          return;
+        }
+
+        Blockly.serialization.workspaces.load(answerRes?.data?.result?.answer?.content, workspace);
+      }
+    })();
   })();
 
   async function toggleBlocksGlobal() {
@@ -131,11 +147,33 @@
     }
   }
 
-  function onSubmit(event) {
+  async function onSubmit(event) {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
+    const id = document.querySelector('input[name="id"]')?.value;
+    const questionId = document.querySelector('input[name="questionId"]')?.value;
+    const content = Blockly.serialization.workspaces.save?.(workspace);
 
-    console.log('onSubmit', formData);
+    const formData = new FormData(event.target);
+    obj2FormData(formData, content, 'content');
+
+    try {
+      const res = await (async () => {
+        if (id) {
+          return await axios.put(`/api/questions/${questionId}/answers/${id}`, formData);
+        }
+        else {
+          return await axios.post(`/api/questions/${questionId}/answers`, formData);
+        }
+      })();
+      console.log('res', res);
+      if (!res?.data?.result?.success) {
+        return;
+      }
+      window.location.href = `/questions/${questionId}/answers`;
+    }
+    catch {
+      alert('Server error!');
+    }
   }
 </script>
