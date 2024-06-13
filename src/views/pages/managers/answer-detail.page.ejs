@@ -1,0 +1,141 @@
+<div class="w-full h-full">
+    <div class="row">
+        <div class="h-100 col-8">
+            <div id="workspace" style="height: 400px; width: 100%;"></div>
+        </div>
+        <div class="col-4 d-flex flex-column gap-3">
+            <div>
+                <button class="btn btn-sm btn-primary" onclick="toggleBlocksGlobal()">LẤY/BỎ KHỐI MẶC ĐỊNH</button>
+            </div>
+            <form onsubmit="onSubmit(event)">
+                <div>
+                    <input name="code" type="text" value="<%= data?.answer?.code %>" />
+                </div>
+                <div>
+                    <input name="name" type="text" value="<%= data?.answer?.name %>" />
+                </div>
+                <div>
+                    <input name="score" type="text" min="0" max="10" value="<%= data?.answer?.score || '10' %>" />
+                </div>
+                <div>
+                    <input name="note" type="text" value="<%= data?.answer?.note %>" />
+                </div>
+                <div>
+                    <button type="submit">SUBMIT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <%= JSON.stringify(data) %>
+</div>
+
+<input name="questionId" type="hidden" value="<%= data?.questionId %>" />
+
+<script>
+  let isContainBlocksGlobal = false;
+  let workspace;
+  let toolbox;
+  let blocksLocal;
+  let blocksGlobal;
+  let blocks;
+
+  // init async
+  (async () => {
+    await loadBlocks();
+
+    workspace = initWorkspace({
+      node: document.getElementById('workspace'),
+    });
+
+    loadToolbox();
+  })();
+
+  async function toggleBlocksGlobal() {
+    isContainBlocksGlobal = !isContainBlocksGlobal;
+    loadToolbox();
+  }
+
+  function initWorkspace(props) {
+    const {
+      node
+    } = {
+      ...props,
+    }
+
+    return Blockly.inject(node, {
+      toolbox: {
+        kind: 'flyoutToolbox',
+        contents: [],
+      },
+    });
+  }
+
+  async function loadToolbox(props) {
+    const {
+      hasLoadBlocks
+    } = {
+      hasLoadBlocks: false,
+      ...props,
+    }
+
+    if (hasLoadBlocks) {
+      await loadBlocks();
+    }
+
+    toolbox = {
+      kind: 'flyoutToolbox',
+      contents: (isContainBlocksGlobal ? blocks : blocksLocal).map(block => {
+        return {
+          kind: 'block',
+          type: block?.type,
+        }
+      }),
+    };
+    workspace?.updateToolbox(toolbox);
+  }
+
+  async function loadBlocks() {
+    const innerBlocksLocal = await (async () => {
+      const questionId = document.querySelector('input[name="questionId"]')?.value;
+      if (!questionId) {
+        return [];
+      }
+
+      const blocksRes = await axios.get('/api/blocks', {
+        params: {
+          questionId: questionId,
+        },
+      });
+      return blocksRes?.data?.result?.blocks || [];
+    })();
+
+    const innerBlocksGlobal = await (async () => {
+      const blocksRes = await axios.get('/api/blocks', {
+        params: {
+          questionId: null,
+        },
+      });
+      return blocksRes?.data?.result?.blocks || [];
+    })();
+
+    blocksLocal = innerBlocksLocal;
+    blocksGlobal = innerBlocksGlobal;
+    blocks = [...blocksLocal, ...blocksGlobal];
+
+    for (const block of blocks) {
+      Blockly.Blocks[block.type] = {
+        init: function () {
+          this.jsonInit(block);
+        }
+      };
+    }
+  }
+
+  function onSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    console.log('onSubmit', formData);
+  }
+</script>

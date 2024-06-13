@@ -43,7 +43,7 @@
                     </button>
                 </div>
                 <div>
-                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#config-answer-modal">
+                    <button class="btn btn-sm btn-primary" onclick="onConfigAnswers()">
                         CẤU HÌNH ĐÁP ÁN
                     </button>
                 </div>
@@ -53,23 +53,6 @@
 
     <div>
         <button onclick="submit()">SUBMIT</button>
-    </div>
-</div>
-
-<div class="modal fade" id="config-answer-modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Cấu hình đáp án</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="test()">TEST</button>
-                <button type="button" class="btn btn-secondary" onclick="addAnswer()">THÊM ĐÁP ÁN</button>
-            </div>
-        </div>
     </div>
 </div>
 

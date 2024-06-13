@@ -1,0 +1,49 @@
+<div class="w-full h-full">
+    <h1>Quản lí đáp án</h1>
+    <button class="btn btn-primary" onClick="detail('<%= data?.newId %>')">Tạo đáp án</button>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Mã</th>
+            <th>Tên</th>
+            <th>Điểm</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for (const answer of data?.answers || []) { %>
+            <tr>
+                <td><%= answer?.code %></td>
+                <td><%= answer?.name %></td>
+                <td><%= answer?.score %></td>
+                <td>
+                    <div class="w-full h-full d-flex">
+                        <button class="btn btn-secondary btn-sm" onClick="detail('<%= answer?._id %>')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onClick="del('<%= answer?._id %>')"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+</div>
+
+<input name="questionId" type="hidden" value="<%= data?.questionId %>" />
+
+<script>
+  function detail(id) {
+    const questionId = document.querySelector('input[name="questionId"]')?.value;
+    window.location.href = `/questions/${questionId}/answers/${id}`;
+  }
+
+  async function del(id) {
+    try {
+      await axios.delete(`/api/answers/${id}`);
+      location.reload();
+    }
+    catch {
+      alert('Server Error!');
+    }
+  }
+</script>

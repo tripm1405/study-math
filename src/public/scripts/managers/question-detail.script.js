@@ -226,6 +226,7 @@ async function addAnswer() {
   await loadToolbox();
 }
 
-function test() {
-  const blocksDefault = Blockly.serialization.workspaces.save?.(workspaceDefault);
+function onConfigAnswers() {
+  const id = document.querySelector('input[name="id"]')?.value;
+  window.location.href = `/questions/${id}/answers`;
 }

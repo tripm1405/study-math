@@ -6,6 +6,7 @@ import CourseModel from "#root/models/course.model.js";
 import LessonModel from "#root/models/lesson.model.js";
 import BlockModel from "#root/models/block.model.js";
 import ResolutionModel from "#root/models/resolution.model.js";
+import AnswerModel from "#root/models/answer.model.js";
 
 export default {
   get: async (req, res) => {
@@ -21,7 +22,7 @@ export default {
       .skip((page - 1) * paging.pageSize)
       .limit(paging.pageSize);
 
-    const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}question.page.ejs`;
+    const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question.page.ejs`;
     res.render(view, ViewUtil.getOptions({
       data: {
         questions: questions,
@@ -125,7 +126,7 @@ export default {
         question: question,
         resolution: resolution,
       },
-    }))
+    }));
   },
   postSolve: async (req, res) => {
     const {
@@ -154,5 +155,40 @@ export default {
     }
 
     res.redirect(`/questions/${id}`);
+  },
+  getAnswers: async (req, res) => {
+    const {
+      id,
+    } = req.params;
+
+    const newId = new mongoose.Types.ObjectId();
+    const answers = await AnswerModel.find({
+      questionId: id,
+    });
+
+    const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/answer.page.ejs`;
+    res.render(view, ViewUtil.getOptions({
+      data: {
+        questionId: id,
+        answers: answers,
+        newId: newId,
+      },
+    }));
+  },
+  getAnswer: async (req, res) => {
+    const {
+      answerId,
+      id,
+    } = req.params;
+
+    const answer = await AnswerModel.findById(answerId) || {};
+
+    const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/answer-detail.page.ejs`;
+    res.render(view, ViewUtil.getOptions({
+      data: {
+        answer: answer,
+        questionId: id,
+      },
+    }));
   },
 }
