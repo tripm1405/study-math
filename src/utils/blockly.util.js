@@ -1,3 +1,5 @@
+import CommonUtil from "#root/utils/common.util.js";
+
 export default class BlocklyUtil {
   static BCRYPT_SALT = Number(process.env.BCRYPT_SALT) || 4;
 
@@ -66,5 +68,26 @@ export default class BlocklyUtil {
         [key]: block[key],
       }
     }, {}));
+  }
+
+  static compareContent(props) {
+    const {
+      content1,
+      content2,
+    } = props;
+
+    function formatContent(content) {
+      return content?.blocks?.blocks?.map(block => {
+        return {
+          fields: block.fields,
+          type: block.type,
+        };
+      });
+    }
+
+    return CommonUtil.compareObj({
+      obj1: formatContent(content1),
+      obj2: formatContent(content2),
+    });
   }
 }

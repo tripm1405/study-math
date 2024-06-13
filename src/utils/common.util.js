@@ -27,4 +27,36 @@ export default class CommonUtil {
       }
     }
   }
+
+  static compareObj(props) {
+    const {
+      obj1,
+      obj2,
+      keyCurrent,
+    } = props;
+    console.log({
+      obj1,
+      obj2,
+      keyCurrent,
+    });
+    const value1 = keyCurrent ? obj1[keyCurrent] : obj1;
+    const value2 = keyCurrent ? obj2[keyCurrent] : obj2;
+
+    if (typeof(value1) !== typeof({})) {
+      return value1 === value2;
+    }
+
+    for (const key in value1) {
+      const result = CommonUtil.compareObj({
+        obj1: value1,
+        obj2: value2,
+        keyCurrent: key,
+      });
+      if (!result) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }

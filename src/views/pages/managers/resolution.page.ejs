@@ -1,4 +1,7 @@
 <div class="w-full h-full">
+    <div>
+        <button onclick="markByAnswer()">Chấm điểm bằng đáp án</button>
+    </div>
     <table>
         <thead>
         <tr>
@@ -28,5 +31,19 @@
 <script>
     function onDetail(id) {
         window.location.href = `/resolutions/${id}`;
+    }
+
+    async function markByAnswer() {
+      try {
+        const res = await axios.put('/api/resolutions/mark-by-answer', {});
+        if (!res?.data?.result?.success) {
+          console.log('errors', res?.data?.result?.errors);
+          return;
+        }
+        window.location.reload();
+      }
+      catch {
+        alert('Server error!');
+      }
     }
 </script>
