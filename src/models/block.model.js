@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 import ModelNameConstant from "#root/models/model-name.constant.js";
 
 const schema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
   type: {
     type: String,
     unique: true,

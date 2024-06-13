@@ -21,8 +21,8 @@ export default {
       .skip((page - 1) * paging.pageSize)
       .limit(paging.pageSize);
 
-    const prefixView = ViewUtil.getPrefixView(res.locals.currentUser?.type);
-    res.render(`${prefixView}/question.page.ejs`, ViewUtil.getOptions({
+    const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}question.page.ejs`;
+    res.render(view, ViewUtil.getOptions({
       data: {
         questions: questions,
         newId: newId,

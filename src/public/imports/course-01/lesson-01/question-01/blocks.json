@@ -1,11 +1,7 @@
 [
   {
     "name": "Block",
-    "output": null,
-    "previousStatement": null,
-    "nextStatement": null,
     "colour": 100,
-    "tooltip": null,
     "message0": "%1 %2 %3",
     "args0": [
       {

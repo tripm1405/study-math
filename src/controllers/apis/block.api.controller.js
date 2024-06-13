@@ -5,6 +5,7 @@ import ApiUtil from "#root/utils/api.util.js";
 import FileUtil from "#root/utils/file.util.js";
 import BlocklyUtil from "#root/utils/blockly.util.js";
 import CourseModel from "#root/models/course.model.js";
+import mongoose from "mongoose";
 
 export default {
   getList: async (req, res) => {
@@ -12,16 +13,9 @@ export default {
       questionId,
     } = req?.query;
 
-    let filter = {};
-    if (questionId === null) {
-      filter = {
-        questionId: undefined,
-      }
-    } else if (questionId) {
-      filter = {
-        questionId: questionId,
-      }
-    }
+    const filter = {
+      questionId: questionId,
+    };
 
     const blocks = await BlockModel.find(filter).lean();
 
@@ -97,6 +91,9 @@ export default {
   },
   importList: async (req, res) => {
     const {
+      questionId,
+    } = req.body;
+    const {
       file
     } = FileUtil.ArrToObj({
       files: req.files
@@ -106,8 +103,7 @@ export default {
       encoding: 'utf8',
     });
 
-    fs.unlink(file?.path, () => {
-    });
+    fs.unlink(file?.path, () => {});
 
     const blocks = (() => {
       try {
@@ -118,12 +114,21 @@ export default {
     })();
 
     const blocksFormat = blocks.map(block => {
-      return new BlockModel({
+      const newBlock = {
         ...block,
         content: BlocklyUtil.stringifyContent({
           block: block
         }),
-      });
+      };
+
+      if (questionId) {
+        const _id = new mongoose.Types.ObjectId();
+        newBlock._id = _id;
+        newBlock.type = _id;
+        newBlock.questionId = questionId;
+      }
+
+      return new BlockModel(newBlock);
     });
 
     await BlockModel.create(blocksFormat);
@@ -135,16 +140,9 @@ export default {
       questionId,
     } = req?.query;
 
-    let filter = {};
-    if (questionId === null) {
-      filter = {
-        questionId: undefined,
-      }
-    } else if (questionId) {
-      filter = {
-        questionId: questionId,
-      }
-    }
+    const filter = {
+      questionId: questionId,
+    };
 
     const blocks = await BlockModel.find(filter).lean();
 

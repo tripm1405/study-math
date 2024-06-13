@@ -3,10 +3,10 @@
 
     <div class="w-full">
         <div>
-            <input name="code" type="text" value="<%= data?.question?.code %>" placeholder="Mã..." />
+            <input name="code" type="text" value="<%= data?.question?.code %>" placeholder="Mã..."/>
         </div>
         <div>
-            <input name="name" type="text" value="<%= data?.question?.name %>" placeholder="Tên..." />
+            <input name="name" type="text" value="<%= data?.question?.name %>" placeholder="Tên..."/>
         </div>
         <div>
             <select name="lessonId">
@@ -16,12 +16,12 @@
             </select>
         </div>
         <div>
-            <input name="note" type="text" value="<%= data?.question?.note %>" placeholder="Ghi chú..." />
+            <input name="note" type="text" value="<%= data?.question?.note %>" placeholder="Ghi chú..."/>
         </div>
     </div>
 
     <div class="w-full">
-        <div class="w-full d-flex"  style="height: max-content;">
+        <div class="w-full d-flex gap-3" style="height: max-content;">
             <div style="width: 400px; height: max-content;">
                 <h3>Khối mặc định</h3>
                 <div class="w-full" style="height: 400px;">
@@ -34,69 +34,110 @@
             </div>
 
             <div>
-                <input type="text" />
-            </div>
-        </div>
-    </div>
-
-    <% if (data?.question?._id) { %>
-        <div class="w-full">
-            <h3>Quản lí khối</h3>
-
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-block-modal">IMPORT</button>
-            <button class="btn btn-primary" onClick="onExportBlock()">EXPORT</button>
-            <table class="table table-striped mt-3">
-                <thead>
-                <tr>
-                    <th>Mã</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <% for (const block of (data?.blocks || [])) { %>
-                    <tr>
-                        <td><%= block?.code %></td>
-                        <td>
-                            <button class="btn btn-secondary" onClick="onUpsertBlock('<%= block?._id %>')"><i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-danger" onClick="onDelBlock('<%= block?._id %>')"><i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-                <% } %>
-                </tbody>
-            </table>
-
-            <div class="modal fade" id="import-block-modal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form onsubmit="onImportBlock(event)">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Import khối</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <input name="file" type="file"/>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
-                                <button type="submit" class="btn btn-primary">SUBMIT</button>
-                            </div>
-                        </form>
-                    </div>
+                <div>
+                    <button class="btn btn-sm btn-primary" onclick="toggleBlocksGlobal()">LẤY/BỎ KHỐI MẶC ĐỊNH</button>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#config-block-modal">
+                        CẤU HÌNH KHỐI
+                    </button>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#config-answer-modal">
+                        CẤU HÌNH ĐÁP ÁN
+                    </button>
                 </div>
             </div>
         </div>
-
-        <script src="/scripts/managers/question-detail-block.script.js"></script>
-    <% } %>
+    </div>
 
     <div>
         <button onclick="submit()">SUBMIT</button>
     </div>
 </div>
 
-<input name="id" type="hidden" value="<%= data?.question?._id %>" />
+<div class="modal fade" id="config-answer-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cấu hình đáp án</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="test()">TEST</button>
+                <button type="button" class="btn btn-secondary" onclick="addAnswer()">THÊM ĐÁP ÁN</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% if (data?.question?._id) { %>
+    <div class="modal fade" id="config-block-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cấu hình khối</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-block-modal">IMPORT
+                    </button>
+                    <button class="btn btn-primary" onClick="onExportBlock()">EXPORT</button>
+                    <table class="table table-striped mt-3">
+                        <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% for (const block of (data?.blocks || [])) { %>
+                            <tr>
+                                <td><%= block?.name %></td>
+                                <td>
+                                    <button class="btn btn-secondary" onClick="onUpsertBlock('<%= block?._id %>')"><i
+                                                class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-danger" onClick="onDelBlock('<%= block?._id %>')"><i
+                                                class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="import-block-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form onsubmit="onImportBlock(event)">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Import khối</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input name="file" type="file"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
+                        <button type="submit" class="btn btn-primary">SUBMIT</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<% } %>
+
+<input name="id" type="hidden" value="<%= data?.question?._id %>"/>
 
 <script src="/scripts/managers/question-detail.script.js"></script>
 <script>

@@ -4,6 +4,7 @@ import questionApiController from "#root/controllers/apis/question.api.controlle
 
 const Router = express.Router();
 
+Router.get('/:id/answers', questionApiController.getAnswers);
 Router.get('/:id', questionApiController.get);
 
 export default Router;
