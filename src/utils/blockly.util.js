@@ -90,4 +90,22 @@ export default class BlocklyUtil {
       obj2: formatContent(content2),
     });
   }
+
+  static formatExportBlock(props) {
+    const {
+      block
+    } = props;
+
+    const excludedProperties = new Set([
+      'createdAt',
+      'updatedAt',
+      'type',
+      '__v',
+    ]);
+
+    return CommonUtil.excludedProperties({
+      obj: block,
+      properties: excludedProperties,
+    });
+  }
 }

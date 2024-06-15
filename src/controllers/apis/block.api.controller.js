@@ -1,11 +1,11 @@
 import fs from 'fs';
+import mongoose from "mongoose";
 
 import BlockModel from "#root/models/block.model.js";
 import ApiUtil from "#root/utils/api.util.js";
 import FileUtil from "#root/utils/file.util.js";
 import BlocklyUtil from "#root/utils/blockly.util.js";
-import CourseModel from "#root/models/course.model.js";
-import mongoose from "mongoose";
+import CommonUtil from "#root/utils/common.util.js";
 
 export default {
   getList: async (req, res) => {
@@ -78,7 +78,12 @@ export default {
       id,
     } = req?.params;
 
-    const block = await BlockModel.findById(id).lean();
+    const block = await (async () => {
+      const block = await BlockModel.findById(id).lean();
+      return BlocklyUtil.formatExportBlock({
+        block: block,
+      });
+    })();
 
     res.setHeader('Content-disposition', 'attachment; filename= block.json');
     res.json(ApiUtil.JsonRes({
@@ -99,41 +104,88 @@ export default {
       files: req.files
     });
 
-    const fileData = fs.readFileSync(file.path, {
-      encoding: 'utf8',
-    });
+    const filter = {
+      questionId: questionId,
+    };
 
-    fs.unlink(file?.path, () => {});
-
-    const blocks = (() => {
-      try {
-        return JSON.parse(fileData);
-      } catch {
-        return [];
-      }
+    const blocksMapping = await (async () => {
+      const blocks = await BlockModel.find(filter).lean();
+      return await blocks.reduce((result, curr) => {
+        return {
+          ...result,
+          [curr._id]: curr,
+        };
+      }, {});
     })();
 
-    const blocksFormat = blocks.map(block => {
-      const newBlock = {
-        ...block,
-        content: BlocklyUtil.stringifyContent({
-          block: block
-        }),
-      };
+    const blocksFromFiles = await (async () => {
+      const fileData = fs.readFileSync(file.path, {
+        encoding: 'utf8',
+      });
 
-      if (questionId) {
-        const _id = new mongoose.Types.ObjectId();
-        newBlock._id = _id;
-        newBlock.type = _id;
-        newBlock.questionId = questionId;
+      fs.unlink(file?.path, () => {
+      });
+
+      const blocks = CommonUtil.jsonParse(fileData);
+      if (blocks === null) {
+        return null;
       }
 
-      return new BlockModel(newBlock);
+      return blocks.map(block => {
+        return {
+          ...block,
+          content: BlocklyUtil.stringifyContent({
+            block: block
+          }),
+        };
+      });
+    })();
+    if (blocksFromFiles === null) {
+      res.json(ApiUtil.JsonRes({
+        success: false,
+        message: 'File ko đúng định dạng',
+      }))
+      return;
+    }
+
+    const blocks = blocksFromFiles.map(block => {
+      const blockExists = blocksMapping[block?._id];
+      console.log('blockExists', {
+        blockExists: blockExists,
+        blockId: block?._id,
+      })
+      return new BlockModel(blockExists
+        ? {
+          ...blockExists,
+          ...CommonUtil.excludedProperties({
+            obj: block,
+            properties: ['_id', 'type', 'questionId'],
+          }),
+        }
+        : ((id) => {
+          return {
+            ...block,
+            _id: id,
+            type: id,
+            questionId: questionId,
+          };
+        })(new mongoose.Types.ObjectId()));
     });
 
-    await BlockModel.create(blocksFormat);
+    for (const block of blocks) {
+      await BlockModel.findByIdAndUpdate(
+        block._id,
+        CommonUtil.excludedProperties({
+          obj: block,
+          properties: ['_id'],
+        }),
+        {
+          upsert: true,
+        }
+      );
+    }
 
-    res.json(ApiUtil.JsonRes())
+    res.json(ApiUtil.JsonRes());
   },
   exportList: async (req, res) => {
     const {
@@ -144,19 +196,24 @@ export default {
       questionId: questionId,
     };
 
-    const blocks = await BlockModel.find(filter).lean();
+    const blocks = await (async () => {
+      const blocks = await BlockModel.find(filter).lean();
+      return blocks?.map(block => {
+        return BlocklyUtil.formatExportBlock({
+          block: {
+            ...block,
+            ...BlocklyUtil.parseContent({
+              block: block,
+            }),
+            content: undefined,
+          },
+        });
+      });
+    })();
 
     res.setHeader('Content-disposition', 'attachment; filename= block.json');
     res.json(ApiUtil.JsonRes({
-      data: blocks.map(block => {
-        return {
-          ...block,
-          ...BlocklyUtil.parseContent({
-            block: block
-          }),
-          content: undefined,
-        };
-      }),
+      data: blocks,
     }));
   },
 }

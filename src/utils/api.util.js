@@ -4,6 +4,7 @@ export default class ApiUtil {
       success,
       data,
       errors,
+      message,
     } = {
       success: true,
       data: {},
@@ -12,9 +13,10 @@ export default class ApiUtil {
     };
 
     return {
-      success,
+      success: success,
       result: data,
       errors: errors,
+      message: message,
     };
   }
 }

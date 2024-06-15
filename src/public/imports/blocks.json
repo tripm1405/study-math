@@ -1,6 +1,7 @@
 [
   {
-    "type": "Compare",
+    "name": "So sánh 23 và 28",
+    "type": "Test",
     "output": "Number",
     "colour": 100,
     "message0": "%1 %2 %3",
@@ -8,7 +9,7 @@
       {
         "type": "field_label",
         "name": "a",
-        "text": "25"
+        "text": "23"
       },
       {
         "type": "field_dropdown",

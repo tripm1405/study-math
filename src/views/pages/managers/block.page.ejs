@@ -14,7 +14,7 @@
     <thead>
     <tr>
         <th>STT</th>
-        <th>Mã</th>
+        <th>Tên</th>
         <th>Người tạo</th>
         <th>Ngày tạo</th>
         <th></th>
@@ -24,9 +24,9 @@
     <% for (const block of (data?.blocks || [])) { %>
         <tr>
             <td>1</td>
-            <td><%= block?.type %></td>
-            <td>Minh Trí</td>
-            <td>13/05/2024 20:53</td>
+            <td><%= block?.name %></td>
+            <td><%= block?.createdById %></td>
+            <td><%= block?.createdAt %></td>
             <td class="align-middle">
                 <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i></button>
                 <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
@@ -91,12 +91,8 @@
         questionId: null,
       }
     });
-    console.log('fileRes?.data?.result', fileRes?.data?.result);
-    const type = fileRes.headers['content-type'];
-    const blob = new Blob([JSON.stringify(fileRes?.data?.result)], { type: type, encoding: 'UTF-8' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'block.json';
-    link.click();
+    await K.exportJson({
+      res: fileRes,
+    });
   }
 </script>

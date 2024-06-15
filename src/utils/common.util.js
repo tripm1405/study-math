@@ -1,5 +1,5 @@
 export default class CommonUtil {
-  static jsonParse(value, valueDefault) {
+  static jsonParse(value, valueDefault = null) {
     try {
       return JSON.parse(value);
     }
@@ -8,7 +8,7 @@ export default class CommonUtil {
     }
   }
 
-  static jsonStringify(value, valueDefault) {
+  static jsonStringify(value, valueDefault = null) {
     try {
       return JSON.stringify(value);
     }
@@ -58,5 +58,29 @@ export default class CommonUtil {
     }
 
     return true;
+  }
+
+  static excludedProperties(props) {
+    const {
+      obj,
+      properties,
+    } = {
+      obj: {},
+      properties: [],
+      ...props,
+    };
+    const propertiesSet = new Set(properties);
+
+
+    return Object.keys(obj)?.reduce((result, key) => {
+      if (propertiesSet.has(key)) {
+        return result;
+      }
+
+      return {
+        ...result,
+        [key]: obj[key]
+      };
+    }, {});
   }
 }

@@ -25,13 +25,9 @@ async function onImport(event) {
 
 async function onExport() {
   const fileRes = await axios.get(`/api/blocks/${id}/export`);
-  console.log('fileRes?.data?.result', fileRes?.data?.result);
-  const type = fileRes.headers['content-type'];
-  const blob = new Blob([JSON.stringify(fileRes?.data?.result)], { type: type, encoding: 'UTF-8' });
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.download = 'block.json';
-  link.click();
+  await K.exportJson({
+    res: fileRes,
+  });
 }
 
 async function initWorkspace(props) {
