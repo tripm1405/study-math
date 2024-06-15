@@ -1,17 +1,21 @@
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <style>
     .btn:hover {
-        background-color:aquamarine; 
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
-      }
-  </style>
-  <div style="justify-content:space-between; display:flex">
+        background-color: aquamarine;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+</style>
+<div style="display: flex; justify-content: space-between;">
     <h1>Quản lí lớp học</h1>
     <button
-      style="background-color:#008080; border:none; color: white; text-align: center; font-size: 16px; cursor: pointer; border-radius: 8px; transition: background-color 0.3s, box-shadow 0.3s; height: 40px;"
-      data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo lớp học
+        class="btn"
+        style="background-color: #008080; color: white; font-size: 16px; cursor: pointer; border-radius: 8px; height: 40px;"
+        data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">
+        Tạo lớp học
     </button>
-  </div>
-  <table class="table">
+</div>
+<table class="table">
     <thead>
         <tr>
             <th>STT</th>
@@ -30,43 +34,70 @@
                 <td><%= _class?.name %></td>
                 <td><%= _class?.teacher %></td>
                 <td><%= _class?.studentsCount %></td>
-                <td class="align-middle">
+                <td>
                     <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-danger btn-sm" onClick="del('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
                 </td>
             </tr>
         <% } %>
     </tbody>
-  </table>
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  
-  <script>
-      function upsert(id) {
-          window.location.href = `/classes/${id}`;
-      }
-    
-      async function del(id) {
-          try {
-              await axios.delete(`/classes/${id}`);
-              Toastify({
-                  text: 'Xóa lớp học thành công!',
-                  duration: 3000,
-                  gravity: 'top',
-                  position: 'right',
-                  backgroundColor: '#4CAF50',
-              }).showToast();
-              location.reload();
-          } catch (error) {
-              console.error('Delete Error:', error);
-              Toastify({
-                  text: 'Đã xảy ra lỗi khi xóa lớp học. Vui lòng thử lại sau.',
-                  duration: 3000,
-                  gravity: 'top',
-                  position: 'right',
-                  backgroundColor: '#ff6347',
-              }).showToast();
-          }
-      }
-    </script>  
+</table>
+<nav>
+    <ul class="pagination">
+        <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+            <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+        </li>
+        <% for (let i = 1; i <= data.totalPages; i++) { %>
+            <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+        <% } %>
+        <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+            <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+        </li>
+    </ul>
+</nav>
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            An error occurred while deleting the user.
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    function upsert(id) {
+        window.location.href = `/classes/${id}`;
+    }
+
+    async function del(id) {
+        try {
+            await axios.delete(`/classes/${id}`);
+            Toastify({
+                text: 'Xóa lớp học thành công!',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#4CAF50',
+            }).showToast();
+            location.reload();
+        } catch (error) {
+            console.error('Delete Error:', error);
+            Toastify({
+                text: 'Đã xảy ra lỗi khi xóa lớp học. Vui lòng thử lại sau.',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#ff6347',
+            }).showToast();
+        }
+    }
+</script>
