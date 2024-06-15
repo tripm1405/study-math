@@ -7,10 +7,10 @@
 <div class="h-100 w-100">
     <div style="justify-content:space-between; display:flex">
         <h1>Quản lí khóa học</h1>
-        <button class="btn btn-primary"
-                style="background-color:#008080; border:none; color: white; padding: 5px 10px; text-align: center; font-size: 18px; margin: 4px 2px; cursor: pointer; border-radius: 12px; transition: background-color 0.3s, box-shadow 0.3s;"
-                data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khóa
-            học
+        <button
+            style="background-color:#008080; border:none; color: white; text-align: center; font-size: 16px; cursor: pointer; border-radius: 8px; transition: background-color 0.3s, box-shadow 0.3s;
+            height:40px"
+            data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khóa học
         </button>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -65,6 +65,17 @@
         </div>
     </div>
 </div>
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            An error occurred while deleting the course.
+        </div>
+    </div>
+</div>
 <nav>
     <ul class="pagination">
         <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
@@ -82,18 +93,24 @@
 </nav>
 
 <script>
-  function upsert(id) {
-    window.location.href = `/courses/${id}`;
-  }
+    function upsert(id) {
+      window.location.href = `/courses/${id}`;
+    }
+  
+    async function del(id) {
+      try {
+          await axios.delete(`http://localhost:5500/courses/${id}`);
+          location.reload();
+      } catch (error) {
+          console.error('Delete Error:', error);
+          const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+          errorToast.show();
+      }
+    }
+  </script>
 
-  async function del(id) {
-    await axios.delete(`http://localhost:5500/courses/${id}`);
-    location.reload();
-  }
-</script>
-
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

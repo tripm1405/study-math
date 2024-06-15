@@ -7,9 +7,10 @@
 <div class="h-100 w-100">
     <div style="justify-content:space-between; display:flex">
         <h1>Quản lí bài học</h1>
-        <button class="btn btn-primary"
-                style="background-color:#008080; border:none; color: white; padding: 5px 10px; text-align: center; font-size: 18px; margin: 4px 2px; cursor: pointer; border-radius: 12px; transition: background-color 0.3s, box-shadow 0.3s;"
-                data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo bài học
+        <button
+            style="background-color:#008080; border:none; color: white; text-align: center; font-size: 16px; cursor: pointer; border-radius: 8px; transition: background-color 0.3s, box-shadow 0.3s;
+            height:40px"
+            data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo bài học
         </button>
     </div>
     <div>

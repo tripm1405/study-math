@@ -1,100 +1,67 @@
-<div style="display: flex; justify-content: center;">
-    <div style="border: 1px solid #ccc; padding: 20px; border-radius: 10px; width: 500px; background-color: #f9f9f9;">
+<div class="h-full w-full">
+    <h1 style="margin-bottom: 20px; color: #333;">Chi tiết tài khoản</h1>
         <form id="form" action="/users">
-            <h1 style="text-align: center; margin-bottom: 20px; color: #333;">Chi tiết tài khoản</h1>
-            <label for="code" style="display: block; margin-bottom: 5px; color: #333;">Mã tài khoản</label>
-            <input 
-                id="code"
-                name="code" 
-                type="text" 
-                value="<%= data?.user?.code %>" 
-                placeholder="Code..." 
-                <%= data?.user?.code && 'disabled' %> 
-                style="
-                    display: block; 
-                    margin-bottom: 10px; 
-                    padding: 10px; 
-                    border-radius: 5px; 
-                    border: 1px solid #ccc; 
-                    width: 100%; 
-                    box-sizing: border-box;
-                "
-            />
-            <label for="username" style="display: block; margin-bottom: 5px; color: #333;">Tên tài khoản</label>
-            <input 
-                id="username"
-                name="username" 
-                type="text" 
-                value="<%= data?.user?.username %>" 
-                placeholder="Username..." 
-                style="
-                    display: block; 
-                    margin-bottom: 10px; 
-                    padding: 10px; 
-                    border-radius: 5px; 
-                    border: 1px solid #ccc; 
-                    width: 100%; 
-                    box-sizing: border-box;
-                "
-            />
-            <label for="password" style="display: block; margin-bottom: 5px; color: #333;">Mật khẩu</label>
-            <input 
-                id="password"
-                name="password" 
-                type="password" 
-                value="<%= data?.user?.password %>" 
-                placeholder="Password..." 
-                style="
-                    display: block; 
-                    margin-bottom: 10px; 
-                    padding: 10px; 
-                    border-radius: 5px; 
-                    border: 1px solid #ccc; 
-                    width: 100%; 
-                    box-sizing: border-box;
-                "
-            />
-            <label for="email" style="display: block; margin-bottom: 5px; color: #333;">Email</label>
-            <input 
-                id="email"
-                name="email" 
-                type="email" 
-                value="<%= data?.user?.email %>" 
-                placeholder="Email" 
-                style="
-                    display: block; 
-                    margin-bottom: 10px; 
-                    padding: 10px; 
-                    border-radius: 5px; 
-                    border: 1px solid #ccc; 
-                    width: 100%; 
-                    box-sizing: border-box;
-                "
-            />
-            <label for="type" style="display: block; margin-bottom: 5px; color: #333;">Quyền truy cập</label>
-            <select id="type" name="type" style="
-                display: block; 
-                margin-bottom: 10px; 
-                padding: 10px; 
-                border-radius: 5px; 
-                border: 1px solid #ccc; 
-                width: 100%; 
-                box-sizing: border-box;
-            ">
-                <option value="Teacher" <%= data?.user?.type === 'Teacher' && 'selected' %>>Giáo viên</option>
-                <option value="Student" <%= data?.user?.type === 'Student' && 'selected' %>>Học sinh</option>
-            </select>
-            <button type="submit" style="
-                background-color: #4CAF50; 
-                color: white; 
-                padding: 10px 20px; 
-                border: none; 
-                border-radius: 5px; 
-                cursor: pointer; 
-                width: 100%;
-            ">Lưu</button>
+            
+            <div class="mb-3">
+                <label for="code" class="form-label">Mã tài khoản</label>
+                <input 
+                    id="code"
+                    name="code" 
+                    type="text" 
+                    value="<%= data?.user?.code %>" 
+                    placeholder="Code..." 
+                    <%= data?.user?.code && 'disabled' %> 
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên tài khoản</label>
+                <input 
+                    id="username"
+                    name="username" 
+                    type="text" 
+                    value="<%= data?.user?.username %>" 
+                    placeholder="Username..." 
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input 
+                    id="password"
+                    name="password" 
+                    type="password" 
+                    value="<%= data?.user?.password %>" 
+                    placeholder="Password..." 
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input 
+                    id="email"
+                    name="email" 
+                    type="email" 
+                    value="<%= data?.user?.email %>" 
+                    placeholder="Email..." 
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">Quyền truy cập</label>
+                <select 
+                    id="type" 
+                    name="type" 
+                    class="form-select"
+                >
+                    <option value="Teacher" <%= data?.user?.type === 'Teacher' && 'selected' %>>Giáo viên</option>
+                    <option value="Student" <%= data?.user?.type === 'Student' && 'selected' %>>Học sinh</option>
+                </select>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
         </form>
-    </div>
 </div>
 
 <input type="hidden" id="id" value="<%= data?.user?._id %>" />
@@ -109,17 +76,19 @@
 
         const formData = new FormData(event.target);
 
-        if (method === 'PUT') {
-            await axios.put(`http://localhost:5500/users/${id}`, formData);
+        try {
+            if (method === 'PUT') {
+                await axios.put(`http://localhost:5500/users/${id}`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+            } else {
+                await axios.post('http://localhost:5500/users', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+            }
+            window.location.href = '/users';
+        } catch (error) {
+            console.error('There was an error!', error);
         }
-        else {
-            await axios.post('http://localhost:5500/users', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-            });
-        }
-
-        window.location.href = `/users`;
-    })
+    });
 </script>

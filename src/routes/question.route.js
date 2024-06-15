@@ -1,18 +1,17 @@
 import express from 'express';
-
 import questionController from "#root/controllers/question.controller.js";
+import CommonUtil from '#root/utils/common.util.js';
 
 const Router = express.Router();
 
-
-Router.get('/:id/answers/:answerId', questionController.getAnswer);
-Router.get('/:id/answers', questionController.getAnswers);
-Router.get('/:id/solve', questionController.getSolve);
-Router.post('/:id/solve', questionController.postSolve);
-Router.get('/:id', questionController.getDetail);
-Router.put('/:id', questionController.put);
-Router.delete('/:id', questionController.delete);
-Router.get('/', questionController.get);
-Router.post('/', questionController.post);
+Router.get('/:id/answers/:answerId', CommonUtil.wrapperController(questionController.getAnswer));
+Router.get('/:id/answers', CommonUtil.wrapperController(questionController.getAnswers));
+Router.get('/:id/solve', CommonUtil.wrapperController(questionController.getSolve));
+Router.post('/:id/solve', CommonUtil.wrapperController(questionController.postSolve));
+Router.get('/:id', CommonUtil.wrapperController(questionController.getDetail));
+Router.put('/:id', CommonUtil.wrapperController(questionController.put));
+Router.delete('/:id', CommonUtil.wrapperController(questionController.delete));
+Router.get('/', CommonUtil.wrapperController(questionController.get));
+Router.post('/', CommonUtil.wrapperController(questionController.post));
 
 export default Router;
