@@ -40,7 +40,7 @@ export default {
 
         const paginatedUsers = users.map((user, index) => ({
             ...user.toObject(),
-            index: (page - 1) * pageSize + index + 1
+            index: (page-1) * pageSize + index + 1
         }));
 
         const data = {
@@ -98,7 +98,6 @@ export default {
             },
         });
     },
-    // KNote: update user will be remove
     put: async (req, res) => {
         const { id } = req?.params;
         const { username, password, email, type, classIds } = req.body;

@@ -3,15 +3,23 @@ import ViewUtil from "#root/utils/view.util.js";
 import ClassModel from "#root/models/class.model.js";
 import UserModel from "#root/models/user.model.js";
 
+const ITEMS_PER_PAGE = 10; 
+
 export default {
     get: async (req, res) => {
-        const classes = await ClassModel.find({});
+        const page = parseInt(req.query.page) || 1;
+        const classes = await ClassModel.find({})
+            .skip((page - 1) * ITEMS_PER_PAGE)
+            .limit(ITEMS_PER_PAGE);
+        const totalClasses = await ClassModel.countDocuments();
         const newId = new mongoose.Types.ObjectId();
 
         res.render('pages/managers/class.page.ejs', ViewUtil.getOptions({
             data: {
                 classes: classes,
                 newId: newId,
+                currentPage: page,
+                totalPages: Math.ceil(totalClasses / ITEMS_PER_PAGE),
             },
         }));
     },
