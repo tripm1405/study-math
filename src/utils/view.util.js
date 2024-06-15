@@ -77,9 +77,9 @@ export default class ViewUtil {
 
   static menus = {
     manager: [
+      menuItems.home,
       menuItems.users,
       menuItems.class,
-      menuItems.home,
       menuItems.course,
       menuItems.lesson,
       menuItems.question,
