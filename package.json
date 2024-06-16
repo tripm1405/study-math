@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "nodemon ./src/index.js"
+    "start": "nodemon ./src/index.js",
+    "vercel-build": "tsc"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
