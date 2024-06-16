@@ -24,5 +24,8 @@
   "type": "module",
   "imports": {
     "#root/*": "./src/*"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
