@@ -6,21 +6,86 @@ import UserModel from "#root/models/user.model.js";
 import CourseModel from "#root/models/course.model.js";
 import LessonModel from "#root/models/lesson.model.js";
 import QuestionModel from "#root/models/question.model.js";
+import AuthUtil from "#root/utils/auth.util.js";
+import ResolutionModel from "#root/models/resolution.model.js";
 
 dotenv.config();
 
 export default {
   getHome: async (req, res) => {
-    const questions = await CourseModel.find({});
 
-    res.render('pages/home.page.ejs', ViewUtil.getOptions({
-      data: {
-        questions: questions,
-      },
-    }));
+    switch (res.locals.currentUser?.type) {
+      case AuthUtil.UserType.Admin: {
+        const resolutions = await ResolutionModel.find({
+          content: {
+            $ne: undefined,
+          },
+        }).lean();
+
+        const resolutionsCount = resolutions
+          .reduce((result, resolution) => {
+            return {
+              ...result,
+              [resolution.questionId]: (result?.[resolution.questionId] || 0) + 1,
+            }
+          }, {});
+        const resolutionsOrderByAmount = Object.keys(resolutionsCount)
+          .reduce((result, questionId) => {
+            return [
+              ...result,
+              {
+                id: questionId,
+                amount: resolutionsCount[questionId]
+              }
+            ]
+          }, [])
+          .sort((a, b) => {
+            return a?.amount > b.amount ? 1 : 0;
+          });
+
+        res.render('pages/home.page.ejs', ViewUtil.getOptions({
+          data: {
+            resolutions: resolutionsOrderByAmount,
+          },
+        }));
+
+        return;
+      }
+      case AuthUtil.UserType.Teacher: {
+        const resolutions = await ResolutionModel.find({
+          score: undefined,
+          content: {
+            $ne: undefined,
+          },
+        });
+
+        res.render('pages/home.page.ejs', ViewUtil.getOptions({
+          data: {
+            resolutions: resolutions,
+          },
+        }));
+
+        return;
+      }
+      case AuthUtil.UserType.Student: {
+        const resolutions = await ResolutionModel.find({
+          score: undefined,
+          content: undefined,
+          studentId: res.locals.currentUser?._id,
+        });
+
+        res.render('pages/home.page.ejs', ViewUtil.getOptions({
+          data: {
+            resolutions: resolutions,
+          },
+        }));
+
+        return;
+      }
+    }
   },
-  getSearch: async (req, res ) => {
-    const { search } = req.query;
+  getSearch: async (req, res) => {
+    const {search} = req.query;
 
     const regex = new RegExp(search, 'i');
 
@@ -56,7 +121,7 @@ export default {
     }));
   },
   postSignIn: async (req, res) => {
-    const { username, password } = req.body;
+    const {username, password} = req.body;
 
     const user = await UserModel.findOne({
       username: username

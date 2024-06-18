@@ -177,15 +177,16 @@ async function onExportBlock() {
       questionId: id,
     }
   });
-  const type = fileRes.headers['content-type'];
-  const blob = new Blob([JSON.stringify(fileRes?.data?.result)], { type: type, encoding: 'UTF-8' });
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.download = 'block.json';
-  link.click();
+  K.exportJson({
+    res: fileRes,
+  })
 }
 
 function onConfigAnswers() {
   const id = document.querySelector('input[name="id"]')?.value;
   window.location.href = `/questions/${id}/answers`;
+}
+
+function onAssignment() {
+
 }
