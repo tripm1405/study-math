@@ -15,6 +15,9 @@
     position: -webkit-sticky;
     position: sticky;
     height: 100%;
+    left: 0;
+    top: 0;
+    overflow-x: hidden;
   }
 
   .sidebar-content {
@@ -41,16 +44,14 @@
     display: flex;
     align-items: center;
     height: 80px;
-    position:sticky;
-    z-index: 1000;
-    position: -webkit-sticky;
+    position: sticky;
     top: 0;
-    overflow: hidden;
+    z-index: 1000;
   }
 
   .d-flex {
     display: flex;
-    height: 100vh;
+    height: calc(100vh - 80px);
   }
   
   .header-content {
@@ -61,8 +62,8 @@
   }
 
   .logo {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     margin-right: 20px;
   }
 

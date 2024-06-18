@@ -61,7 +61,6 @@ export default {
         switch (res.locals.currentUser?.type) {
             default:
             case AuthUtil.UserType.Student: {
-                // get questions
 
                 res.render('pages/students/lesson-detail.page.ejs', ViewUtil.getOptions({
                     data: {

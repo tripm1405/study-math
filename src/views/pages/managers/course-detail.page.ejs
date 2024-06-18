@@ -58,8 +58,8 @@
                     <td><%= lesson?.code %></td>
                     <td><%= lesson?.name %></td>
                     <td><%= lesson?.teacher %></td>
-                    <td><%= lesson?.startTime %></td>
-                    <td><%= lesson?.endTime %></td>
+                    <td><%= lesson.createdAt.getFullYear() + '-' + String(lesson.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(lesson.createdAt.getDate()).padStart(2, '0') + ' ' + String(lesson.createdAt.getHours()).padStart(2, '0') + ':' + String(lesson.createdAt.getMinutes()).padStart(2, '0') %></td>
+                    <td><%= lesson?.endAt %></td>
                     <td><%= lesson?.participants %></td>
                     <td class="align-middle">
                         <button class="btn btn-secondary btn-sm me-1" onClick="upsertLesson('<%= lesson._id %>')"><i class="fas fa-edit"></i></button>
