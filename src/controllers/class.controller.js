@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import ViewUtil from "#root/utils/view.util.js";
 import ClassModel from "#root/models/class.model.js";
 import UserModel from "#root/models/user.model.js";
+import AuthUtil from "#root/utils/auth.util.js";
 
 const ITEMS_PER_PAGE = 10; 
 
@@ -31,12 +32,14 @@ export default {
         });
 
         const _class = await ClassModel.findById(id) || {};
-        const users = await UserModel.find({});
+        const users = await UserModel.find({
+          type: AuthUtil.UserType.Student,
+        });
 
         res.render('pages/managers/class-detail.page.ejs', ViewUtil.getOptions({
             data: {
                 class: _class,
-                users: users,
+                users: users, 
             },
         }));
     },
