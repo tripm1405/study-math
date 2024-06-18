@@ -6,6 +6,9 @@ const schema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  fullName: {
+    type: String,
+  },
   email: {
     type: String,
   },
@@ -19,10 +22,6 @@ const schema = new mongoose.Schema({
   type: {
     type: String, // ['Admin', 'GiaoVien', 'HocSinh']
   },
-  classIds: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: ModelNameConstant.CLASS,
-  }],
   createdById: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,

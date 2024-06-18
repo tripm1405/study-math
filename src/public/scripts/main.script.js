@@ -1,6 +1,6 @@
 "use strict";
 
-$(".js-select2").select2({
+$(".js-select2")?.select2?.({
   closeOnSelect : false,
   placeholder : "Click to select an option",
   allowHtml: true,
@@ -8,7 +8,7 @@ $(".js-select2").select2({
   tags: true,
 });
 
-$('.icons_select2').select2({
+$('.icons_select2')?.select2?.({
   width: "100%",
   templateSelection: iformat,
   templateResult: iformat,

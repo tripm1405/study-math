@@ -24,11 +24,10 @@
         <tr>
             <th scope="col">STT</th>
             <th scope="col">Mã tài khoản</th>
+            <th scope="col">Chức danh</th>
+            <th scope="col">Họ tên</th>
             <th scope="col">Email</th>
-            <th scope="col">Truy cập gần nhất</th>
-            <th scope="col">Số lần truy cập</th>
-            <th scope="col">Số bài toán đã tham gia</th>
-            <th scope="col">Hành động</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -36,10 +35,9 @@
             <tr>
                 <th scope="row"><%= user.index %></th>
                 <td><%= user.code %></td>
+                <td><%= user.type %></td>
+                <td><%= user.fullName %></td>
                 <td><%= user.email %></td>
-                <td><%= user.lastAccess %></td>
-                <td><%= user.accessCount %></td>
-                <td><%= user.participatedProblems %></td>
                 <td>
                     <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= user._id %>')"><i
                                 class="fas fa-edit"></i></button>

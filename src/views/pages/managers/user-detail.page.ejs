@@ -8,131 +8,141 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 <body>
-    <div class="h-full w-full">
-        <h1 style="margin-bottom: 20px; color: #333;">Chi tiết tài khoản</h1>
-        <form id="form" action="/users">
-            <div class="mb-3">
-                <label for="code" class="form-label">Mã tài khoản</label>
-                <input 
+<div class="h-full w-full">
+    <h1 style="margin-bottom: 20px; color: #333;">Chi tiết tài khoản</h1>
+    <form onsubmit="onSubmit(event)">
+        <div class="mb-3">
+            <label for="code" class="form-label">Mã tài khoản</label>
+            <input
                     id="code"
-                    name="code" 
-                    type="text" 
-                    value="<%= data?.user?.code %>" 
-                    placeholder="Code..." 
-                    <%= data?.user?.code && 'disabled' %> 
+                    name="code"
+                    type="text"
+                    value="<%= data?.user?.code %>"
+                    placeholder="Code..."
+                    <%= data?.user?.code && 'disabled' %>
                     class="form-control"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="username" class="form-label">Tên tài khoản</label>
-                <input 
+            />
+        </div>
+        <div class="mb-3">
+            <label for="username" class="form-label">Tên tài khoản</label>
+            <input
                     id="username"
-                    name="username" 
-                    type="text" 
-                    value="<%= data?.user?.username %>" 
-                    placeholder="Username..." 
+                    name="username"
+                    type="text"
+                    value="<%= data?.user?.username %>"
+                    placeholder="Username..."
                     class="form-control"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Mật khẩu</label>
-                <input 
+            />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Mật khẩu</label>
+            <input
                     id="password"
-                    name="password" 
-                    type="password" 
-                    value="<%= data?.user?.password %>" 
-                    placeholder="Password..." 
+                    name="password"
+                    type="password"
+                    value="<%= data?.user?.password %>"
+                    placeholder="Password..."
                     class="form-control"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input 
+            />
+        </div>
+        <div class="mb-3">
+            <label for="fullName" class="form-label">Họ và tên</label>
+            <input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    value="<%= data?.user?.fullName %>"
+                    placeholder="Họ và tên..."
+                    class="form-control"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
                     id="email"
-                    name="email" 
-                    type="email" 
-                    value="<%= data?.user?.email %>" 
-                    placeholder="Email..." 
+                    name="email"
+                    type="email"
+                    value="<%= data?.user?.email %>"
+                    placeholder="Email..."
                     class="form-control"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="type" class="form-label">Quyền truy cập</label>
-                <select 
-                    id="type" 
-                    name="type" 
+            />
+        </div>
+        <div class="mb-3">
+            <label for="type" class="form-label">Quyền truy cập</label>
+            <select
+                    id="type"
+                    name="type"
                     class="form-select"
-                >
-                    <option value="Teacher" <%= data?.user?.type === 'Teacher' && 'selected' %>>Giáo viên</option>
-                    <option value="Student" <%= data?.user?.type === 'Student' && 'selected' %>>Học sinh</option>
-                </select>
-            </div>
-            <div style="display: flex; justify-content: flex-end;">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-            </div>
-        </form>
-    </div>
+            >
+                <option value="Teacher" <%= data?.user?.type === 'Teacher' && 'selected' %>>Giáo viên</option>
+                <option value="Student" <%= data?.user?.type === 'Student' && 'selected' %>>Học sinh</option>
+            </select>
+        </div>
+        <div style="display: flex; justify-content: flex-end;">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+    </form>
+</div>
 
-    <input type="hidden" id="id" value="<%= data?.user?._id %>" />
-    <input type="hidden" id="method" value="<%= data?.user?._id ? 'PUT' : 'POST' %>" />
+<input name="id" type="hidden" id="id" value="<%= data?.user?._id %>"/>
 
-    <!-- Table to display additional data, e.g., classes the user is part of -->
+<!-- Table to display additional data, e.g., classes the user is part of -->
+<% if (data?.user?._id && data?.user?.type === 'Student') { %>
     <div style="margin-top: 40px;">
         <h2 style="margin-bottom: 20px; color: #333;">Danh sách lớp học</h2>
         <table class="table">
             <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Mã lớp</th>
-                    <th>Tên lớp</th>
-                    <th>Giáo viên</th>
-                </tr>
+            <tr>
+                <th>STT</th>
+                <th>Mã lớp</th>
+                <th>Tên lớp</th>
+                <th>Giáo viên</th>
+            </tr>
             </thead>
             <tbody>
-                <% let index = 1; %>
-                <% for (const _class of (data?.classes || [])) { %>
-                    <% if (_class.users.includes(data.user._id)) { %>
-                        <tr>
-                            <td><%= index++ %></td>
-                            <td><%= _class.code %></td>
-                            <td><%= _class.name %></td>
-                            <td><%= _class.teacher %></td>
-                        </tr>
-                    <% } %>
+            <% let index = 1; %>
+            <% for (const _class of (data?.classes || [])) { %>
+                <% if (_class.users.includes(data.user._id)) { %>
+                    <tr>
+                        <td><%= index++ %></td>
+                        <td><%= _class.code %></td>
+                        <td><%= _class.name %></td>
+                        <td><%= _class.createdById %></td>
+                    </tr>
                 <% } %>
+            <% } %>
             </tbody>
         </table>
     </div>
+<% } %>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script>
-        const method = document.getElementById('method').value;
-        const id = document.getElementById('id').value;
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+  async function onSubmit(event) {
+    event.preventDefault();
 
-        document.getElementById('form').addEventListener('submit', async event => {
-            event.preventDefault();
+    const id = document.querySelector('input[name="id"]')?.value;
+    const formData = new FormData(event.target);
 
-            const formData = new FormData(event.target);
-
-            try {
-                if (method === 'PUT') {
-                    await axios.put(`http://localhost:5500/users/${id}`, formData, {
-                        headers: { 'Content-Type': 'multipart/form-data' }
-                    });
-                } else {
-                    await axios.post('http://localhost:5500/users', formData, {
-                        headers: { 'Content-Type': 'multipart/form-data' }
-                    });
-                }
-                window.location.href = '/users';
-            } catch (error) {
-                console.error('There was an error!', error);
-            }
+    try {
+      if (id) {
+        await axios.put(`/users/${id}`, formData, {
+          headers: {'Content-Type': 'multipart/form-data'}
         });
-    </script>
+      } else {
+        await axios.post('/users', formData, {
+          headers: {'Content-Type': 'multipart/form-data'}
+        });
+      }
+      window.location.href = '/users';
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
+  }
+</script>
 </body>
 </html>
