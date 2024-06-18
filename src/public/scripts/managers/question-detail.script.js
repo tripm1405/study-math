@@ -191,3 +191,8 @@ function onAssign() {
   const id = document.querySelector('input[name="id"]')?.value;
   window.location.href = `/questions/${id}/assign`;
 }
+
+function onMark() {
+  const id = document.querySelector('input[name="id"]')?.value;
+  window.location.href = `/resolutions?questionId=${id}`;
+}

@@ -5,12 +5,21 @@ import ResolutionModel from "#root/models/resolution.model.js";
 
 export default {
   getList: async (req, res) => {
-    const resolutions = await ResolutionModel.find({
+    const {
+      questionId,
+    } = req.query;
+
+    const filter = {
       score: undefined,
       content: {
         $ne: undefined,
       },
-    });
+    };
+    if (questionId) {
+      filter.questionId = questionId;
+    }
+
+    const resolutions = await ResolutionModel.find(filter);
 
     const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/resolution.page.ejs`;
     res.render(view, ViewUtil.getOptions({

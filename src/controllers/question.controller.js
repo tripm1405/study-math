@@ -39,6 +39,10 @@ export default {
       id: id,
     });
 
+    const resolutions = await ResolutionModel.find({
+      questionId: id,
+    });
+
     const question = await QuestionModel.findById(id).lean() || {};
     const lessons = await LessonModel.find({});
     const blocks = await BlockModel.find({
@@ -55,6 +59,7 @@ export default {
         },
         blocks: blocks,
         lessons: lessons,
+        resolutions,
       },
     }));
   },

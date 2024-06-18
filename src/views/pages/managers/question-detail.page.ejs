@@ -37,21 +37,28 @@
                 <div>
                     <button class="btn btn-sm btn-primary" onclick="toggleBlocksGlobal()">LẤY/BỎ KHỐI MẶC ĐỊNH</button>
                 </div>
-                <div>
-                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#config-block-modal">
-                        CẤU HÌNH KHỐI
-                    </button>
-                </div>
-                <div>
-                    <button class="btn btn-sm btn-primary" onclick="onConfigAnswers()">
-                        CẤU HÌNH ĐÁP ÁN
-                    </button>
-                </div>
-                <div>
-                    <button class="btn btn-sm btn-primary" onclick="onAssign()">
-                        GIAO BÀI TOÁN
-                    </button>
-                </div>
+                <% if (data?.question?._id) { %>
+                    <div>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#config-block-modal">
+                            CẤU HÌNH KHỐI
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-primary" onclick="onConfigAnswers()">
+                            CẤU HÌNH ĐÁP ÁN
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-primary" onclick="onAssign()">
+                            GIAO BÀI TOÁN
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-primary" onclick="onMark()">
+                            CHẤM ĐIỂM
+                        </button>
+                    </div>
+                <% } %>
             </div>
         </div>
     </div>
