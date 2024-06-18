@@ -10,9 +10,10 @@
             </tr>
             </thead>
             <tbody>
+            <% let index = 1; %>
             <% for (const question of (data?.questions || [])) { %>
                 <tr>
-                    <td>1</td>
+                    <th scope="row"><%= index++ %></th>
                     <td><%= question?.code %></td>
                     <td>
                         <button class="btn btn-secondary" onClick="upsert('<%= question?._id %>')">

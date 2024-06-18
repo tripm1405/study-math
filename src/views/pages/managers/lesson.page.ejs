@@ -1,104 +1,113 @@
-<style>
-    .btn:hover {
-        background-color: aquamarine;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-</style>
-<div class="h-100 w-100">
-    <div style="justify-content:space-between; display:flex">
-        <h1>Quản lí bài học</h1>
-        <button
-            style="background-color:#008080; border:none; color: white; text-align: center; font-size: 16px; cursor: pointer; border-radius: 8px; transition: background-color 0.3s, box-shadow 0.3s;
-            height:40px"
-            data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo bài học
-        </button>
-    </div>
-    <div>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="active-courses-tab" data-bs-toggle="tab"
-                        data-bs-target="#active-courses" type="button" role="tab" aria-controls="active-courses"
-                        aria-selected="true">Bài học đang mở
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="completed-courses-tab" data-bs-toggle="tab"
-                        data-bs-target="#completed-courses" type="button" role="tab" aria-controls="completed-courses"
-                        aria-selected="false">Bài học đã kết thúc
-                </button>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="active-courses" role="tabpanel"
-                 aria-labelledby="active-courses-tab">
-                <table class="table table-striped mt-3">
-                    <thead>
-                    <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Mã bài học</th>
-                        <th scope="col">Tên bài học</th>
-                        <th scope="col">Giáo viên</th>
-                        <th scope="col">Thời gian tạo</th>
-                        <th scope="col">Thời gian kết thúc</th>
-                        <th scope="col">Số người đã tham gia</th>
-                        <th scope="col">Hành động</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <% let index = 1; %>
-                    <% for (const lesson of (data?.lessons || [])) { %>
-                        <tr>
-                            <th scope="row"><%= index++ %></th>
-                            <td><%= lesson.code %></td>
-                            <td><%= lesson.name %></td>
-                            <td><%= lesson.teacher %></td>
-                            <td><%= lesson.createdAt %></td>
-                            <td><%= lesson.endAt %></td>
-                            <td><%= lesson.participants %></td>
-                            <td class="align-middle">
-                                <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= lesson._id %>')"><i
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lí bài học</title>
+    <style>
+        .btn:hover {
+            background-color: aquamarine;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="h-100 w-100">
+        <div style="justify-content:space-between; display:flex">
+            <h1>Quản lí bài học</h1>
+            <button style="background-color:#008080; border:none; color: white; text-align: center; font-size: 16px; cursor: pointer; border-radius: 8px; transition: background-color 0.3s, box-shadow 0.3s; height:40px"
+                    data-bs-toggle="modal" data-bs-target="#accountModal" onclick="upsert('<%= data?.newId %>')">Tạo bài học
+            </button>
+        </div>
+        <div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="active-courses-tab" data-bs-toggle="tab"
+                            data-bs-target="#active-courses" type="button" role="tab" aria-controls="active-courses"
+                            aria-selected="true">Bài học đang mở
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="completed-courses-tab" data-bs-toggle="tab"
+                            data-bs-target="#completed-courses" type="button" role="tab" aria-controls="completed-courses"
+                            aria-selected="false">Bài học đã kết thúc
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="active-courses" role="tabpanel"
+                    aria-labelledby="active-courses-tab">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã bài học</th>
+                                <th scope="col">Tên bài học</th>
+                                <th scope="col">Giáo viên</th>
+                                <th scope="col">Thời gian tạo</th>
+                                <th scope="col">Thời gian kết thúc</th>
+                                <th scope="col">Số người đã tham gia</th>
+                                <th scope="col">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% let index = 1; %>
+                            <% for (const lesson of (data?.lessons || [])) { %>
+                            <tr>
+                                <th scope="row"><%= index++ %></th>
+                                <td><%= lesson.code %></td>
+                                <td><%= lesson.name %></td>
+                                <td><%= lesson.teacher %></td>
+                                <td><%= lesson.createdAt.getFullYear() + '-' + String(lesson.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(lesson.createdAt.getDate()).padStart(2, '0') + ' ' + String(lesson.createdAt.getHours()).padStart(2, '0') + ':' + String(lesson.createdAt.getMinutes()).padStart(2, '0')%></td>
+                                <td><%= lesson.endAt %></td>
+                                <td><%= lesson.participants %></td>
+                                <td class="align-middle">
+                                    <button class="btn btn-secondary btn-sm me-1" onclick="upsert('<%= lesson._id %>')"><i
                                             class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= lesson._id %>')"><i
+                                    <button class="btn btn-danger btn-sm" onclick="deleteLesson('<%= lesson._id %>')"><i
                                             class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                    <% } %>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<nav>
-    <ul class="pagination">
-        <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-            <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-        </li>
-        <% for(let i = 1; i <= data.totalPages; i++) { %>
+    <nav>
+        <ul class="pagination">
+            <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+            </li>
+            <% for(let i = 1; i <= data.totalPages; i++) { %>
             <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
                 <a class="page-link" href="?page=<%= i %>"><%= i %></a>
             </li>
-        <% } %>
-        <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-            <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-        </li>
-    </ul>
-</nav>
+            <% } %>
+            <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+            </li>
+        </ul>
+    </nav>
 
-<script>
-  function upsert(id) {
-    window.location.href = `/lessons/${id}`;
-  }
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function upsert(id) {
+            window.location.href = `/lessons/${id}`;
+        }
 
-  async function deleteLesson(id) {
-    await axios.delete(`/lessons/${id}`);
-    location.reload();
-  }
-</script>
-
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        async function deleteLesson(id) {
+            try {
+                await axios.delete(`/lessons/${id}`);
+                location.reload();
+            } catch (error) {
+                console.error('Error deleting lesson:', error);
+            }
+        }
+    </script>
+</body>
+</html>

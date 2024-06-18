@@ -43,13 +43,14 @@
                 </tr>
                 </thead>
                 <tbody>
+                <% let index = 1; %>
                 <% for (const _class of (data?.courses || [])) { %>
                     <tr>
-                        <td>1</td>
+                        <th scope="row"><%= index++ %></th>
                         <td><%= _class?.code %></td>
                         <td><%= _class?.name %></td>
                         <td><%= _class?.teacher %></td>
-                        <td><%= _class?.createdAt %></td>
+                        <td><%= _class.createdAt.getFullYear() + '-' + String(_class.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(_class.createdAt.getDate()).padStart(2, '0') + ' ' + String(_class.createdAt.getHours()).padStart(2, '0') + ':' + String(_class.createdAt.getMinutes()).padStart(2, '0') %></td>
                         <td><%= _class?.endAt %></td>
                         <td><%= _class?.participants %></td>
                         <td class="align-middle">
