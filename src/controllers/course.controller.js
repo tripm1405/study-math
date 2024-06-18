@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import CourseModel from "#root/models/course.model.js";
 import AuthUtil from "#root/utils/auth.util.js";
 import LessonModel from "#root/models/lesson.model.js";
+import UserModel from "#root/models/user.model.js";
 
 export default {
   get: async (req, res) => {
@@ -11,12 +12,17 @@ export default {
     const totalCourses = await CourseModel.countDocuments({type: {$ne: 'Admin'}});
     const totalPages = Math.ceil(totalCourses / pageSize);
 
+    const teachers = await UserModel.find({
+      type: AuthUtil.UserType.Teacher,
+    });
     const courses = await CourseModel.find({})
       .skip((page - 1) * pageSize)
-      .limit(pageSize);
+      .limit(pageSize)
+      .populate('createdBy')
+      .lean();
 
     const paginatedCourses = courses.map((course, index) => ({
-      ...course.toObject(), index: (page - 1) * pageSize + index + 1
+      ...course, index: (page - 1) * pageSize + index + 1
     }));
     const newId = new mongoose.Types.ObjectId();
 
@@ -29,7 +35,8 @@ export default {
         currentPage: page,
       },
     }));
-  }, getDetail: async (req, res) => {
+  },
+  getDetail: async (req, res) => {
     const {id} = req?.params;
     if (!id) return res.json({
       success: false, id: id,
@@ -51,7 +58,7 @@ export default {
     const {code, name, note} = req.body;
 
     const course = await CourseModel.create({
-      code: code, name: name, note: note, createdById: res?.locals?.currentUser?._id,
+      code: code, name: name, note: note, createdBy: res?.locals?.currentUser?._id,
     });
 
     res.json({

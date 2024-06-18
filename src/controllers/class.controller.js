@@ -39,7 +39,7 @@ export default {
         res.render('pages/managers/class-detail.page.ejs', ViewUtil.getOptions({
             data: {
                 class: _class,
-                users: users, 
+                users: users,
             },
         }));
     },

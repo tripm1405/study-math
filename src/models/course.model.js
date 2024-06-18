@@ -12,10 +12,6 @@ const schema = new mongoose.Schema({
     note: {
         type: String,
     },
-    lessonIds: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: ModelNameConstant.LESSON,
-    }],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.USER,

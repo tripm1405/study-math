@@ -35,10 +35,11 @@
             <button type="submit" class="btn btn-primary">Lưu</button>
         </div>
     </form>
-  
-    <h2 style="margin-bottom: 10px; color: #333;">Danh sách bài học</h2>
-    <table class="table">
-        <thead>
+
+    <% if (data?.course?._id) { %>
+        <h2 style="margin-bottom: 10px; color: #333;">Danh sách bài học</h2>
+        <table class="table">
+            <thead>
             <tr>
                 <th scope="col">STT</th>
                 <th scope="col">Mã bài học</th>
@@ -49,8 +50,8 @@
                 <th scope="col">Số người đã tham gia</th>
                 <th scope="col">Hành động</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <% let stt = 1; %>
             <% for (const lesson of (data?.lessons || [])) { %>
                 <tr>
@@ -67,8 +68,9 @@
                     </td>
                 </tr>
             <% } %>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    <% } %>
   </div>
   
   <input type="hidden" id="id" value="<%= data?.course?._id %>" />

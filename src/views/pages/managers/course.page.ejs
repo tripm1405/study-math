@@ -37,9 +37,7 @@
                     <th scope="col">Tên khóa học</th>
                     <th scope="col">Giáo viên</th>
                     <th scope="col">Thời gian tạo</th>
-                    <th scope="col">Thời gian kết thúc</th>
-                    <th scope="col">Số người đã tham gia</th>
-                    <th scope="col">Hành động</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,10 +47,8 @@
                         <th scope="row"><%= index++ %></th>
                         <td><%= _class?.code %></td>
                         <td><%= _class?.name %></td>
-                        <td><%= _class?.teacher %></td>
+                        <td><%= _class?.createdBy?.fullName %></td>
                         <td><%= _class.createdAt.getFullYear() + '-' + String(_class.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(_class.createdAt.getDate()).padStart(2, '0') + ' ' + String(_class.createdAt.getHours()).padStart(2, '0') + ':' + String(_class.createdAt.getMinutes()).padStart(2, '0') %></td>
-                        <td><%= _class?.endAt %></td>
-                        <td><%= _class?.participants %></td>
                         <td class="align-middle">
                             <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= _class._id %>')"><i
                                         class="fas fa-edit"></i></button>
