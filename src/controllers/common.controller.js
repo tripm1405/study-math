@@ -13,6 +13,13 @@ dotenv.config();
 
 export default {
   getHome: async (req, res) => {
+    const questions = await QuestionModel.find({}).lean();
+    const questionMappingById = questions.reduce((result, question) => {
+      return {
+        ...result,
+        [question?._id.toString()]: question,
+      }
+    }, {});
 
     switch (res.locals.currentUser?.type) {
       case AuthUtil.UserType.Admin: {
@@ -45,7 +52,9 @@ export default {
 
         res.render('pages/home.page.ejs', ViewUtil.getOptions({
           data: {
-            resolutions: resolutionsOrderByAmount,
+            questions: resolutionsOrderByAmount.map(e => {
+              return questionMappingById[e?.id?.toString()];
+            }),
           },
         }));
 
@@ -57,11 +66,13 @@ export default {
           content: {
             $ne: undefined,
           },
-        });
+        }).lean();
 
         res.render('pages/home.page.ejs', ViewUtil.getOptions({
           data: {
-            resolutions: resolutions,
+            questions: resolutions.map(resolution => {
+              return questionMappingById[resolution?.questionId?.toString()];
+            }),
           },
         }));
 
@@ -76,7 +87,9 @@ export default {
 
         res.render('pages/home.page.ejs', ViewUtil.getOptions({
           data: {
-            resolutions: resolutions,
+            questions: resolutions.map(resolution => {
+              return questionMappingById[resolution?.questionId?.toString()];
+            }),
           },
         }));
 
