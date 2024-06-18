@@ -1,0 +1,85 @@
+<div class="w-full h-full">
+    <div>
+        <h3>Học sinh đã tham gia</h3>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Mã tài khoản</th>
+                <th scope="col">Email</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for (const student of data?.studentNotAssign) { %>
+                <tr>
+                    <td><%= student.code %></td>
+                    <td><%= student.email %></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm me-1" onClick="onAssign(['<%= student.id %>'])"><i
+                                    class="fas fa-edit"></i></button>
+                        <button class="btn btn-secondary btn-sm me-1" onClick="onDetail('<%= student.id %>')"><i
+                                    class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <h3>Học sinh đã tham gia</h3>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Mã tài khoản</th>
+                <th scope="col">Email</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for (const student of data?.studentAssign) { %>
+                <tr>
+                    <td><%= student.code %></td>
+                    <td><%= student.email %></td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm me-1" onClick="onDetail('<%= student.id %>')"><i
+                                    class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<input name="id" type="hidden" value="<%= data?.id %>" />
+
+<script>
+  async function onAssign(studentIds) {
+    try {
+      const id = document.querySelector('input[name="id"]')?.value;
+
+      const body = {
+        studentIds: studentIds,
+      };
+      const formData = new FormData();
+      K.obj2FormData(formData, body);
+
+      const res = await axios.post(`/api/questions/${id}/assign`, formData);
+      console.log('res', res);
+
+      if (!res?.data?.success) {
+        return;
+      }
+
+      window.location.reload();
+    }
+    catch {
+
+    }
+  }
+  function onDetail(studentId) {
+    window.location.href = `/users/${studentId}`;
+  }
+</script>

@@ -6,6 +6,7 @@ import QuestionModel from "#root/models/question.model.js";
 import LessonModel from "#root/models/lesson.model.js";
 import AnswerModel from "#root/models/answer.model.js";
 import CommonUtil from "#root/utils/common.util.js";
+import ResolutionModel from "#root/models/resolution.model.js";
 
 export default {
   get: async (req, res) => {
@@ -121,6 +122,36 @@ export default {
     } = req.params;
 
     await AnswerModel.findByIdAndDelete(answerId);
+
+    res.json(ApiUtil.JsonRes());
+  },
+  assign: async (req, res) => {
+    const {
+      id,
+    } = req.params;
+    const {
+      studentIds,
+    } = {
+      studentIds: [],
+      ...req.body,
+    };
+
+    for (const studentId of studentIds) {
+      const isExists = await ResolutionModel.findOne({
+        questionId: id,
+        studentId: studentId,
+      });
+
+      if (isExists) {{
+        continue;
+      }}
+
+      await ResolutionModel.create({
+        questionId: id,
+        studentId: studentId,
+        createdById: res.locals.currentUser?._id,
+      });
+    }
 
     res.json(ApiUtil.JsonRes());
   },

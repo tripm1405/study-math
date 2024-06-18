@@ -69,6 +69,9 @@
         <a  onclick="detail('lessons')">Chi tiết <i class="fa fa-arrow-right"></i></a>
     </div>
 </div>
+
+<%= JSON.stringify(data) %>
+
 <script>
     function detail(id) {
         window.location.href = `/${id}`;

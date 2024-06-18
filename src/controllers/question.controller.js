@@ -7,6 +7,7 @@ import LessonModel from "#root/models/lesson.model.js";
 import BlockModel from "#root/models/block.model.js";
 import ResolutionModel from "#root/models/resolution.model.js";
 import AnswerModel from "#root/models/answer.model.js";
+import UserModel from "#root/models/user.model.js";
 
 export default {
   get: async (req, res) => {
@@ -188,6 +189,57 @@ export default {
       data: {
         answer: answer,
         questionId: id,
+      },
+    }));
+  },
+  getAssign: async (req, res) => {
+    const {
+      id,
+    } = req.params;
+
+    const resolutions = await ResolutionModel.find({
+      questionId: id,
+    }).lean();
+    const resolutionStudentIdSet = new Set(resolutions.map(resolution => resolution.studentId?.toString()));
+
+    const students = await UserModel.find({
+      type: AuthUtil.UserType.Student,
+    }).lean();
+
+    const studentsGroupByAssign = students.reduce((result, student) => {
+      const clone = structuredClone(result);
+
+      if (resolutionStudentIdSet.has(student._id?.toString())) {
+        clone.studentAssign = [
+          ...clone.studentAssign,
+          {
+            ...student,
+            id: student._id?.toString(),
+          },
+        ];
+      }
+      else {
+        clone.studentNotAssign = [
+          ...clone.studentNotAssign,
+          {
+            ...student,
+            id: student._id?.toString(),
+          },
+        ]
+      }
+
+      return clone;
+    }, {
+      studentAssign: [],
+      studentNotAssign: [],
+    })
+
+    const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question-assign.page.ejs`;
+    res.render(view, ViewUtil.getOptions({
+      data: {
+        id: id,
+        studentAssign: studentsGroupByAssign.studentAssign,
+        studentNotAssign: studentsGroupByAssign.studentNotAssign,
       },
     }));
   },

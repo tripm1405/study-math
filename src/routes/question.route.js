@@ -4,6 +4,7 @@ import CommonUtil from '#root/utils/common.util.js';
 
 const Router = express.Router();
 
+Router.get('/:id/assign', CommonUtil.wrapperController(questionController.getAssign));
 Router.get('/:id/answers/:answerId', CommonUtil.wrapperController(questionController.getAnswer));
 Router.get('/:id/answers', CommonUtil.wrapperController(questionController.getAnswers));
 Router.get('/:id/solve', CommonUtil.wrapperController(questionController.getSolve));

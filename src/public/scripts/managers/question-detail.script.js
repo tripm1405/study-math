@@ -187,6 +187,7 @@ function onConfigAnswers() {
   window.location.href = `/questions/${id}/answers`;
 }
 
-function onAssignment() {
-
+function onAssign() {
+  const id = document.querySelector('input[name="id"]')?.value;
+  window.location.href = `/questions/${id}/assign`;
 }
