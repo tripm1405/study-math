@@ -38,10 +38,14 @@ export default {
             .skip((page - 1) * pageSize)
             .limit(pageSize);
 
+        if (users.length === 0 && page > 1) {
+            return res.redirect(`/users?page=${page - 1}`);
+        }
+        
         const paginatedUsers = users.map((user, index) => ({
             ...user.toObject(),
-            index: (page-1) * pageSize + index + 1
-        }));
+            index: (page - 1) * pageSize + index + 1
+        }));        
 
         const data = {
             users: paginatedUsers,
@@ -54,12 +58,12 @@ export default {
 
         res.render('pages/managers/user.page.ejs', ViewUtil.getOptions({
             data: {
-                users: users,
+                users: paginatedUsers,
                 newId: newId,
                 totalPages: totalPages, 
                 currentPage: page,
             },
-        }));
+        }));        
     },
     
     getDetail: async (req, res) => {
