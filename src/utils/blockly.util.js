@@ -1,7 +1,12 @@
 import CommonUtil from "#root/utils/common.util.js";
+import FileUtil from "#root/utils/file.util.js";
 
 export default class BlocklyUtil {
   static BCRYPT_SALT = Number(process.env.BCRYPT_SALT) || 4;
+
+  static ArgTypes = class {
+    static FieldImage = 'field_image';
+  }
 
   static blocks = {
     number: {
@@ -107,5 +112,65 @@ export default class BlocklyUtil {
       obj: block,
       properties: excludedProperties,
     });
+  }
+
+  static embedImages(props) {
+    const {
+      block,
+      imageFiles,
+    } = props;
+
+    return Object.keys(block).reduce((result, key) => {
+      if (!key.includes('args')) {
+        return {
+          ...result,
+          [key]: block[key],
+        };
+      }
+
+      return {
+        ...result,
+        [key]: block[key]?.map(args => {
+          if (args.type !== BlocklyUtil.ArgTypes.FieldImage) {
+            return args;
+          }
+
+          return {
+            ...args,
+            src: imageFiles?.find(image => image.displayName === args.src)?.physicalName,
+          };
+        }),
+      };
+    }, {});
+  }
+
+  static formatArgs(props) {
+    const {
+      block,
+    } = props;
+
+    return Object.keys(block)
+      .reduce((result, key) => {
+        if (!key.includes('args')) {
+          return {
+            ...result,
+            [key]: block[key],
+          };
+        }
+
+        return {
+          ...result,
+          [key]: block[key]?.map(args => {
+            if (args.type !== BlocklyUtil.ArgTypes.FieldImage) {
+              return args;
+            }
+
+            return {
+              ...args,
+              src: `${FileUtil.RootPaths.Blockly}/${args?.src}`,
+            };
+          }),
+        };
+      }, {})
   }
 }

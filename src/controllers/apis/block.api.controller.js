@@ -6,6 +6,8 @@ import ApiUtil from "#root/utils/api.util.js";
 import FileUtil from "#root/utils/file.util.js";
 import BlocklyUtil from "#root/utils/blockly.util.js";
 import CommonUtil from "#root/utils/common.util.js";
+import {rootPath} from "#root/public/index.js";
+import FileModel from "#root/models/file.model.js";
 
 export default {
   getList: async (req, res) => {
@@ -17,17 +19,46 @@ export default {
       questionId: questionId,
     };
 
-    const blocks = await BlockModel.find(filter).lean();
+    const blocks = await (async () => {
+      const blocks = await BlockModel.find(filter).lean();
 
-    res.json(ApiUtil.JsonRes({
-      data: {
-        blocks: blocks.map(block => {
+      return blocks
+        .map(block => {
           return {
             ...block,
             ...BlocklyUtil.parseContent({block: block}),
-          }
+          };
         })
-          .filter(block => block != null),
+        .map(block => {
+          return Object.keys(block).reduce((result, key) => {
+            if (!key.includes('args')) {
+              return {
+                ...result,
+                [key]: block[key],
+              };
+            }
+
+            return {
+              ...result,
+              [key]: block[key]?.map(args => {
+                if (args.type !== BlocklyUtil.ArgTypes.FieldImage) {
+                  return args;
+                }
+
+                return {
+                  ...args,
+                  src: `${FileUtil.RootPaths.Blockly}/${args.src}`,
+                };
+              }),
+            };
+          }, {});
+        })
+        .filter(block => block != null);
+    })();
+
+    res.json(ApiUtil.JsonRes({
+      data: {
+        blocks: blocks,
       },
     }));
   },
@@ -36,14 +67,20 @@ export default {
       id,
     } = req?.params;
 
-    const block = await BlockModel.findById(id).lean();
+    const block = await (async () => {
+      const block = await BlockModel.findById(id).lean();
 
-    res.json(ApiUtil.JsonRes({
-      data: {
+      return BlocklyUtil.formatArgs({
         block: {
           ...block,
           ...BlocklyUtil.parseContent({block: block}),
         },
+      });
+    })();
+
+    res.json(ApiUtil.JsonRes({
+      data: {
+        block: block,
       },
     }))
   },
@@ -51,23 +88,48 @@ export default {
     const {
       id,
     } = req?.params;
-    const {
-      file
-    } = FileUtil.ArrToObj({
-      files: req.files
-    });
+    const blockFile = req.files?.find(file => file.fieldname === 'block');
+    const imageFiles = req.files
+      ?.filter(file => file.fieldname === 'images')
+      ?.map(file => {
+        const id = new mongoose.Types.ObjectId();
 
-    const blockStr = fs.readFileSync(file.path, {
+        const extend = ((originNameList) => {
+          return originNameList[originNameList.length - 1];
+        })(file.originalname.split('.'));
+        const physicalName = `${id}.${extend}`;
+        const destination = `${rootPath}/blockly/`;
+
+        return {
+          oldPath: file.path,
+          displayName: file.originalname,
+          physicalName: physicalName,
+          destination: destination,
+          path: `${destination}/${physicalName}`,
+        }
+      });
+
+    for (const image of imageFiles) {
+      fs.rename(image?.oldPath, image.path, () => {
+      });
+    }
+
+    const blockStr = fs.readFileSync(blockFile.path, {
       encoding: 'utf8',
     });
-    await fs.unlink(file.path, () => {
+    await fs.unlink(blockFile.path, () => {
     });
-    const block = BlocklyUtil.parse({block: blockStr});
+    const block = BlocklyUtil.embedImages({
+      block: BlocklyUtil.parse({block: blockStr}),
+      imageFiles: imageFiles,
+    });
 
     const newBlock = await BlockModel.findByIdAndUpdate(id, {
       ...block,
       content: BlocklyUtil.stringifyContent({block: block}),
     });
+
+    await FileModel.create(imageFiles);
 
     res.json(ApiUtil.JsonRes({
       block: newBlock,
@@ -98,11 +160,31 @@ export default {
     const {
       questionId,
     } = req.body;
-    const {
-      file
-    } = FileUtil.ArrToObj({
-      files: req.files
-    });
+    const blockFile = req.files?.find(file => file.fieldname === 'block');
+    const imageFiles = req.files
+      ?.filter(file => file.fieldname === 'images')
+      ?.map(file => {
+        const id = new mongoose.Types.ObjectId();
+
+        const extend = ((originNameList) => {
+          return originNameList[originNameList.length - 1];
+        })(file.originalname.split('.'));
+        const physicalName = `${id}.${extend}`;
+        const destination = `${rootPath}/blockly/`;
+
+        return {
+          oldPath: file.path,
+          displayName: file.originalname,
+          physicalName: physicalName,
+          destination: destination,
+          path: `${destination}/${physicalName}`,
+        }
+      });
+
+    for (const image of imageFiles) {
+      fs.rename(image?.oldPath, image.path, () => {
+      });
+    }
 
     const filter = {
       questionId: questionId,
@@ -119,11 +201,11 @@ export default {
     })();
 
     const blocksFromFiles = await (async () => {
-      const fileData = fs.readFileSync(file.path, {
+      const fileData = fs.readFileSync(blockFile.path, {
         encoding: 'utf8',
       });
 
-      fs.unlink(file?.path, () => {
+      fs.unlink(blockFile?.path, () => {
       });
 
       const blocks = CommonUtil.jsonParse(fileData);
@@ -131,14 +213,21 @@ export default {
         return null;
       }
 
-      return blocks.map(block => {
-        return {
-          ...block,
-          content: BlocklyUtil.stringifyContent({
-            block: block
-          }),
-        };
-      });
+      return blocks
+        .map(block => {
+          return BlocklyUtil.embedImages({
+            block: block,
+            imageFiles: imageFiles,
+          });
+        })
+        .map(block => {
+          return {
+            ...block,
+            content: BlocklyUtil.stringifyContent({
+              block: block
+            }),
+          };
+        });
     })();
     if (blocksFromFiles === null) {
       res.json(ApiUtil.JsonRes({
@@ -150,10 +239,6 @@ export default {
 
     const blocks = blocksFromFiles.map(block => {
       const blockExists = blocksMapping[block?._id];
-      console.log('blockExists', {
-        blockExists: blockExists,
-        blockId: block?._id,
-      })
       return new BlockModel(blockExists
         ? {
           ...blockExists,
@@ -184,6 +269,8 @@ export default {
         }
       );
     }
+
+    await FileModel.create(imageFiles);
 
     res.json(ApiUtil.JsonRes());
   },

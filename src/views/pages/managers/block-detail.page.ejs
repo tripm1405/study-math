@@ -41,7 +41,14 @@
                       </button>
                   </div>
                   <div class="modal-body">
-                      <input name="file" type="file"/>
+                      <div>
+                          <label for="block">Chọn khối</label>
+                          <input id="block" name="block" type="file" />
+                      </div>
+                      <div>
+                          <label for="images">Chọn hình</label>
+                          <input id="images" name="images" type="file" multiple />
+                      </div>
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -53,16 +60,18 @@
   </div>
   
   <input name="id" type="hidden" value="<%= data?.block?._id %>"/>
-  <input name="method" type="hidden" value="<%= data?.block?._id ? 'PUT' : 'POST' %>"/>
   
   <script src="/scripts/managers/block-detail.script.js"></script>
   <script>
       async function onImport(event) {
         event.preventDefault();
+
+        const id = document.querySelector('input[name="id"]')?.value;
+
         const formData = new FormData(event.target);
         
         try {
-          const res = await axios.post('/api/import', formData);
+          const res = await axios.post(`/api/blocks/${id}/import`, formData);
           if (res.data.success) {
             Toastify({
               text: 'Import khối thành công!',

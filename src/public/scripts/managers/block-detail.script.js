@@ -1,5 +1,4 @@
 const id = document.querySelector('input[name="id"]').value;
-const method = document.querySelector('input[name="method"]').value;
 
 const workspace = initWorkspace({
   node: document.getElementById('block'),

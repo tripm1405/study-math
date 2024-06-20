@@ -7,4 +7,5 @@ export default class ModelNameConstant {
   static ANSWER = 'Answer';
   static RESOLUTION = 'Resolution';
   static BLOCK = 'Block';
+  static FILE = 'File';
 }
