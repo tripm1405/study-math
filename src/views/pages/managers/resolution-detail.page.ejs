@@ -1,15 +1,67 @@
-<div class="w-full h-full">
-    <div class="w-full d-flex" style="height: max-content;">
-        <div style="width: 400px; height: max-content;">
+<style>
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 20px;
+  }
+  .review-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .review-workspace-container {
+    width: 400px;
+    height: 400px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fafafa;
+  }
+  .review-workspace {
+    height: 100%;
+    width: 100%;
+  }
+  .score-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .score-section button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .score-section button:hover {
+    background-color: #45a049;
+  }
+  .score-section input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100px;
+  }
+</style>
+<div class="container">
+    <div class="review-section">
+        <div class="review-workspace-container">
             <div class="w-full" style="height: 400px;">
-                <div id="review-workspace" style="height: 100%; width: 100%;"></div>
+                <div id="review-workspace" class="review-workspace"></div>
             </div>
         </div>
 
-        <div>
-            <div>
-                <button onclick="submit()">CHẤM ĐIỂM</button>
-            </div>
+        <div class="score-section">
+            <button onclick="submit()">CHẤM ĐIỂM</button>
             <input name="score" type="number" min="0" max="10" value="10" />
         </div>
     </div>
