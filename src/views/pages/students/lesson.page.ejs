@@ -4,7 +4,7 @@
         gap: 20px;
     }
     .lesson-card {
-        width: 300px;
+        width: 250px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 10px;
@@ -68,10 +68,10 @@
         <div class="lesson-info">👥 50</div>
     </div>
 </div>
-<%= JSON.stringify(data)%>
+<!-- <%= JSON.stringify(data)%>
 <% for (const lesson of (data?.lessons || [])) { %>
     <div onclick="detail('<%= lesson._id %>')"><%= lesson.code %></div>
-<% } %>
+<% } %> -->
 
 <script>
     function detail(id) {

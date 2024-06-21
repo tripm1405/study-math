@@ -4,17 +4,28 @@
         gap: 20px;
     }
     .lesson-card {
-        width: 300px;
+        width: 250px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 10px;
-        text-align: center;
+        text-align: left;
+        cursor: pointer;
+    }
+    .lesson-card:nth-child(1) {
         background-color: #fde1e1;
+    }
+    .lessson-card:nth-child(2) {
+        background-color: #ccf2ff;
+    }
+    .lesson-card:nth-child(3) {
+        background-color: #f6f7c2;
+    }
+    .lesson-card:nth-child(4) {
+        background-color: #e3ffd7;
     }
     .lesson-card img {
         width: 100%;
         border-radius: 10px;
-        height: 250px;
     }
     .lesson-title {
         font-size: 18px;
@@ -25,52 +36,39 @@
         font-size: 14px;
         color: #555;
     }
-    .level{
-        background-color: #DEFFCF;
-        color: #40FF8C;
-        padding: 3px 15px;
-        border-radius: 10px;
-        border-color: #40FF8C;
-        border: 2px;
-        border-style: dashed;
-    }
-    .lesson-card a {
-        position: absol10px;
-        top: 80%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-        background-color: #ffffff;
-        color: white;
-        font-size: 20px;
-        padding: 8px 10px;
-        border: none;
-        cursor: pointer;
-        border-radius: 20px;
-        text-align: center;
-        text-decoration: none;
-      }
-    .lesson-card a:hover {
-        background-color: #6bdeb9; 
-    }
-    .lesson-card a i {
-        margin-right: 10px;
-    }
 </style>
 <div href="/lessons-details" class="lesson-container">
-    <div class="lesson-card">
-        <img src="/images/img13.gif" alt="Lớp 1 - Nguyễn Anh">
-        <div class="lesson-title">Danh sách các khóa học</div>
-        <a onclick="detail('courses')">Chi tiết <i class="fa fa-arrow-right"></i></a>
+    <div onclick="detail('lessons/665190d0e9990e1c6af80ef8')" class="lesson-card">
+        <img src="/images/img5.png" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Số tự nhiên</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
     </div>
-    <div class="lesson-card">
-        <img src="/images/img13.gif" alt="Lớp 1 - Nguyễn Anh">
-        <div class="lesson-title">Danh sách các bài học</div>
-        <a  onclick="detail('lessons')">Chi tiết <i class="fa fa-arrow-right"></i></a>
+    <div onclick="detail('lessons/665190d0e9990e1c6af80ef8')" class="lesson-card">
+        <img src="/images/img6.png" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Phép dư</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+    <div onclick="detail('lessons/665190d0e9990e1c6af80ef8')" class="lesson-card">
+        <img src="/images/img7.png" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">Số chẵn, số lẻ</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
+    </div>
+    <div onclick="detail('lessons/665190d0e9990e1c6af80ef8')" class="lesson-card">
+        <img src="/images/img8.jpg" alt="Lớp 1 - Nguyễn Anh">
+        <div class="lesson-title">So sánh</div>
+        <div class="lesson-teacher">Lớp 1 - Nguyễn Anh</div>
+        <div class="lesson-info">Ngày tạo: 20/04/2024</div>
+        <div class="lesson-info">👥 50</div>
     </div>
 </div>
 
-<%= JSON.stringify(data) %>
+<!-- <%= JSON.stringify(data) %> -->
 
 <script>
     function detail(id) {
