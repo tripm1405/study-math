@@ -16,7 +16,7 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.COURSE,
   },
-  createdById: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
   },
