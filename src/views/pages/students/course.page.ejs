@@ -1,59 +1,11 @@
-<style>
-    .course-container {
-        display: flex;
-        gap: 20px;
-    }
-
-    .course-card {
-        width: 250px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 10px;
-        text-align: left;
-        cursor: pointer;
-    }
-
-    .course-card:nth-child(1) {
-        background-color: #fffbcc;
-    }
-
-    .course-card:nth-child(2) {
-        background-color: #ccf2ff;
-    }
-
-    .course-card:nth-child(3) {
-        background-color: #edd5f8;
-    }
-
-    .course-card:nth-child(4) {
-        background-color: #e3ffd7;
-    }
-
-    .course-card img {
-        width: 100%;
-        border-radius: 10px;
-    }
-
-    .course-title {
-        font-size: 18px;
-        font-weight: bold;
-        margin: 10px 0 5px 0;
-    }
-
-    .course-info {
-        font-size: 14px;
-        color: #555;
-    }
-</style>
-
 <div class="w-full h-full">
     <h1>Các khóa học</h1>
-    
     <div class="k-container">
         <% for (const course of (data?.courses || [])) { %>
-            <div onclick="detail('<%= course?._id %>')" class="k-card">
+            <div onclick="onDetail('<%= course?._id %>')" class="k-card">
                 <img src="/images/img4.png" alt="Lớp 2 - Nguyễn Anh">
-                <div class="k-title">Lớp 2 - Nguyễn Anh</div>
+                <div class="k-title"><%= course?.name %></div>
+                <div class="f-info"><%= course?.createdBy?.fullName %></div>
                 <div class="k-info">
                     <%= ((date) => {
                         const year = date.getFullYear();
@@ -64,14 +16,13 @@
                         return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
                     })(course.createdAt) %>
                 </div>
-                <div class="f-info">👥 79</div>
             </div>
         <% } %>
     </div>
 </div>
 
 <script>
-  function detail(id) {
+  function onDetail(id) {
     window.location.href = `/courses/${id}`;
   }
 </script>
