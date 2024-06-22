@@ -45,48 +45,50 @@
     <script src="/scripts/init.script.js"></script>
 </head>
 <body>
-  <header class="header">
-    <div class="header-content">
-      <img src="/images/logo.png" alt="Study Math Logo" class="logo" width="100px" height="100px">
-      <div class="search-bar">
-        <form action="/search" method="GET">
-          <input name="search" type="text" value="<%= data?.search %>" class="form-control" placeholder="Tìm kiếm...">
-        </form>
+  <div style="width: 100vw; height: 100vh; overflow: hidden;">
+      <header class="header">
+          <div class="header-content">
+              <img src="/images/logo.png" alt="Study Math Logo" class="logo" width="100px" height="100px">
+              <div class="search-bar">
+                  <form action="/search" method="GET">
+                      <input name="search" type="text" value="<%= data?.search %>" class="form-control" placeholder="Tìm kiếm...">
+                  </form>
+              </div>
+              <div class="ml-auto d-flex align-items-center">
+                  <button class="btn transparent-btn" type="button">
+                      <i class="fas fa-bell"></i>
+                  </button>
+                  <div class="dropdown">
+                      <button class="btn dropdown-toggle transparent-btn" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                          <%= currentUser?.fullName %>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                          <li><a class="dropdown-item" href="#" id="info">Thông tin cá nhân</a></li>
+                          <li><a class="dropdown-item" href="/sign-out" id="logout">Đăng xuất</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </header>
+      <div class="d-flex">
+          <nav class="sidebar" style="background-color:#fff8f3; flex: 0 0 240px; overflow-y: auto; overflow-x: hidden;">
+              <div class="sidebar-content">
+                  <div class="welcome">Xin chào, <%= currentUser?.fullName %></div>
+                  <ul class="nav flex-column">
+                      <% menus.forEach(item => { %>
+                          <li class="nav-item">
+                              <a class="nav-link" href="<%= item.link %>">
+                                  <i class="<%= item.icon %>" ></i> <%= item.label %>
+                              </a>
+                          </li>
+                      <% }); %>
+                  </ul>
+              </div>
+          </nav>
+          <div class="content" style="width: 100%; overflow-y: auto; overflow-x: hidden;">
+              <%- body %>
+          </div>
       </div>
-      <div class="ml-auto d-flex align-items-center">
-        <button class="btn transparent-btn" type="button">
-          <i class="fas fa-bell"></i>
-        </button>
-        <div class="dropdown">
-          <button class="btn dropdown-toggle transparent-btn" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            <%= currentUser?.fullName %>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#" id="info">Thông tin cá nhân</a></li>
-            <li><a class="dropdown-item" href="/sign-out" id="logout">Đăng xuất</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </header>
-  <div class="d-flex">
-    <nav class="sidebar" style="background-color:#fff8f3">
-      <div class="sidebar-content">
-        <div class="welcome">Xin chào, <%= currentUser?.fullName %></div>
-        <ul class="nav flex-column">
-          <% menus.forEach(item => { %>
-            <li class="nav-item">
-              <a class="nav-link" href="<%= item.link %>">
-                <i class="<%= item.icon %>" ></i> <%= item.label %>
-              </a>
-            </li>
-          <% }); %>
-        </ul>
-      </div>
-    </nav>
-    <div class="content">
-      <%- body %>
-    </div>
   </div>
   <script src="/scripts/main.script.js"></script>
 </body>
