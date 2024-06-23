@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 
 import BlockModel from "#root/models/block.model.js";
 import ApiUtil from "#root/utils/api.util.js";
-import FileUtil from "#root/utils/file.util.js";
 import BlocklyUtil from "#root/utils/blockly.util.js";
 import CommonUtil from "#root/utils/common.util.js";
 import {rootPath} from "#root/public/index.js";
@@ -15,43 +14,23 @@ export default {
       questionId,
     } = req?.query;
 
-    const filter = {
-      questionId: questionId,
-    };
-
     const blocks = await (async () => {
+      const filter = {
+        questionId: questionId,
+      };
+
       const blocks = await BlockModel.find(filter).lean();
 
       return blocks
         .map(block => {
-          return {
-            ...block,
-            ...BlocklyUtil.parseContent({block: block}),
-          };
-        })
-        .map(block => {
-          return Object.keys(block).reduce((result, key) => {
-            if (!key.includes('args')) {
-              return {
-                ...result,
-                [key]: block[key],
-              };
-            }
-
-            return {
-              ...result,
-              [key]: block[key]?.map(args => {
-                if (args.type !== BlocklyUtil.ArgTypes.FieldImage) {
-                  return args;
-                }
-
-                return {
-                  ...args,
-                  src: `${FileUtil.RootPaths.Blockly}/${args.src}`,
-                };
+          return BlocklyUtil.formatArgs({
+            block: {
+              ...block,
+              ...BlocklyUtil.parseContent({
+                block: block
               }),
-            };
-          }, {});
+            },
+          });
         })
         .filter(block => block != null);
     })();
@@ -253,6 +232,7 @@ export default {
             _id: id,
             type: id,
             questionId: questionId,
+            createdBy: res.locals.currentUser?._id,
           };
         })(new mongoose.Types.ObjectId()));
     });

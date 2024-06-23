@@ -25,15 +25,7 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.LESSON,
   },
-  answers: [new mongoose.Schema({
-    content: {
-      type: String,
-    },
-    score: {
-      type: Number,
-    },
-  })],
-  createdById: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
   },

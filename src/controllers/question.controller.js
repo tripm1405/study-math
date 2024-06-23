@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import ViewUtil from "#root/utils/view.util.js";
 import QuestionModel from "#root/models/question.model.js";
 import AuthUtil from "#root/utils/auth.util.js";
-import CourseModel from "#root/models/course.model.js";
 import LessonModel from "#root/models/lesson.model.js";
 import BlockModel from "#root/models/block.model.js";
 import ResolutionModel from "#root/models/resolution.model.js";
@@ -43,7 +42,10 @@ export default {
       questionId: id,
     });
 
-    const question = await QuestionModel.findById(id).lean() || {};
+    const question = await QuestionModel
+      .findById(id)
+      .populate('createdBy')
+      .lean() || {};
     const lessons = await LessonModel.find({});
     const blocks = await BlockModel.find({
       questionId: new mongoose.Types.ObjectId(id),
@@ -74,7 +76,7 @@ export default {
       result: result,
       lessonId: lessonId,
       answers: answers,
-      createdById: res?.locals?.currentUser?._id,
+      createdBy: res?.locals?.currentUser?._id,
     });
 
     res.json({

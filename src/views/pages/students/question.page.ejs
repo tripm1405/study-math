@@ -3,7 +3,7 @@
     <div class="k-container">
         <% for (const question of (data?.questions || [])) { %>
             <div onclick="onDetail('<%= question?._id %>')" class="k-card">
-                <img src="/images/img4.png" alt="Lớp 2 - Nguyễn Anh">
+                <img src="<%= question?.image || '/images/question-default.png'%>" alt="Lớp 2 - Nguyễn Anh">
                 <div class="k-title"><%= question?.name %></div>
                 <div class="f-info"><%= question?.createdBy?.fullName %></div>
                 <div class="k-info">

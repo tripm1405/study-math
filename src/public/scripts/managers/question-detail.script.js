@@ -12,7 +12,29 @@ let answers;
 let workspaceDefault;
 let workspaceToolbox;
 
-init();
+// init
+(async () => {
+  const id = document.querySelector('input[name="id"]')?.value;
+  await loadBlocks();
+
+  workspaceDefault = K.initWorkspace({
+    node: document.getElementById('blockly-workspace-default'),
+  });
+  workspaceToolbox = K.initWorkspace({
+    node: document.getElementById('blockly-workspace-toolbox'),
+  });
+
+  loadToolbox({
+    hasLoadBlocks: true,
+  });
+
+  const question = await (async () => {
+    const questionRes = await axios.get(`/api/questions/${id}`);
+    return questionRes?.data?.result?.question;
+  })();
+  Blockly.serialization.workspaces.load(question?.blocksDefault, workspaceDefault);
+  Blockly.serialization.workspaces.load(question?.toolbox, workspaceToolbox);
+})();
 
 function submit() {
   try {
@@ -45,36 +67,6 @@ async function toggleBlocksGlobal() {
   loadToolbox();
 }
 
-async function init() {
-  await loadBlocks();
-
-  workspaceDefault = initWorkspace({
-    node: document.getElementById('blockly-workspace-default'),
-  });
-  workspaceToolbox = initWorkspace({
-    node: document.getElementById('blockly-workspace-toolbox'),
-  });
-
-  loadToolbox({
-    hasLoadBlocks: true,
-  });
-}
-
-function initWorkspace(props) {
-  const {
-    node
-  } = {
-    ...props,
-  }
-
-  return Blockly.inject(node, {
-    toolbox: {
-      kind: 'flyoutToolbox',
-      contents: [],
-    },
-  });
-}
-
 async function loadToolbox(props) {
   const {
     hasLoadBlocks
@@ -101,6 +93,8 @@ async function loadToolbox(props) {
   for (const workspace of (answers || []).map(answer => answer.workspace)) {
     workspace?.updateToolbox(toolbox);
   }
+
+  Blockly.serialization.workspaces.load(question?.blocksDefault, solveWorkspace);
 }
 
 async function loadBlocks() {

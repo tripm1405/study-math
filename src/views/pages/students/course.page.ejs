@@ -3,7 +3,7 @@
     <div class="k-container">
         <% for (const course of (data?.courses || [])) { %>
             <div onclick="onDetail('<%= course?._id %>')" class="k-card">
-                <img src="/images/img4.png" alt="Lớp 2 - Nguyễn Anh">
+                <img src="<%= course?.image || '/images/course-default.jpg'%>" alt="Lớp 2 - Nguyễn Anh">
                 <div class="k-title"><%= course?.name %></div>
                 <div class="f-info"><%= course?.createdBy?.fullName %></div>
                 <div class="k-info">

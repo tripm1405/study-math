@@ -3,7 +3,7 @@
     <div class="k-container">
         <% for (const lesson of (data?.lessons || [])) { %>
             <div onclick="onDetail('<%= lesson?._id %>')" class="k-card">
-                <img src="/images/img5.png" alt="Lớp 1 - Nguyễn Anh">
+                <img src="<%= lesson?.image || '/images/lesson-default.png'%>" alt="Lớp 1 - Nguyễn Anh">
                 <div class="k-title"><%= lesson?.name %></div>
                 <div class="k-info"><%= lesson?.createdBy?.fullName %></div>
                 <div class="k-info">

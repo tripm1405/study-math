@@ -33,4 +33,45 @@ class K {
     link.download = 'block.json';
     link.click();
   }
+
+  static initWorkspace(props) {
+    const {
+      node,
+      options,
+    } = {
+      ...props,
+      options: {
+        ...(props?.options || {}),
+        toolbox: {
+          kind: 'flyoutToolbox',
+          contents: [],
+          ...(props?.toolbox || {}),
+        },
+      },
+    }
+
+    return Blockly.inject(node, options);
+  }
+
+  static async loadBlocks(props) {
+    const {
+      params,
+    } = props;
+
+    const blocksRes = await axios.get('/api/blocks', {
+      params: params,
+    });
+
+    const blocks = blocksRes?.data?.result?.blocks || [];
+
+    for (const block of blocks) {
+      Blockly.Blocks[block.type] = {
+        init: function () {
+          this.jsonInit(block);
+        }
+      };
+    }
+
+    return blocks;
+  }
 }
