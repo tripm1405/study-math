@@ -49,11 +49,6 @@
     z-index: 1000;
 }
 
-.d-flex {
-    display: flex;
-    height: calc(100vh - 80px);
-}
-
 .header-content {
     display: flex;
     align-items: center;
