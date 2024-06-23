@@ -117,11 +117,11 @@
     
           try {
               if (method === 'PUT') {
-                  await axios.put(`http://localhost:5500/courses/${id}`, formData, {
+                  await axios.put(`/courses/${id}`, formData, {
                       headers: { 'Content-Type': 'multipart/form-data' }
                   });
               } else {
-                  await axios.post('http://localhost:5500/courses', formData, {
+                  await axios.post('/courses', formData, {
                       headers: { 'Content-Type': 'multipart/form-data' }
                   });
               }

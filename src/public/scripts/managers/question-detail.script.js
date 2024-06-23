@@ -138,7 +138,7 @@ function onUpsertBlock(id) {
 }
 
 async function onDelBlock(id) {
-  await axios.delete(`http://localhost:5500/blocks/${id}`);
+  await axios.delete(`/blocks/${id}`);
   await loadToolbox({ hasLoadBlocks: true });
 }
 

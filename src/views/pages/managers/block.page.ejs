@@ -75,7 +75,7 @@ function upsert(id) {
 
 async function del(id) {
   try {
-    await axios.delete(`http://localhost:5500/blocks/${id}`);
+    await axios.delete(`/blocks/${id}`);
     Toastify({
       text: 'Xóa khối thành công!',
       duration: 3000,

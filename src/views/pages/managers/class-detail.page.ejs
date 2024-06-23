@@ -109,9 +109,9 @@
 
             try {
                 if (method === 'PUT') {
-                    await axios.put(`http://localhost:5500/classes/${id}`, formData);
+                    await axios.put(`/classes/${id}`, formData);
                 } else {
-                    await axios.post('http://localhost:5500/classes', formData, {
+                    await axios.post('/classes', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         },

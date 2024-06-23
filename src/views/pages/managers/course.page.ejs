@@ -96,7 +96,7 @@
   
     async function del(id) {
       try {
-          await axios.delete(`http://localhost:5500/courses/${id}`);
+          await axios.delete(`/courses/${id}`);
           location.reload();
       } catch (error) {
           console.error('Delete Error:', error);
