@@ -32,15 +32,17 @@ export default {
     }));
   },
   getDetail: async (req, res) => {
-    const { id } = req?.params;
+    const {id} = req?.params;
     if (!id) return res.json({
       success: false,
       id: id,
     });
 
-    const resolutions = await ResolutionModel.find({
-      questionId: id,
-    });
+    const resolutions = await ResolutionModel
+      .find({
+        questionId: id,
+      })
+      .lean();
 
     const question = await QuestionModel
       .findById(id)
@@ -61,12 +63,15 @@ export default {
         },
         blocks: blocks,
         lessons: lessons,
-        resolutions,
+        resolutions: resolutions,
+        resolution: resolutions?.find(resolution => {
+          return resolution?.student.toString() === res.locals?.currentUser?._id.toString();
+        }),
       },
     }));
   },
   post: async (req, res) => {
-    const { code, name, result, blocksDefault, toolbox, lessonId, answers } = req.body;
+    const {code, name, result, blocksDefault, toolbox, lessonId, answers} = req.body;
 
     const question = await QuestionModel.create({
       code: code,
@@ -87,10 +92,10 @@ export default {
     });
   },
   put: async (req, res) => {
-    const { id } = req?.params;
-    const { name, result, blocksDefault, toolbox, lessonId, answers } = req.body;
+    const {id} = req?.params;
+    const {name, result, blocksDefault, toolbox, lessonId, answers} = req.body;
 
-    const question = await QuestionModel.findByIdAndUpdate(id,{
+    const question = await QuestionModel.findByIdAndUpdate(id, {
       name: name,
       result: result,
       blocksDefault: blocksDefault,
@@ -107,7 +112,7 @@ export default {
     });
   },
   delete: async (req, res) => {
-    const { id } = req?.params;
+    const {id} = req?.params;
 
     await QuestionModel.findByIdAndDelete(id);
 
@@ -123,10 +128,20 @@ export default {
     } = req.params;
 
     const question = await QuestionModel.findById(id);
-    const resolution = await ResolutionModel.findOne({
+
+    const resolution = await ResolutionModel.findOneAndUpdate({
       questionId: id,
-      createdById: res.locals.currentUser?._id,
-    }) || {};
+      student: res.locals.currentUser?._id,
+    }, {
+      $setOnInsert: {
+        questionId: id,
+        student: res.locals.currentUser?._id,
+        createdBy: res.locals.currentUser?._id,
+      },
+    }, {
+      upsert: true,
+      new: true
+    });
 
     const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question-solve.page.ejs`;
     res.render(view, ViewUtil.getOptions({
@@ -136,7 +151,7 @@ export default {
       },
     }));
   },
-  postSolve: async (req, res) => {
+  putSolve: async (req, res) => {
     const {
       content,
     } = req.body;
@@ -144,23 +159,12 @@ export default {
       id
     } = req.params;
 
-    const resolution = ResolutionModel.findOne({
+    await ResolutionModel.findOneAndUpdate({
       questionId: id,
-      createdById: res.locals.currentUser?._id,
-    }) || {};
-
-    if (resolution?._id) {
-      await ResolutionModel.findByIdAndUpdate(resolution?._id, {
-        content: content,
-      });
-    }
-    else {
-      await ResolutionModel.create({
-        content: content,
-        questionId: id,
-        createdById: res.locals.currentUser?._id,
-      });
-    }
+      createdBy: res.locals.currentUser?._id,
+    }, {
+      content: content,
+    });
 
     res.redirect(`/questions/${id}`);
   },
@@ -224,8 +228,7 @@ export default {
             id: student._id?.toString(),
           },
         ];
-      }
-      else {
+      } else {
         clone.studentNotAssign = [
           ...clone.studentNotAssign,
           {

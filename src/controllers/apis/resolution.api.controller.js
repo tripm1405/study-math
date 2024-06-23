@@ -5,6 +5,22 @@ import CommonUtil from "#root/utils/common.util.js";
 import BlocklyUtil from "#root/utils/blockly.util.js";
 
 export default {
+  get: async (req, res) => {
+    const {
+      id,
+    } = req.params;
+
+    const resolution = await ResolutionModel.findById(id);
+
+    res.json(ApiUtil.JsonRes({
+      data: {
+        resolution: {
+          ...resolution,
+          content: CommonUtil.jsonParse(resolution?.content, {}),
+        },
+      },
+    }));
+  },
   putMarkByAnswer: async (req, res) => {
     const resolutions = await ResolutionModel.find({
       score: undefined,
@@ -50,10 +66,29 @@ export default {
       score,
     } = req.body;
 
-    console.log({ id, score });
-
-    await ResolutionModel.findByIdAndUpdate(id, { score: score });
+    await ResolutionModel.findByIdAndUpdate(id, {score: score});
 
     res.json(ApiUtil.JsonRes());
   },
+  getSolve: async (req, res) => {
+    const {
+      questionId,
+    } = req.query;
+
+    const resolution = await ResolutionModel
+      .findOne({
+        questionId: questionId,
+        student: res.locals?.currentUser?._id,
+      })
+      .lean();
+
+    res.json(ApiUtil.JsonRes({
+      data: {
+        resolution: {
+          ...resolution,
+          content: CommonUtil.jsonParse(resolution?.content, null),
+        },
+      },
+    }));
+  }
 }

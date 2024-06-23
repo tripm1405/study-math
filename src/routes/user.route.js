@@ -9,5 +9,5 @@ Router.put('/:id', CommonUtil.wrapperController(userController.put));
 Router.delete('/:id', CommonUtil.wrapperController(userController.delete));
 Router.get('/', CommonUtil.wrapperController(userController.get));
 Router.post('/', CommonUtil.wrapperController(userController.post));
-
+ 
 export default Router;

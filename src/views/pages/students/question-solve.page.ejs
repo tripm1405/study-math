@@ -7,7 +7,18 @@
         </div>
 
         <div>
-            <button class="btn btn-sm btn-primary" onclick="submit()">Nộp bài</button>
+            <% if (data?.resolution?.score === null || data?.resolution?.score === undefined) { %>
+                <div>
+                    <button class="btn btn-sm btn-primary" onclick="submit()">Nộp bài</button>
+                </div>
+            <% } %>
+            <% if (data?.resolution?.content) { %>
+                <% if (data?.resolution?.score !== null && data?.resolution?.score !== undefined) { %>
+                    <div><%= data?.resolution?.score %> điểm</div>
+                <% } else { %>
+                    <div>Chờ chấm điểm</div>
+                <% } %>
+            <% } %>
         </div>
     </div>
 </div>
@@ -59,15 +70,26 @@
       },
     });
 
-    Blockly.serialization.workspaces.load(question?.blocksDefault, solveWorkspace);
+    const resolution = await (async () => {
+      const resolutionRes = await axios.get('/api/resolutions/solve', {
+        params: {
+          questionId: questionId,
+        },
+      });
+      return resolutionRes?.data?.result?.resolution;
+    })();
+
+    Blockly.serialization.workspaces.load(resolution?.content || question?.blocksDefault, solveWorkspace);
   })();
 
   async function submit() {
+    const questionId = document.querySelector('input[name="questionId"]').value;
+
     const formData = new FormData();
     const content = Blockly.serialization.workspaces.save?.(solveWorkspace);
     formData.set('content', JSON.stringify(content));
-    await axios.post(`/questions/${questionIdInput?.value}/solve`, formData);
+    await axios.put(`/questions/${questionId}/solve`, formData);
 
-    window.location.href = `/questions/${questionIdInput.value}`;
+    window.location.href = `/questions/${questionId}`;
   }
 </script>

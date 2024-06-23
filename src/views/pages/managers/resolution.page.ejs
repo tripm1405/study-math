@@ -73,10 +73,10 @@
         <% for (const resolution of data?.resolutions || []) { %>
         <tr onclick="onDetail('<%= resolution?._id %>')">
             <td>
-                <%= resolution?.questionId %>
+                <%= resolution?.questionId?.name %>
             </td>
             <td>
-                <%= resolution?.createdById %>
+                <%= resolution?.student?.fullName %>
             </td>
             <td>
                 <button class="btn btn-secondary" onClick="onDetail('<%= resolution?._id %>')"><i class="fas fa-edit"></i></button>

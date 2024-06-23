@@ -8,7 +8,7 @@ Router.get('/:id/assign', CommonUtil.wrapperController(questionController.getAss
 Router.get('/:id/answers/:answerId', CommonUtil.wrapperController(questionController.getAnswer));
 Router.get('/:id/answers', CommonUtil.wrapperController(questionController.getAnswers));
 Router.get('/:id/solve', CommonUtil.wrapperController(questionController.getSolve));
-Router.post('/:id/solve', CommonUtil.wrapperController(questionController.postSolve));
+Router.put('/:id/solve', CommonUtil.wrapperController(questionController.putSolve));
 Router.get('/:id', CommonUtil.wrapperController(questionController.getDetail));
 Router.put('/:id', CommonUtil.wrapperController(questionController.put));
 Router.delete('/:id', CommonUtil.wrapperController(questionController.delete));

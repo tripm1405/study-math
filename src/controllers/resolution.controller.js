@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
 import ViewUtil from "#root/utils/view.util.js";
-import BlockModel from "#root/models/block.model.js";
 import ResolutionModel from "#root/models/resolution.model.js";
 
 export default {
@@ -19,7 +17,10 @@ export default {
       filter.questionId = questionId;
     }
 
-    const resolutions = await ResolutionModel.find(filter);
+    const resolutions = await ResolutionModel
+      .find(filter)
+      .populate('student')
+      .populate('questionId');
 
     const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/resolution.page.ejs`;
     res.render(view, ViewUtil.getOptions({

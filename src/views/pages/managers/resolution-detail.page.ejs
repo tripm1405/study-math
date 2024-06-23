@@ -71,32 +71,20 @@
 <input name="questionId" type="hidden" value="<%= data?.resolution?.questionId %>" />
 
 <script>
-  const idInput = document.querySelector('input[name="id"]');
-  const questionIdInput = document.querySelector('input[name="questionId"]');
   let solveWorkspace;
 
-  init();
+  // init
+  (async () => {
+    const id = document.querySelector('input[name="id"]')?.value;
+    const questionId = document.querySelector('input[name="questionId"]')?.value;
 
-  async function submit() {
-    const formData = new FormData();
-    formData.set('score', document.querySelector('input[name="score"]').value);
-    await axios.put(`/api/resolutions/${idInput?.value}/mark`, formData);
+    await K.loadBlocks({
+      params: {
+        all: true,
+      },
+    });
 
-    window.location.href = `/resolutions`;
-  }
-
-  async function init() {
-    const blocks = await initBlocks();
-
-    for (const block of blocks) {
-      Blockly.Blocks[block.type] = {
-        init: function () {
-          this.jsonInit(block);
-        }
-      };
-    }
-
-    const questionRes = await axios.get(`/api/questions/${questionIdInput?.value}`);
+    const questionRes = await axios.get(`/api/questions/${questionId}`);
     const question = questionRes?.data?.result?.question;
     const toolboxContents = question?.toolbox?.blocks?.blocks?.map(block => {
       return {
@@ -105,18 +93,42 @@
       }
     }) || [];
 
-    solveWorkspace = Blockly.inject(document.getElementById('review-workspace'), {
-      toolbox: {
-        contents: toolboxContents,
+    solveWorkspace = K.initWorkspace({
+      node: document.getElementById('review-workspace'),
+      options: {
+        toolbox: {
+          contents: toolboxContents,
+        },
+        readOnly: true,
       },
-      readOnly: true,
-    })
+    });
 
-    Blockly.serialization.workspaces.load(question?.blocksDefault, solveWorkspace);
+    const resolution = await (async () => {
+      const res = await axios.get(`/api/resolutions/${id}`);
+      return res?.data?.result?.resolution;
+    })();
+
+    console.log('resolution', resolution);
+
+    Blockly.serialization.workspaces.load(resolution?.content, solveWorkspace);
+  })();
+
+  async function submit() {
+    const id = document.querySelector('input[name="id"]')?.value;
+    const score = document.querySelector('input[name="score"]')?.value;
+    const formData = new FormData();
+    formData.set('score', score);
+    await axios.put(`/api/resolutions/${id}/mark`, formData);
+
+    window.location.href = `/resolutions`;
   }
 
   async function initBlocks() {
-    const blocksRes = await axios.get('/api/blocks');
+    const blocksRes = await axios.get('/api/blocks', {
+      params: {
+        all: true,
+      },
+    });
     return blocksRes?.data?.result?.blocks || [];
   }
 </script>

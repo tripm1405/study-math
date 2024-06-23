@@ -137,19 +137,18 @@ export default {
     };
 
     for (const studentId of studentIds) {
-      const isExists = await ResolutionModel.findOne({
+      await ResolutionModel.findOneAndUpdate({
         questionId: id,
-        studentId: studentId,
-      });
-
-      if (isExists) {{
-        continue;
-      }}
-
-      await ResolutionModel.create({
-        questionId: id,
-        studentId: studentId,
-        createdById: res.locals.currentUser?._id,
+        student: studentId,
+      }, {
+        $setOnInsert: {
+          questionId: id,
+          student: studentId,
+          createdBy: res.locals.currentUser?._id,
+        },
+      }, {
+        upsert: true,
+        new: true
       });
     }
 

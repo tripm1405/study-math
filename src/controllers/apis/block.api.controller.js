@@ -12,10 +12,11 @@ export default {
   getList: async (req, res) => {
     const {
       questionId,
+      all,
     } = req?.query;
 
     const blocks = await (async () => {
-      const filter = {
+      const filter = all ? {} : {
         questionId: questionId,
       };
 
