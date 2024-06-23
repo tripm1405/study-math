@@ -45,10 +45,10 @@
     <script src="/scripts/init.script.js"></script>
 </head>
 <body>
-  <div style="width: 100vw; height: 100vh; overflow: hidden;">
+  <div class="d-flex flex-column" style="width: 100vw; height: 100vh; overflow: hidden;">
       <header class="header">
           <div class="header-content">
-              <img src="/images/logo.png" alt="Study Math Logo" class="logo" width="100px" height="100px">
+              <img src="/images/logo.png" alt="Study Math Logo" class="logo">
               <div class="search-bar">
                   <form action="/search" method="GET">
                       <input name="search" type="text" value="<%= data?.search %>" class="form-control" placeholder="Tìm kiếm...">
@@ -70,7 +70,7 @@
               </div>
           </div>
       </header>
-      <div class="d-flex h-full">
+      <div class="d-flex h-full" style="flex: 1 1;">
           <div class="h-full">
               <nav class="sidebar" style="background-color:#fff8f3; flex: 0 0 240px; overflow-y: auto; overflow-x: hidden;">
                   <div class="sidebar-content">
