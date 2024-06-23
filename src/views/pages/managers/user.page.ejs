@@ -3,6 +3,7 @@
         background-color: aquamarine;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
+
     .toast-container {
         position: fixed;
         top: 1rem;
@@ -13,65 +14,68 @@
 <div class="h-100 w-100">
     <div style="justify-content:space-between; display:flex">
         <h1>Quản lí tài khoản</h1>
-        <button 
+        <button
                 style="background-color:#008080; border:none; color: white; padding: 5px 10px; text-align: center; font-size: 18px; margin: 4px 2px; cursor: pointer; border-radius: 12px; transition: background-color 0.3s, box-shadow 0.3s;height:40px;"
-                data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo tài
-            khoản
+                onClick="upsert('<%= data?.newId %>')">
+            Tạo tài khoản
         </button>
     </div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Mã tài khoản</th>
-            <th scope="col">Chức danh</th>
-            <th scope="col">Họ tên</th>
-            <th scope="col">Email</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <% data.users.forEach((user) => { %>
+    <div>
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <th scope="row"><%= user.index %></th>
-                <td><%= user.code %></td>
-                <td><%= user.type %></td>
-                <td><%= user.fullName %></td>
-                <td><%= user.email %></td>
-                <td>
-                    <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= user._id %>')"><i
-                                class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
-                                class="fas fa-trash-alt"></i></button>
-                </td>
+                <th scope="col">STT</th>
+                <th scope="col">Mã tài khoản</th>
+                <th scope="col">Chức danh</th>
+                <th scope="col">Họ tên</th>
+                <th scope="col">Email</th>
+                <th style="width: 100px;"></th>
             </tr>
-        <% }) %>
-        </tbody>
-    </table>
-    <nav>
-        <ul class="pagination">
-            <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-                <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-            </li>
-            <% for(let i = 1; i <= data.totalPages; i++) { %>
-                <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </thead>
+            <tbody>
+            <% data.users.forEach((user) => { %>
+                <tr>
+                    <th scope="row"><%= user.index %></th>
+                    <td><%= user.code %></td>
+                    <td><%= user.type %></td>
+                    <td><%= user.fullName %></td>
+                    <td><%= user.email %></td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= user._id %>')"><i
+                                    class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
+                                    class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
                 </li>
-            <% } %>
-            <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-                <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-            </li>
-        </ul>
-    </nav>
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <strong class="me-auto">Error</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                An error occurred while deleting the user.
-            </div>
+                <% for(let i = 1; i <= data.totalPages; i++) { %>
+                    <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            An error occurred while deleting the user.
         </div>
     </div>
 </div>
@@ -83,12 +87,12 @@
 
   async function del(id) {
     try {
-        await axios.delete(`/users/${id}`);
-        location.reload();
+      await axios.delete(`/users/${id}`);
+      location.reload();
     } catch (error) {
-        console.error('Delete Error:', error);
-        const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-        errorToast.show();
+      console.error('Delete Error:', error);
+      const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+      errorToast.show();
     }
   }
 </script>

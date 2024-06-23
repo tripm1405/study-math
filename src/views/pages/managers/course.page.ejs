@@ -13,55 +13,55 @@
             data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khóa học
         </button>
     </div>
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="active-courses-tab" data-bs-toggle="tab"
-                    data-bs-target="#active-courses" type="button" role="tab" aria-controls="active-courses"
-                    aria-selected="true">Khóa học đang mở
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="completed-courses-tab" data-bs-toggle="tab" data-bs-target="#completed-courses"
-                    type="button" role="tab" aria-controls="completed-courses" aria-selected="false">Khóa học đã kết
-                thúc
-            </button>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="active-courses" role="tabpanel" aria-labelledby="active-courses-tab">
-            <table class="table table-striped mt-3">
-                <thead>
+    <div>
+        <table class="table table-striped mt-3">
+            <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Mã khóa học</th>
+                <th scope="col">Tên khóa học</th>
+                <th scope="col">Giáo viên</th>
+                <th scope="col">Thời gian tạo</th>
+                <th style="width: 100px;"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% let index = 1; %>
+            <% for (const _class of (data?.courses || [])) { %>
                 <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Mã khóa học</th>
-                    <th scope="col">Tên khóa học</th>
-                    <th scope="col">Giáo viên</th>
-                    <th scope="col">Thời gian tạo</th>
-                    <th scope="col"></th>
+                    <th scope="row"><%= index++ %></th>
+                    <td><%= _class?.code %></td>
+                    <td><%= _class?.name %></td>
+                    <td><%= _class?.createdBy?.fullName %></td>
+                    <td><%= _class.createdAt.getFullYear() + '-' + String(_class.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(_class.createdAt.getDate()).padStart(2, '0') + ' ' + String(_class.createdAt.getHours()).padStart(2, '0') + ':' + String(_class.createdAt.getMinutes()).padStart(2, '0') %></td>
+                    <td class="align-middle">
+                        <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= _class._id %>')"><i
+                                    class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onClick="del('<%= _class._id %>')"><i
+                                    class="fas fa-trash-alt"></i></button>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                <% let index = 1; %>
-                <% for (const _class of (data?.courses || [])) { %>
-                    <tr>
-                        <th scope="row"><%= index++ %></th>
-                        <td><%= _class?.code %></td>
-                        <td><%= _class?.name %></td>
-                        <td><%= _class?.createdBy?.fullName %></td>
-                        <td><%= _class.createdAt.getFullYear() + '-' + String(_class.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(_class.createdAt.getDate()).padStart(2, '0') + ' ' + String(_class.createdAt.getHours()).padStart(2, '0') + ':' + String(_class.createdAt.getMinutes()).padStart(2, '0') %></td>
-                        <td class="align-middle">
-                            <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= _class._id %>')"><i
-                                        class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger btn-sm" onClick="del('<%= _class._id %>')"><i
-                                        class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
+            <% } %>
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+                </li>
+                <% for(let i = 1; i <= data.totalPages; i++) { %>
+                    <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
                 <% } %>
-                </tbody>
-            </table>
-        </div>
+                <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
+
 <div class="toast-container position-fixed top-0 end-0 p-3">
     <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
@@ -73,21 +73,6 @@
         </div>
     </div>
 </div>
-<nav>
-    <ul class="pagination">
-        <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-            <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-        </li>
-        <% for(let i = 1; i <= data.totalPages; i++) { %>
-            <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-            </li>
-        <% } %>
-        <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-            <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-        </li>
-    </ul>
-</nav>
 
 <script>
     function upsert(id) {

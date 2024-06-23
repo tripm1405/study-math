@@ -1,6 +1,6 @@
 <div class="h-full w-full">
     <h1 style="margin-bottom: 20px; color: #333;">Chi tiết khóa học</h1>
-    <form id="form" action="/courses">
+    <form onsubmit="onSubmit(event)">
         <div class="mb-3">
             <label for="code" class="form-label">Mã khóa học</label>
             <input 
@@ -109,25 +109,25 @@
     
       const method = document.getElementById('method').value;
       const id = document.getElementById('id').value;
-    
-      document.getElementById('form').addEventListener('submit', async event => {
-          event.preventDefault();
-    
-          const formData = new FormData(event.target);
-    
-          try {
-              if (method === 'PUT') {
-                  await axios.put(`/courses/${id}`, formData, {
-                      headers: { 'Content-Type': 'multipart/form-data' }
-                  });
-              } else {
-                  await axios.post('/courses', formData, {
-                      headers: { 'Content-Type': 'multipart/form-data' }
-                  });
-              }
-              window.location.href = '/courses';
-          } catch (error) {
-              console.error('There was an error!', error);
+
+      async function onSubmit(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+
+        try {
+          if (method === 'PUT') {
+            await axios.put(`/courses/${id}`, formData, {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            });
+          } else {
+            await axios.post('/courses', formData, {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            });
           }
-      });
+          window.location.href = '/courses';
+        } catch (error) {
+          console.error('There was an error!', error);
+        }
+      }
     </script>  

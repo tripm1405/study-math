@@ -1,12 +1,15 @@
 <div class="h-100 w-100">
-    <h1>Quản lí bài toán</h1>
-    <button class="btn btn-primary" onClick="upsert('<%= data?.newId %>')">Tạo bài toán</button>
+    <div style="justify-content:space-between; display:flex">
+        <h1>Quản lí bài toán</h1>
+        <button class="k-btn-create" onClick="upsert('<%= data?.newId %>')">Tạo bài toán</button>
+    </div>
     <div>
         <table class="table table-striped mt-3">
             <thead>
             <tr>
                 <th>STT</th>
                 <th>Mã bài toán</th>
+                <th style="width: 100px;"></th>
             </tr>
             </thead>
             <tbody>
@@ -15,11 +18,11 @@
                 <tr>
                     <th scope="row"><%= index++ %></th>
                     <td><%= question?.code %></td>
-                    <td>
-                        <button class="btn btn-secondary" onClick="upsert('<%= question?._id %>')">
+                    <td >
+                        <button class="btn btn-secondary btn-sm" onClick="upsert('<%= question?._id %>')">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-danger" onClick="deleteLesson('<%= question?._id %>')">
+                        <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= question?._id %>')">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
@@ -27,23 +30,22 @@
             <% } %>
             </tbody>
         </table>
-    </div>
-
-    <nav>
-        <ul class="pagination">
-            <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-                <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-            </li>
-            <% for(let i = 1; i <= data.totalPages; i++) { %>
-                <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
                 </li>
-            <% } %>
-            <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-                <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-            </li>
-        </ul>
-    </nav>
+                <% for(let i = 1; i <= data.totalPages; i++) { %>
+                    <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
 
 <script>
