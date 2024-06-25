@@ -90,7 +90,7 @@ export default {
       code: code,
       name: name,
       note: note,
-      courseId: courseId,
+      course: courseId,
       createdBy: res?.locals?.currentUser?._id,
     });
 
@@ -108,7 +108,7 @@ export default {
     const newLesson = await LessonModel.findByIdAndUpdate(id, {
       name: name,
       note: note,
-      courseId: courseId,
+      course: courseId,
     });
 
     res.json({

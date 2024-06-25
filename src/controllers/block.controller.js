@@ -59,7 +59,7 @@ export default {
       name: name,
       content: content,
       note: note,
-      createdById: res?.locals?.currentUser?._id,
+      createdBy: res?.locals?.currentUser?._id,
     });
 
     res.json({

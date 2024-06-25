@@ -50,8 +50,8 @@ export default {
             code: code,
             name: name,
             note: note,
-            userIds: userIds,
-            createdById: res?.locals?.currentUser?._id,
+            users: userIds,
+            createdBy: res?.locals?.currentUser?._id,
         });
 
         res.json({
@@ -68,7 +68,7 @@ export default {
         const newClass = await ClassModel.findByIdAndUpdate(id,{
             name: name,
             note: note,
-            userIds: userIds,
+            users: userIds,
         });
 
         res.json({

@@ -21,7 +21,7 @@ const schema = new mongoose.Schema({
   level: {
     type: String, // ['Easy', 'Normal', 'Hard']
   },
-  lessonId: {
+  lesson: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.LESSON,
   },

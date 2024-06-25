@@ -27,17 +27,17 @@ export default {
     }).lean();
 
     const answers = await AnswerModel.find({}).lean();
-    const answersGroupByQuestionId = answers.reduce((result, curr) => {
+    const answersGroupByQuestion = answers.reduce((result, curr) => {
       return {
-        [curr.questionId]: [
-          ...(result?.questionId || []),
+        [curr.question]: [
+          ...(result?.question || []),
           curr,
         ]
       }
     }, {});
 
     for (const resolution of resolutions) {
-      const answers = answersGroupByQuestionId[resolution?.questionId];
+      const answers = answersGroupByQuestion[resolution?.question];
       if (!answers) {
         continue;
       }
@@ -77,7 +77,7 @@ export default {
 
     const resolution = await ResolutionModel
       .findOne({
-        questionId: questionId,
+        question: questionId,
         student: res.locals?.currentUser?._id,
       })
       .lean();

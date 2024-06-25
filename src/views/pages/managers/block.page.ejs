@@ -29,7 +29,7 @@
         <tr>
             <th scope="row"><%= index++ %></th>
             <td><%= block?.name %></td>
-            <td><%= block?.createdById %></td>
+            <td><%= block?.createdBy?.fullName %></td>
             <td><%= block.createdAt.getFullYear() + '-' + String(block.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(block.createdAt.getDate()).padStart(2, '0') + ' ' + String(block.createdAt.getHours()).padStart(2, '0') + ':' + String(block.createdAt.getMinutes()).padStart(2, '0') %></td>
             <td class="align-middle">
                 <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i></button>

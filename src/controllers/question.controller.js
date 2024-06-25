@@ -40,7 +40,7 @@ export default {
 
     const resolutions = await ResolutionModel
       .find({
-        questionId: id,
+        question: id,
       })
       .lean();
 
@@ -50,7 +50,7 @@ export default {
       .lean() || {};
     const lessons = await LessonModel.find({});
     const blocks = await BlockModel.find({
-      questionId: new mongoose.Types.ObjectId(id),
+      question: new mongoose.Types.ObjectId(id),
     });
 
     const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question-detail.page.ejs`;
@@ -79,7 +79,7 @@ export default {
       blocksDefault: blocksDefault,
       toolbox: toolbox,
       result: result,
-      lessonId: lessonId,
+      lesson: lessonId,
       answers: answers,
       createdBy: res?.locals?.currentUser?._id,
     });
@@ -100,7 +100,7 @@ export default {
       result: result,
       blocksDefault: blocksDefault,
       toolbox: toolbox,
-      lessonId: lessonId,
+      lesson: lessonId,
       answers: answers,
     });
 
@@ -130,11 +130,11 @@ export default {
     const question = await QuestionModel.findById(id);
 
     const resolution = await ResolutionModel.findOneAndUpdate({
-      questionId: id,
+      question: id,
       student: res.locals.currentUser?._id,
     }, {
       $setOnInsert: {
-        questionId: id,
+        question: id,
         student: res.locals.currentUser?._id,
         createdBy: res.locals.currentUser?._id,
       },
@@ -160,7 +160,7 @@ export default {
     } = req.params;
 
     await ResolutionModel.findOneAndUpdate({
-      questionId: id,
+      question: id,
       createdBy: res.locals.currentUser?._id,
     }, {
       content: content,
@@ -175,7 +175,7 @@ export default {
 
     const newId = new mongoose.Types.ObjectId();
     const answers = await AnswerModel.find({
-      questionId: id,
+      question: id,
     });
 
     const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/answer.page.ejs`;
@@ -209,7 +209,7 @@ export default {
     } = req.params;
 
     const resolutions = await ResolutionModel.find({
-      questionId: id,
+      question: id,
     }).lean();
     const resolutionStudentIdSet = new Set(resolutions.map(resolution => resolution.studentId?.toString()));
 

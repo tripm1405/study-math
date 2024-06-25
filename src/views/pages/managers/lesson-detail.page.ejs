@@ -44,7 +44,7 @@
                 <% for (const course of (data?.courses || [])) { %>
                     <option 
                         value="<%= course?._id %>" 
-                        <%= data?.lesson?.courseId === course?._id ? 'selected' : '' %>
+                        <%= data?.lesson?.course === course?._id ? 'selected' : '' %>
                     ><%= course?.code %></option>
                 <% } %>
             </select>

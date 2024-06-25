@@ -12,11 +12,11 @@ const schema = new mongoose.Schema({
   note: {
     type: String,
   },
-  userIds: [{
+  users: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
   }],
-  createdById: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
   },

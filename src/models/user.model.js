@@ -22,7 +22,7 @@ const schema = new mongoose.Schema({
   type: {
     type: String, // ['Admin', 'GiaoVien', 'HocSinh']
   },
-  createdById: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
   },

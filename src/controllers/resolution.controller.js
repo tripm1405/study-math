@@ -14,13 +14,13 @@ export default {
       },
     };
     if (questionId) {
-      filter.questionId = questionId;
+      filter.question = questionId;
     }
 
     const resolutions = await ResolutionModel
       .find(filter)
       .populate('student')
-      .populate('questionId');
+      .populate('question');
 
     const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/resolution.page.ejs`;
     res.render(view, ViewUtil.getOptions({

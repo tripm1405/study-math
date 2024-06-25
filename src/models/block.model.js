@@ -31,11 +31,11 @@ const schema = new mongoose.Schema({
   tooltip: {
     type: String,
   },
-  questionId: {
+  question: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.QUESTION,
   },
-  createdById: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
   },

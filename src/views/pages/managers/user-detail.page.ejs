@@ -105,9 +105,9 @@
                 <% if (_class.users.includes(data.user._id)) { %>
                     <tr>
                         <td><%= index++ %></td>
-                        <td><%= _class.code %></td>
-                        <td><%= _class.name %></td>
-                        <td><%= _class.createdById %></td>
+                        <td><%= _class?.code %></td>
+                        <td><%= _class?.name %></td>
+                        <td><%= _class?.createdBy?.fullName %></td>
                     </tr>
                 <% } %>
             <% } %>

@@ -1,4 +1,11 @@
+import {rootPath} from "#root/public/index.js";
+
 export default class FileUtil {
+  static Path = class {
+    static Blockly = `${rootPath}/blockly`;
+    static Image = `${rootPath}/images`;
+  }
+
   static RootPaths = class {
     static Blockly = 'http://localhost:5500/blockly';
   }

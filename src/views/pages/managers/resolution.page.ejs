@@ -73,7 +73,7 @@
         <% for (const resolution of data?.resolutions || []) { %>
         <tr onclick="onDetail('<%= resolution?._id %>')">
             <td>
-                <%= resolution?.questionId?.name %>
+                <%= resolution?.question?.name %>
             </td>
             <td>
                 <%= resolution?.student?.fullName %>

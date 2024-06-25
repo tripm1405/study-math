@@ -17,7 +17,7 @@ const schema = new mongoose.Schema({
   deadline: {
     type: Date,
   },
-  questionId: {
+  question: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.QUESTION,
   },

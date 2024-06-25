@@ -67,7 +67,7 @@ export default {
     });
     const user = await UserModel.findById(id).lean() || {};
     const classes = await ClassModel.find({
-      userIds: user?._id,
+      users: user?._id,
     });
 
     res.render('pages/managers/user-detail.page.ejs', ViewUtil.getOptions({
@@ -90,7 +90,7 @@ export default {
       email: email,
       type: type,
       classIds: classIds,
-      createdById: res?.locals?.currentUser?._id,
+      createdBy: res?.locals?.currentUser?._id,
     });
 
     res.json({

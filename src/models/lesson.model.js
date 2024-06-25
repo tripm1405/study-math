@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
   note: {
     type: String,
   },
-  courseId: {
+  course: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.COURSE,
   },

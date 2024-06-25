@@ -45,7 +45,7 @@ export default {
     const course = await CourseModel.findById(id) || {};
 
     const lessons = await LessonModel.find({
-      courseId: course?._id,
+      course: course?._id,
     });
 
     const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/course-detail.page.ejs`;

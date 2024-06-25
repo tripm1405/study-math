@@ -17,7 +17,7 @@ export default {
 
     const blocks = await (async () => {
       const filter = all ? {} : {
-        questionId: questionId,
+        question: questionId,
       };
 
       const blocks = await BlockModel.find(filter).lean();
@@ -167,7 +167,7 @@ export default {
     }
 
     const filter = {
-      questionId: questionId,
+      question: questionId,
     };
 
     const blocksMapping = await (async () => {
@@ -224,7 +224,7 @@ export default {
           ...blockExists,
           ...CommonUtil.excludedProperties({
             obj: block,
-            properties: ['_id', 'type', 'questionId'],
+            properties: ['_id', 'type', 'question'],
           }),
         }
         : ((id) => {
@@ -232,7 +232,7 @@ export default {
             ...block,
             _id: id,
             type: id,
-            questionId: questionId,
+            question: questionId,
             createdBy: res.locals.currentUser?._id,
           };
         })(new mongoose.Types.ObjectId()));
@@ -261,7 +261,7 @@ export default {
     } = req?.query;
 
     const filter = {
-      questionId: questionId,
+      question: questionId,
     };
 
     const blocks = await (async () => {

@@ -33,16 +33,16 @@ export default {
           .reduce((result, resolution) => {
             return {
               ...result,
-              [resolution.questionId]: (result?.[resolution.questionId] || 0) + 1,
+              [resolution.question]: (result?.[resolution.question] || 0) + 1,
             }
           }, {});
         const resolutionsOrderByAmount = Object.keys(resolutionsCount)
-          .reduce((result, questionId) => {
+          .reduce((result, question) => {
             return [
               ...result,
               {
-                id: questionId,
-                amount: resolutionsCount[questionId]
+                id: question,
+                amount: resolutionsCount[question]
               }
             ]
           }, [])
@@ -71,7 +71,7 @@ export default {
         res.render('pages/home.page.ejs', ViewUtil.getOptions({
           data: {
             questions: resolutions.map(resolution => {
-              return questionMappingById[resolution?.questionId?.toString()];
+              return questionMappingById[resolution?.question?.toString()];
             }),
           },
         }));
@@ -88,7 +88,7 @@ export default {
         res.render('pages/home.page.ejs', ViewUtil.getOptions({
           data: {
             questions: resolutions.map(resolution => {
-              return questionMappingById[resolution?.questionId?.toString()];
+              return questionMappingById[resolution?.question?.toString()];
             }),
           },
         }));

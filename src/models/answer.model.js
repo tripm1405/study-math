@@ -20,12 +20,12 @@ const schema = new mongoose.Schema({
   note: {
     type: String,
   },
-  questionId: {
+  question: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.QUESTION,
     required : true,
   },
-  createdById: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
   },

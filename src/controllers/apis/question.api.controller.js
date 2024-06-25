@@ -19,7 +19,7 @@ export default {
     const question = await QuestionModel.findById(id).lean() || {};
     const lessons = await LessonModel.find({});
     const blocks = await BlockModel.find({
-      questionId: new mongoose.Types.ObjectId(id),
+      question: new mongoose.Types.ObjectId(id),
     });
 
     res.json(ApiUtil.JsonRes({
@@ -83,7 +83,7 @@ export default {
       content: CommonUtil.jsonStringify(content, null),
       score: score,
       note: note,
-      questionId: id,
+      question: id,
     });
 
     res.json(ApiUtil.JsonRes({
@@ -138,11 +138,11 @@ export default {
 
     for (const studentId of studentIds) {
       await ResolutionModel.findOneAndUpdate({
-        questionId: id,
+        question: id,
         student: studentId,
       }, {
         $setOnInsert: {
-          questionId: id,
+          question: id,
           student: studentId,
           createdBy: res.locals.currentUser?._id,
         },
