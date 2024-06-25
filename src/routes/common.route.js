@@ -10,6 +10,7 @@ Router.get('/search', AuthMiddleware.checkSingedIn, CommonUtil.wrapperController
 Router.get('/sign-in', CommonUtil.wrapperController(commonController.getSignIn));
 Router.post('/sign-in', CommonUtil.wrapperController(commonController.postSignIn));
 Router.get('/sign-out', AuthMiddleware.checkSingedIn, CommonUtil.wrapperController(commonController.getSignOut));
+Router.get('/profile', AuthMiddleware.checkSingedIn, CommonUtil.wrapperController(commonController.getProfile));
 Router.get('/', AuthMiddleware.checkSingedIn, CommonUtil.wrapperController(commonController.getHome));
 Router.use(CommonUtil.wrapperController(commonController.getNotFound));
 

@@ -103,6 +103,17 @@ export default {
       }
     }
   },
+  getProfile: async (req, res) => {
+    const user = await UserModel.findOne({
+      _id: res.locals.currentUser?._id,
+    });
+
+    res.render('pages/profile.page.ejs', ViewUtil.getOptions({
+      data: {
+        user: user,
+      },
+    }));
+  },
   getSearch: async (req, res) => {
     const {search} = req.query;
 
