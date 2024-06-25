@@ -52,9 +52,11 @@ export default {
 
         res.render('pages/home.page.ejs', ViewUtil.getOptions({
           data: {
-            questions: resolutionsOrderByAmount.map(e => {
-              return questionMappingById[e?.id?.toString()];
-            }),
+            questions: resolutionsOrderByAmount
+              .map(e => {
+                return questionMappingById[e?.id?.toString()];
+              })
+              .filter(question => Boolean(question)),
           },
         }));
 
@@ -70,9 +72,11 @@ export default {
 
         res.render('pages/home.page.ejs', ViewUtil.getOptions({
           data: {
-            questions: resolutions.map(resolution => {
-              return questionMappingById[resolution?.question?.toString()];
-            }),
+            questions: resolutions
+              .map(resolution => {
+                return questionMappingById[resolution?.question?.toString()];
+              })
+              .filter(question => Boolean(question)),
           },
         }));
 
@@ -87,9 +91,11 @@ export default {
 
         res.render('pages/home.page.ejs', ViewUtil.getOptions({
           data: {
-            questions: resolutions.map(resolution => {
-              return questionMappingById[resolution?.question?.toString()];
-            }),
+            questions: resolutions
+              .map(resolution => {
+                return questionMappingById[resolution?.question?.toString()];
+              })
+              .filter(question => Boolean(question)),
           },
         }));
 
