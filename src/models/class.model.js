@@ -12,6 +12,7 @@ const schema = new mongoose.Schema({
   note: {
     type: String,
   },
+  // user.type === 'Student'
   users: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,

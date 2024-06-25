@@ -44,7 +44,8 @@ export default {
       success: false, id: id,
     });
 
-    const course = await CourseModel.findById(id) || {};
+    const course = await CourseModel.findById(id)
+      .populate('createdBy')|| {};
 
     const lessons = await LessonModel.find({
       course: course?._id,

@@ -4,7 +4,7 @@
         <div class="w-full">
             <div>Mã <%= data?.course?.code %></div>
             <div>Tên <%= data?.course?.name %></div>
-            <div>Người tạo <%= data?.course?.createdBy?.name %></div>
+            <div>Người tạo <%= data?.course?.createdBy?.fullName %></div>
             <div>
                 Tạo lúc
                 <%= ((date) => {

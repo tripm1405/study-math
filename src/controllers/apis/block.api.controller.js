@@ -7,6 +7,7 @@ import BlocklyUtil from "#root/utils/blockly.util.js";
 import CommonUtil from "#root/utils/common.util.js";
 import {rootPath} from "#root/public/index.js";
 import FileModel from "#root/models/file.model.js";
+import FileUtil from "#root/utils/file.util.js";
 
 export default {
   getList: async (req, res) => {

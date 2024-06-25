@@ -21,6 +21,7 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.QUESTION,
   },
+  // user.type === Student
   student: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,

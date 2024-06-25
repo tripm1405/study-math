@@ -39,7 +39,7 @@
 <input name="questionId" type="hidden" value="<%= data?.question %>" />
 
 <script>
-    function detail(id) {
+    function upsert(id) {
         const questionId = document.querySelector('input[name="questionId"]')?.value;
         window.location.href = `/questions/${questionId}/answers/${id}`;
     }
