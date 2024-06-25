@@ -4,32 +4,34 @@ import CourseModel from "#root/models/course.model.js";
 import AuthUtil from "#root/utils/auth.util.js";
 import LessonModel from "#root/models/lesson.model.js";
 import UserModel from "#root/models/user.model.js";
+import CommonUtil from "#root/utils/common.util.js";
 
 export default {
   get: async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const pageSize = 10;
-    const totalCourses = await CourseModel.countDocuments({type: {$ne: 'Admin'}});
-    const totalPages = Math.ceil(totalCourses / pageSize);
-
-    const teachers = await UserModel.find({
-      type: AuthUtil.UserType.Teacher,
-    });
-    const courses = await CourseModel.find({})
-      .skip((page - 1) * pageSize)
-      .limit(pageSize)
-      .populate('createdBy')
-      .lean();
-
-    const paginatedCourses = courses.map((course, index) => ({
-      ...course, index: (page - 1) * pageSize + index + 1
-    }));
     const newId = new mongoose.Types.ObjectId();
+    const {
+      page: page,
+      totalPages: totalPages,
+      models: models,
+    } = await CommonUtil.Pagination.get({
+      query: req.query,
+      Model: CourseModel,
+      filter: {
+        type: {
+          $ne: 'Admin',
+        },
+      },
+      extendGet: get => {
+        return get
+          .populate('createdBy')
+          .lean();
+      },
+    })
 
     const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/course.page.ejs`;
     res.render(view, ViewUtil.getOptions({
       data: {
-        courses: courses,
+        courses: models,
         newId: newId,
         totalPages: totalPages,
         currentPage: page,

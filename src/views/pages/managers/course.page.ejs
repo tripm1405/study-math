@@ -27,17 +27,17 @@
             </thead>
             <tbody>
             <% let index = 1; %>
-            <% for (const _class of (data?.courses || [])) { %>
+            <% for (const course of (data?.courses || [])) { %>
                 <tr>
-                    <th scope="row"><%= index++ %></th>
-                    <td><%= _class?.code %></td>
-                    <td><%= _class?.name %></td>
-                    <td><%= _class?.createdBy?.fullName %></td>
-                    <td><%= _class.createdAt.getFullYear() + '-' + String(_class.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(_class.createdAt.getDate()).padStart(2, '0') + ' ' + String(_class.createdAt.getHours()).padStart(2, '0') + ':' + String(_class.createdAt.getMinutes()).padStart(2, '0') %></td>
+                    <th scope="row"><%= course?.index %></th>
+                    <td><%= course?.code %></td>
+                    <td><%= course?.name %></td>
+                    <td><%= course?.createdBy?.fullName %></td>
+                    <td><%= course.createdAt.getFullYear() + '-' + String(course.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(course.createdAt.getDate()).padStart(2, '0') + ' ' + String(course.createdAt.getHours()).padStart(2, '0') + ':' + String(course.createdAt.getMinutes()).padStart(2, '0') %></td>
                     <td class="align-middle">
-                        <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= _class._id %>')"><i
+                        <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= course._id %>')"><i
                                     class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-sm" onClick="del('<%= _class._id %>')"><i
+                        <button class="btn btn-danger btn-sm" onClick="del('<%= course._id %>')"><i
                                     class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
