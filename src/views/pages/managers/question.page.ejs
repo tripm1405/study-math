@@ -1,3 +1,9 @@
+<style>
+    table tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+</style>
 <div class="h-100 w-100">
     <div style="justify-content:space-between; display:flex">
         <h1>Quản lí bài toán</h1>
@@ -9,19 +15,16 @@
             <tr>
                 <th>STT</th>
                 <th>Mã bài toán</th>
-                <th style="width: 100px;"></th>
+                <th scope="col" style="width: 50px;"></th>
             </tr>
             </thead>
             <tbody>
             <% let index = 1; %>
             <% for (const question of (data?.questions || [])) { %>
-                <tr>
+                <tr onClick="upsert('<%= question?._id %>')">
                     <th scope="row"><%= index++ %></th>
                     <td><%= question?.code %></td>
                     <td >
-                        <button class="btn btn-secondary btn-sm" onClick="upsert('<%= question?._id %>')">
-                            <i class="fas fa-edit"></i>
-                        </button>
                         <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= question?._id %>')">
                             <i class="fas fa-trash-alt"></i>
                         </button>

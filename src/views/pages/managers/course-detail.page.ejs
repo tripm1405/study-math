@@ -1,3 +1,9 @@
+<style>
+    table tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+</style>
 <div class="h-full w-full">
     <h1 style="margin-bottom: 20px; color: #333;">Chi tiết khóa học</h1>
     <form onsubmit="onSubmit(event)">
@@ -48,13 +54,13 @@
                 <th scope="col">Thời gian tạo</th>
                 <th scope="col">Thời gian kết thúc</th>
                 <th scope="col">Số người đã tham gia</th>
-                <th scope="col">Hành động</th>
+                <th scope="col" style="width: 50px;"></th>
             </tr>
             </thead>
             <tbody>
             <% let stt = 1; %>
             <% for (const lesson of (data?.lessons || [])) { %>
-                <tr>
+                <tr onClick="upsertLesson('<%= lesson._id %>')">
                     <td><%= stt++ %></td>
                     <td><%= lesson?.code %></td>
                     <td><%= lesson?.name %></td>
@@ -63,7 +69,6 @@
                     <td><%= lesson?.endAt %></td>
                     <td><%= lesson?.participants %></td>
                     <td class="align-middle">
-                        <button class="btn btn-secondary btn-sm me-1" onClick="upsertLesson('<%= lesson._id %>')"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= lesson._id %>')"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>

@@ -3,6 +3,10 @@
       background-color:aquamarine;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   }
+  table tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -20,19 +24,18 @@
         <th>Mã</th>
         <th>Người tạo</th>
         <th>Ngày tạo</th>
-        <th style="width: 100px;"></th>
+        <th style="width: 50px;"></th>
     </tr>
     </thead>
     <tbody>
     <% let index = 1; %>
     <% for (const block of (data?.blocks || [])) { %>
-        <tr>
+        <tr onClick="upsert('<%= block?._id %>')">
             <th scope="row"><%= index++ %></th>
             <td><%= block?.name %></td>
             <td><%= block?.createdBy?.fullName %></td>
             <td><%= block.createdAt.getFullYear() + '-' + String(block.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(block.createdAt.getDate()).padStart(2, '0') + ' ' + String(block.createdAt.getHours()).padStart(2, '0') + ':' + String(block.createdAt.getMinutes()).padStart(2, '0') %></td>
             <td class="align-middle">
-                <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= block?._id %>')"><i class="fas fa-edit"></i></button>
                 <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
             </td>
         </tr>

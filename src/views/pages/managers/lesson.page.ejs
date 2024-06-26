@@ -1,87 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lí bài học</title>
-    <style>
-        .btn:hover {
-            background-color: aquamarine;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-    </style>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
-    <div class="h-100 w-100">
-        <div style="justify-content:space-between; display:flex">
-            <h1>Quản lí bài học</h1>
-            <button class="k-btn-create" onclick="upsert('<%= data?.newId %>')">Tạo bài học</button>
-        </div>
-        <div>
-            <table class="table table-striped mt-3">
-                <thead>
-                <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Mã bài học</th>
-                    <th scope="col">Tên bài học</th>
-                    <th scope="col">Giáo viên</th>
-                    <th scope="col">Thời gian tạo</th>
-                    <th style="width: 100px;"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <% let index = 1; %>
-                <% for (const lesson of (data?.lessons || [])) { %>
-                    <tr>
-                        <th scope="row"><%= index++ %></th>
-                        <td><%= lesson.code %></td>
-                        <td><%= lesson.name %></td>
-                        <td><%= lesson.createdBy?.fullName %></td>
-                        <td><%= lesson.createdAt.getFullYear() + '-' + String(lesson.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(lesson.createdAt.getDate()).padStart(2, '0') + ' ' + String(lesson.createdAt.getHours()).padStart(2, '0') + ':' + String(lesson.createdAt.getMinutes()).padStart(2, '0')%></td>
-                        <td class="align-middle">
-                            <button class="btn btn-secondary btn-sm me-1" onclick="upsert('<%= lesson._id %>')"><i
-                                        class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteLesson('<%= lesson._id %>')"><i
-                                        class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
-                <% } %>
-                </tbody>
-            </table>
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-                    </li>
-                    <% for(let i = 1; i <= data.totalPages; i++) { %>
-                        <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                        </li>
-                    <% } %>
-                    <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+<style>
+    .btn:hover {
+        background-color: aquamarine;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    table tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+</style>
+<div class="h-100 w-100">
+    <div style="justify-content:space-between; display:flex">
+        <h1>Quản lí bài học</h1>
+        <button class="k-btn-create" onclick="upsert('<%= data?.newId %>')">Tạo bài học</button>
     </div>
+    <div>
+        <table class="table table-striped mt-3">
+            <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Mã bài học</th>
+                <th scope="col">Tên bài học</th>
+                <th scope="col">Giáo viên</th>
+                <th scope="col">Thời gian tạo</th>
+                <th scope="col" style="width: 50px;"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% let index = 1; %>
+            <% for (const lesson of (data?.lessons || [])) { %>
+                <tr onclick="upsert('<%= lesson._id %>')">
+                    <th scope="row"><%= index++ %></th>
+                    <td><%= lesson.code %></td>
+                    <td><%= lesson.name %></td>
+                    <td><%= lesson.createdBy?.fullName %></td>
+                    <td><%= lesson.createdAt.getFullYear() + '-' + String(lesson.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(lesson.createdAt.getDate()).padStart(2, '0') + ' ' + String(lesson.createdAt.getHours()).padStart(2, '0') + ':' + String(lesson.createdAt.getMinutes()).padStart(2, '0')%></td>
+                    <td class="align-middle">
+                        <button class="btn btn-danger btn-sm" onclick="deleteLesson('<%= lesson._id %>')"><i
+                                    class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+                </li>
+                <% for(let i = 1; i <= data.totalPages; i++) { %>
+                    <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        function upsert(id) {
-            window.location.href = `/lessons/${id}`;
-        }
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function upsert(id) {
+        window.location.href = `/lessons/${id}`;
+    }
 
-        async function deleteLesson(id) {
-            try {
-                await axios.delete(`/lessons/${id}`);
-                location.reload();
-            } catch (error) {
-                console.error('Error deleting lesson:', error);
-            }
+    async function deleteLesson(id) {
+        try {
+            await axios.delete(`/lessons/${id}`);
+            location.reload();
+        } catch (error) {
+            console.error('Error deleting lesson:', error);
         }
-    </script>
-</body>
-</html>
+    }
+</script>

@@ -1,143 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết lớp học</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <style>
-        .btn:hover {
-            background-color: aquamarine;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-    </style>
-</head>
-<body>
-    <div class="h-full w-full">
-        <h1 style="margin-bottom: 20px; color: #333;">Chi tiết lớp học</h1>
+<style>
+    .btn:hover {
+        background-color: aquamarine;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    table tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+</style>
+<div class="h-full w-full">
+    <h1 style="margin-bottom: 20px; color: #333;">Chi tiết lớp học</h1>
 
-        <form id="form" action="/classes">
-            <div class="mb-3">
-                <label for="code" class="form-label">Mã lớp</label>
-                <input
-                        id="code"
-                        name="code"
-                        type="text"
-                        value="<%= data?.class?.code %>"
-                        placeholder="Nhập mã lớp..."
-                        <%= data?.class?.code && 'disabled' %>
-                        class="form-control"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="name" class="form-label">Tên lớp</label>
-                <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value="<%= data?.class?.name %>"
-                        placeholder="Nhập tên lớp..."
-                        class="form-control"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="users" class="form-label">Danh sách học sinh</label>
-                <select name="users[]" id="users" class="form-select js-select2" multiple style="width: 100%;">
-                    <% for (const user of (data?.users || [])) { %>
-                        <option value="<%= user?._id %>" <%= data?.class?.users?.includes(user?._id) ? 'selected' : null %>><%= user?.code %></option>
-                    <% } %>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="note" class="form-label">Ghi chú</label>
-                <textarea class="form-control"
-                          id="note"
-                          name="note"
-                          placeholder="Nhập ghi chú..."><%= data?.class?.note %></textarea>
-            </div>
-            <div style="display: flex; justify-content: flex-end;">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-            </div>
-        </form>
-    </div>
+    <form id="form" action="/classes">
+        <div class="mb-3">
+            <label for="code" class="form-label">Mã lớp</label>
+            <input
+                    id="code"
+                    name="code"
+                    type="text"
+                    value="<%= data?.class?.code %>"
+                    placeholder="Nhập mã lớp..."
+                    <%= data?.class?.code && 'disabled' %>
+                    class="form-control"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Tên lớp</label>
+            <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value="<%= data?.class?.name %>"
+                    placeholder="Nhập tên lớp..."
+                    class="form-control"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="note" class="form-label">Ghi chú</label>
+            <textarea class="form-control"
+                        id="note"
+                        name="note"
+                        placeholder="Nhập ghi chú..."><%= data?.class?.note %></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end;">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+    </form>
+</div>
 
-    <input type="hidden" id="id" value="<%= data?.class?._id %>" />
-    <input type="hidden" id="method" value="<%= data?.class?._id ? 'PUT' : 'POST' %>" />
+<input type="hidden" id="id" value="<%= data?.class?._id %>" />
+<input type="hidden" id="method" value="<%= data?.class?._id ? 'PUT' : 'POST' %>" />
 
-    <!-- Table to display additional data, e.g., students in the class -->
-    <div style="margin-top: 40px;">
-        <h2 style="margin-bottom: 20px; color: #333;">Danh sách học sinh</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Mã học sinh</th>
-                    <th>Tên học sinh</th>
-                    <th>Email</th>
-                </tr>
+<div style="margin-top: 40px;">
+    <h2 style="margin-bottom: 20px; color: #333;">Danh sách học sinh</h2>
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Mã tài khoản</th>
+                <th scope="col">Họ tên</th>
+                <th scope="col">Email</th>
+                <th style="width: 50px;"></th>
+            </tr>
             </thead>
-            <tbody>
-                <% let index = 1; %>
-                <% for (const user of (data?.users || [])) { %>
-                    <% if (data?.class?.users?.includes(user._id)) { %>
-                        <tr>
-                            <td><%= index++ %></td>
-                            <td><%= user.code %></td>
-                            <td><%= user.username %></td>
-                            <td><%= user.email %></td>
-                        </tr>
-                    <% } %>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
+        <tbody>
+            <% data.users.forEach((user) => { %>
+                <tr onClick="upsert('<%= user._id %>')">
+                    <th scope="row"><%= user.index %></th>
+                    <td><%= user.code %></td>
+                    <td><%= user.fullName %></td>
+                    <td><%= user.email %></td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
+                                    class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script>
-        const method = document.getElementById('method').value;
-        const id = document.getElementById('id').value;
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    const method = document.getElementById('method').value;
+    const id = document.getElementById('id').value;
 
-        document.getElementById('form').addEventListener('submit', async event => {
-            event.preventDefault();
+    document.getElementById('form').addEventListener('submit', async event => {
+        event.preventDefault();
 
-            const formData = new FormData(event.target);
+        const formData = new FormData(event.target);
 
-            try {
-                if (method === 'PUT') {
-                    await axios.put(`/classes/${id}`, formData);
-                } else {
-                    await axios.post('/classes', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        },
-                    });
-                }
-
-                Toastify({
-                    text: 'Lưu thành công!',
-                    duration: 3000,
-                    gravity: 'top',
-                    position: 'right',
-                    backgroundColor: '#4CAF50',
-                }).showToast();
-
-                window.location.href = `/classes`;
-            } catch (error) {
-                console.error('Save Error:', error);
-                Toastify({
-                    text: 'Đã xảy ra lỗi khi lưu. Vui lòng thử lại sau.',
-                    duration: 3000,
-                    gravity: 'top',
-                    position: 'right',
-                    backgroundColor: '#ff6347',
-                }).showToast();
+        try {
+            if (method === 'PUT') {
+                await axios.put(`/classes/${id}`, formData);
+            } else {
+                await axios.post('/classes', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                });
             }
-        });
-    </script>
-</body>
-</html>
+
+            Toastify({
+                text: 'Lưu thành công!',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#4CAF50',
+            }).showToast();
+
+            window.location.href = `/classes`;
+        } catch (error) {
+            console.error('Save Error:', error);
+            Toastify({
+                text: 'Đã xảy ra lỗi khi lưu. Vui lòng thử lại sau.',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#ff6347',
+            }).showToast();
+        }
+    });
+    function upsert(id) {
+        window.location.href = `/users/${id}`;
+    }
+</script>
