@@ -1,70 +1,47 @@
 <style>
-  .container {
-    width: 100%;
-    max-width: 1200px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-    padding: 20px;
-  }
-  .review-section {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
-  .review-workspace-container {
-    width: 400px;
-    height: 400px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #fafafa;
+  input[type="text"], input[type="number"], select {
+    width: 35%;
+    padding: 10px;
+    box-sizing: border-box;
   }
   .review-workspace {
     height: 100%;
     width: 100%;
   }
-  .score-section {
+  .button-section {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+    align-items:flex-start;
     gap: 10px;
+    padding: 10px;
   }
-  .score-section button {
+  .button-section button {
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+    background-color: #ffffff;
+    color: #4CAF50;
+    border: 2px solid #ceffd0;        
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    align-items:flex-end;
   }
-  .score-section button:hover {
+  .button-section button:hover {
     background-color: #45a049;
-  }
-  .score-section input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100px;
+    color: #ffffff;
   }
 </style>
-<div class="container">
-    <div class="review-section">
-        <div class="review-workspace-container">
-            <div class="w-full" style="height: 400px;">
-                <div id="review-workspace" class="review-workspace"></div>
-            </div>
-        </div>
 
-        <div class="score-section">
-            <button onclick="submit()">CHẤM ĐIỂM</button>
-            <input name="score" type="number" min="0" max="10" value="10" />
-        </div>
+<div class="w-100 h-100 row">
+  <div class="h-100 col-8 border" style="position: relative;">
+    <div style="height: 100%; width: 100%;">
+      <div class="w-full">
+        <div id="review-workspace" class="review-workspace"></div>
+      </div>
     </div>
+  </div>
+  <div class="col-4 d-flex button-section">
+    <input name="score" type="number" min="0" max="10" value="10" />
+    <button onclick="submit()">CHẤM ĐIỂM</button>
+  </div>
 </div>
 
 <input name="id" type="hidden" value="<%= data?.resolution?._id %>" />
@@ -107,8 +84,6 @@
       const res = await axios.get(`/api/resolutions/${id}`);
       return res?.data?.result?.resolution;
     })();
-
-    console.log('resolution', resolution);
 
     Blockly.serialization.workspaces.load(resolution?.content, solveWorkspace);
   })();

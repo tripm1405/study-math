@@ -1,32 +1,22 @@
 <style>
-    k-idn {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f9f9f9;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
     .buttonMark {
+        display: flex;
+        justify-content: flex-end;
         padding: 20px;
-        background-color:#ceffd0;
         color: white;
-        text-align: center;
     }
     .buttonMark button {
         padding: 10px 20px;
         background-color: #ffffff;
         color: #4CAF50;
-        border: none;
+        border: 2px solid #ceffd0;        
         border-radius: 5px;
         cursor: pointer;
         font-size: 16px;
     }
     .buttonMark button:hover {
         background-color: #45a049;
-        color:#ffffff;
+        color: #ffffff;
     }
     table {
         width: 100%;
@@ -57,7 +47,7 @@
         background-color: #5a6268;
     }
 </style>
-<div class="w-full h-full k-idn">
+<div class="w-full h-full">
     <div class="buttonMark">
         <button onclick="markByAnswer()">Chấm điểm bằng đáp án</button>
     </div>
@@ -93,16 +83,15 @@
     }
 
     async function markByAnswer() {
-      try {
-        const res = await axios.put('/api/resolutions/mark-by-answer', {});
-        if (!res?.data?.result?.success) {
-          console.log('errors', res?.data?.result?.errors);
-          return;
+        try {
+            const res = await axios.put('/api/resolutions/mark-by-answer', {});
+            if (!res?.data?.result?.success) {
+                console.log('errors', res?.data?.result?.errors);
+                return;
+            }
+            window.location.reload();
+        } catch {
+            alert('Server error!');
         }
-        window.location.reload();
-      }
-      catch {
-        alert('Server error!');
-      }
     }
 </script>
