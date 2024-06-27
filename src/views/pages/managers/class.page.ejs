@@ -1,9 +1,11 @@
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <style>
     .btn:hover {
         background-color: aquamarine;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    table tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
     }
 </style>
 <div class="w-full h-full">
@@ -17,7 +19,7 @@
         </button>
     </div>
     <div>
-        <table class="table">
+        <table class="table table-striped mt-3">
             <thead>
             <tr>
                 <th>STT</th>
@@ -25,20 +27,19 @@
                 <th>Tên lớp</th>
                 <th>Giáo viên</th>
                 <th>Số học sinh</th>
-                <th style="width: 100px;"></th>
+                <th style="width: 50px;"></th>
             </tr>
             </thead>
             <tbody>
             <% let index = 1; %>
             <% for (const _class of (data?.classes || [])) { %>
-                <tr>
+                <tr onClick="upsert('<%= _class?._id %>')">
                     <th scope="row"><%= index++ %></th>
                     <td><%= _class?.code %></td>
                     <td><%= _class?.name %></td>
                     <td><%= _class?.teacher %></td>
                     <td><%= _class?.studentsCount %></td>
                     <td>
-                        <button class="btn btn-secondary btn-sm me-1" onClick="upsert('<%= _class?._id %>')"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-danger btn-sm" onClick="del('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
