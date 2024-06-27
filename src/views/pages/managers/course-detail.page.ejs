@@ -8,34 +8,44 @@
     <h1 style="margin-bottom: 20px; color: #333;">Chi tiết khóa học</h1>
     <form onsubmit="onSubmit(event)">
         <div class="mb-3">
+            <label for="image" class="form-label">Hình ảnh</label>
+            <input
+                    id="image"
+                    name="image"
+                    type="file"
+                    value="<%= data?.course?.image?.path %>"
+                    class="form-control"
+            />
+        </div>
+        <div class="mb-3">
             <label for="code" class="form-label">Mã khóa học</label>
-            <input 
-                id="code"
-                name="code" 
-                type="text" 
-                value="<%= data?.course?.code %>" 
-                placeholder="Nhập mã khóa học..."
-                <%= data?.course?.code && 'disabled' %>
-                class="form-control"/>
+            <input
+                    id="code"
+                    name="code"
+                    type="text"
+                    value="<%= data?.course?.code %>"
+                    placeholder="Nhập mã khóa học..."
+                    <%= data?.course?.code && 'disabled' %>
+                    class="form-control"/>
         </div>
         <div class="mb-3">
             <label for="name" class="form-label">Tên khóa học</label>
-            <input 
-                id="name"
-                name="name" 
-                type="text" 
-                value="<%= data?.course?.name %>" 
-                placeholder="Nhập tên khóa học..." 
-                class="form-control"
+            <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value="<%= data?.course?.name %>"
+                    placeholder="Nhập tên khóa học..."
+                    class="form-control"
             />
         </div>
         <div class="mb-3">
             <label for="note" class="form-label">Ghi chú</label>
             <textarea id="note" name="note
-                type="text" 
-                value="<%= data?.course?.note %>" 
-                class="form-control">
-              </textarea>
+                type=" text"
+            value="<%= data?.course?.note %>"
+            class="form-control">
+            </textarea>
         </div>
         <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
             <button type="submit" class="btn btn-primary">Lưu</button>
@@ -69,70 +79,71 @@
                     <td><%= lesson?.endAt %></td>
                     <td><%= lesson?.participants %></td>
                     <td class="align-middle">
-                        <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= lesson._id %>')"><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= lesson._id %>')"><i
+                                    class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
             <% } %>
             </tbody>
         </table>
     <% } %>
-  </div>
-  
-  <input type="hidden" id="id" value="<%= data?.course?._id %>" />
-  <input type="hidden" id="method" value="<%= data?.course?._id ? 'PUT' : 'POST' %>" />
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  
-  <script>
-      function upsertLesson(id) {
-          window.location.href = `/lessons/${id}`;
-      }
-    
-      async function deleteLesson(id) {
-          try {
-              await axios.delete(`/lessons/${id}`);
-              Toastify({
-                  text: 'Xóa bài học thành công!',
-                  duration: 3000,
-                  gravity: 'top',
-                  position: 'right',
-                  backgroundColor: '#4CAF50',
-              }).showToast();
-              location.reload();
-          } catch (error) {
-              console.error('Error deleting lesson', error);
-              Toastify({
-                  text: 'Đã xảy ra lỗi khi xóa bài học. Vui lòng thử lại sau.',
-                  duration: 3000,
-                  gravity: 'top',
-                  position: 'right',
-                  backgroundColor: '#ff6347',
-              }).showToast();
-          }
-      }
-    
-      const method = document.getElementById('method').value;
-      const id = document.getElementById('id').value;
+</div>
 
-      async function onSubmit(event) {
+<input type="hidden" id="id" value="<%= data?.course?._id %>"/>
+<input type="hidden" id="method" value="<%= data?.course?._id ? 'PUT' : 'POST' %>"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+    function upsertLesson(id) {
+        window.location.href = `/lessons/${id}`;
+    }
+
+    async function deleteLesson(id) {
+        try {
+            await axios.delete(`/lessons/${id}`);
+            Toastify({
+                text: 'Xóa bài học thành công!',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#4CAF50',
+            }).showToast();
+            location.reload();
+        } catch (error) {
+            console.error('Error deleting lesson', error);
+            Toastify({
+                text: 'Đã xảy ra lỗi khi xóa bài học. Vui lòng thử lại sau.',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#ff6347',
+            }).showToast();
+        }
+    }
+
+    const method = document.getElementById('method').value;
+    const id = document.getElementById('id').value;
+
+    async function onSubmit(event) {
         event.preventDefault();
 
         const formData = new FormData(event.target);
 
         try {
-          if (method === 'PUT') {
-            await axios.put(`/courses/${id}`, formData, {
-              headers: { 'Content-Type': 'multipart/form-data' }
-            });
-          } else {
-            await axios.post('/courses', formData, {
-              headers: { 'Content-Type': 'multipart/form-data' }
-            });
-          }
-          window.location.href = '/courses';
+            if (method === 'PUT') {
+                await axios.put(`/courses/${id}`, formData, {
+                    headers: {'Content-Type': 'multipart/form-data'}
+                });
+            } else {
+                await axios.post('/courses', formData, {
+                    headers: {'Content-Type': 'multipart/form-data'}
+                });
+            }
+            window.location.href = '/courses';
         } catch (error) {
-          console.error('There was an error!', error);
+            console.error('There was an error!', error);
         }
-      }
-    </script>  
+    }
+</script>

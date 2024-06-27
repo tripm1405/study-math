@@ -6,6 +6,10 @@ const schema = new mongoose.Schema({
         type: String,
         unique: true,
     },
+    image: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: ModelNameConstant.FILE,
+    },
     name: {
         type: String,
     },
