@@ -3,105 +3,112 @@
         background-color: aquamarine;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
+
     table tr:hover {
         background-color: #f1f1f1;
         cursor: pointer;
     }
 </style>
 <div class="h-full w-full">
-    <h1 style="margin-bottom: 20px; color: #333;">Chi tiết lớp học</h1>
+    <div>
+        <h1 style="margin-bottom: 20px; color: #333;">Chi tiết lớp học</h1>
+    </div>
 
-    <form id="form" action="/classes">
-        <div class="mb-3">
-            <label for="code" class="form-label">Mã lớp</label>
-            <input
-                    id="code"
-                    name="code"
-                    type="text"
-                    value="<%= data?.class?.code %>"
-                    placeholder="Nhập mã lớp..."
-                    <%= data?.class?.code && 'disabled' %>
-                    class="form-control"
-            />
-        </div>
-        <div class="mb-3">
-            <label for="name" class="form-label">Tên lớp</label>
-            <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    value="<%= data?.class?.name %>"
-                    placeholder="Nhập tên lớp..."
-                    class="form-control"
-            />
-        </div>
-        <div class="mb-3">
-            <label for="users" class="form-label">Danh sách học sinh</label>
-            <select name="users[]" id="users" class="js-select2 form-control" multiple>
-                <% for (const user of (data?.users || [])) { %>
-                    <option
-                            value="<%= user?._id %>"
-                            <%= data?.class?.users?.includes(user?._id) ? 'selected' : null %>
-                    ><%= user?.code %></option>
-                <% } %>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="note" class="form-label">Ghi chú</label>
-            <textarea class="form-control"
-                        id="note"
-                        name="note"
-                        placeholder="Nhập ghi chú..."><%= data?.class?.note %></textarea>
-        </div>
-        <div style="display: flex; justify-content: flex-end;">
-            <button type="submit" class="btn btn-primary">Lưu</button>
-        </div>
-    </form>
-</div>
+    <div>
+        <form onsubmit="onSubmit(event)">
+            <div class="mb-3">
+                <label for="code" class="form-label">Mã lớp</label>
+                <input
+                        id="code"
+                        name="code"
+                        type="text"
+                        value="<%= data?.class?.code %>"
+                        placeholder="Nhập mã lớp..."
+                        <%= data?.class?.code && 'disabled' %>
+                        class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Tên lớp</label>
+                <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        value="<%= data?.class?.name %>"
+                        placeholder="Nhập tên lớp..."
+                        class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="users" class="form-label">Danh sách học sinh</label>
+                <select name="userIds[]" id="users" class="js-select2 form-control" multiple>
+                    <% for (const user of (data?.users || [])) { %>
+                        <option
+                                value="<%= user?._id %>"
+                                <%= data?.class?.users?.includes(user?._id) ? 'selected' : null %>
+                        ><%= user?.code %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="note" class="form-label">Ghi chú</label>
+                <textarea class="form-control"
+                          id="note"
+                          name="note"
+                          placeholder="Nhập ghi chú..."><%= data?.class?.note %></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+        </form>
+    </div>
 
-<input type="hidden" id="id" value="<%= data?.class?._id %>" />
-<input type="hidden" id="method" value="<%= data?.class?._id ? 'PUT' : 'POST' %>" />
-
-<div style="margin-top: 40px;">
-    <h2 style="margin-bottom: 20px; color: #333;">Danh sách học sinh</h2>
-    <table class="table table-striped mt-3">
-        <thead>
-            <tr>
-                <th scope="col">STT</th>
-                <th scope="col">Mã tài khoản</th>
-                <th scope="col">Họ tên</th>
-                <th scope="col">Email</th>
-                <th style="width: 50px;"></th>
-            </tr>
-            </thead>
-        <tbody>
-            <% data.users.forEach((user) => { %>
-                <tr onClick="upsert('<%= user._id %>')">
-                    <th scope="row"><%= user.index %></th>
-                    <td><%= user.code %></td>
-                    <td><%= user.fullName %></td>
-                    <td><%= user.email %></td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
-                                    class="fas fa-trash-alt"></i></button>
-                    </td>
+    <% if (data?.class?._id) { %>
+        <div style="margin-top: 40px;">
+            <h2 style="margin-bottom: 20px; color: #333;">Danh sách học sinh</h2>
+            <table class="table table-striped mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Mã tài khoản</th>
+                    <th scope="col">Họ tên</th>
+                    <th scope="col">Email</th>
+                    <th style="width: 50px;"></th>
                 </tr>
-            <% }) %>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                <% for (const user of data?.usersInClass || []) { %>
+                    <tr onClick="upsert('<%= user._id %>')">
+                        <th scope="row"><%= user.index %></th>
+                        <td><%= user.code %></td>
+                        <td><%= user.fullName %></td>
+                        <td><%= user.email %></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
+                                        class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
 </div>
+
+<input name="id" type="hidden" id="id" value="<%= data?.class?._id %>"/>
 
 <script>
     const method = document.getElementById('method').value;
-    const id = document.getElementById('id').value;
 
-    document.getElementById('form').addEventListener('submit', async event => {
+    async function onSubmit(event) {
         event.preventDefault();
+
+        const id = document.querySelector('input[name="id"]')?.value;
 
         const formData = new FormData(event.target);
 
         try {
-            if (method === 'PUT') {
+            if (id) {
                 await axios.put(`/classes/${id}`, formData);
             } else {
                 await axios.post('/classes', formData, {
@@ -130,7 +137,8 @@
                 backgroundColor: '#ff6347',
             }).showToast();
         }
-    });
+    }
+
     function upsert(id) {
         window.location.href = `/users/${id}`;
     }
