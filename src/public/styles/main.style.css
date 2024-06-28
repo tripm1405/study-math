@@ -156,3 +156,11 @@
     transition: background-color 0.3s, box-shadow 0.3s;
     height:40px;
 }
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}

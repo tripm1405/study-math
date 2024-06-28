@@ -36,6 +36,17 @@
             />
         </div>
         <div class="mb-3">
+            <label for="users" class="form-label">Danh sách học sinh</label>
+            <select name="users[]" id="users" class="js-select2 form-control" multiple>
+                <% for (const user of (data?.users || [])) { %>
+                    <option
+                            value="<%= user?._id %>"
+                            <%= data?.class?.users?.includes(user?._id) ? 'selected' : null %>
+                    ><%= user?.code %></option>
+                <% } %>
+            </select>
+        </div>
+        <div class="mb-3">
             <label for="note" class="form-label">Ghi chú</label>
             <textarea class="form-control"
                         id="note"
@@ -80,11 +91,6 @@
     </table>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
     const method = document.getElementById('method').value;
     const id = document.getElementById('id').value;
