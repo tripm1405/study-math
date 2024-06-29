@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Điền số thích hợp 1",
+    "message0": "Chọn con vật cao hơn",
+    "message1": "%1 %2",
+    "args1": [
+      {
+        "type": "field_image",
+        "src": "image01.png",
+        "width": 100,
+        "height": 100,
+        "alt": "*"
+      },
+      {
+        "type": "field_image",
+        "src": "image02.png",
+        "width": 100,
+        "height": 100,
+        "alt": "*"
+      }
+    ],
+    "message2": "%1 %2 %3 %4",
+    "args2": [
+      {
+        "type": "field_label",
+        "text": "         "
+      },
+      {
+        "type": "field_checkbox",
+        "name": "b"
+      },
+      {
+        "type": "field_label",
+        "text": "                     "
+      },
+      {
+        "type": "field_checkbox",
+        "name": "a"
+      }
+    ]
+  }
+]

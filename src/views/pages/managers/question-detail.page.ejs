@@ -6,23 +6,26 @@
     <div class="w-full">
         <div class="mb-3">
             <label for="code-input" class="form-label">Mã:</label>
-            <input name="code" id="code-input" class="form-control" type="text" value="<%= data?.question?.code %>" placeholder="Mã..." />
+            <input name="code" id="code-input" class="form-control" type="text" value="<%= data?.question?.code %>"
+                   placeholder="Mã..."/>
         </div>
         <div class="mb-3">
             <label for="name-input" class="form-label">Tên:</label>
-            <input name="name" id="name-input" class="form-control" type="text" value="<%= data?.question?.name %>" placeholder="Tên..." />
+            <input name="name" id="name-input" class="form-control" type="text" value="<%= data?.question?.name %>"
+                   placeholder="Tên..."/>
         </div>
         <div class="mb-3">
             <label for="lesson-select" class="form-label">Bài học:</label>
             <select name="lessonId" id="lesson-select" class="form-control">
                 <% for (const lesson of data?.lessons || []) { %>
-                    <option value="<%= lesson?._id %>"><%= lesson?.code %></option>
+                    <option value="<%= lesson?._id %>" <%= data?.question?.lesson?.toString?.() === lesson?._id?.toString?.() ? 'selected' : '' %>><%= lesson?.code %></option>
                 <% } %>
             </select>
         </div>
         <div class="mb-3">
             <label for="note-input" class="form-label">Ghi chú:</label>
-            <input name="note" id="note-input" class="form-control" type="text" value="<%= data?.question?.note %>" placeholder="Ghi chú..."/>
+            <input name="note" id="note-input" class="form-control" type="text" value="<%= data?.question?.note %>"
+                   placeholder="Ghi chú..."/>
         </div>
     </div>
 
@@ -41,14 +44,15 @@
 
             <div>
                 <div class="mb-1">
-                    <button class="btn btn-sm btn-primary" onclick="submit()">LƯU</button>
+                    <button class="btn btn-sm btn-primary" onclick="onSubmit()">LƯU</button>
                 </div>
                 <div class="mb-1">
                     <button class="btn btn-sm btn-primary" onclick="toggleBlocksGlobal()">LẤY/BỎ KHỐI MẶC ĐỊNH</button>
                 </div>
                 <% if (data?.question?._id) { %>
                     <div class="mb-1">
-                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#config-block-modal">
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#config-block-modal">
                             CẤU HÌNH KHỐI
                         </button>
                     </div>
@@ -127,11 +131,11 @@
                     <div class="modal-body">
                         <div>
                             <label for="block">Chọn khối</label>
-                            <input id="block" name="block" type="file" />
+                            <input id="block" name="block" type="file"/>
                         </div>
                         <div>
                             <label for="images">Chọn hình</label>
-                            <input id="images" name="images" type="file" multiple />
+                            <input id="images" name="images" type="file" multiple/>
                         </div>
                     </div>
                     <div class="modal-footer">

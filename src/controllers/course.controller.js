@@ -66,21 +66,34 @@ export default {
     },
     post: async (req, res) => {
         const {code, name, note} = req.body;
-        const image = (() => {
-            const imageFile = req.files?.find(file => file.fieldname === 'image');
-            return FileUtil.format({
-                file: imageFile,
+        const imageId = await (async () => {
+            const image = (() => {
+                const imageFile = req.files?.find(file => file.fieldname === 'image');
+
+                if (!imageFile) {
+                    return undefined;
+                }
+
+                return FileUtil.format({
+                    file: imageFile,
+                });
+            })();
+
+            if (!image) {
+                return undefined;
+            }
+
+            fs.rename(image?.oldPath, image.path, () => {
             });
+
+            const imageId = new mongoose.Types.ObjectId();
+            await FileModel.create({
+                _id: imageId,
+                ...image,
+            });
+
+            return imageId;
         })();
-
-        fs.rename(image?.oldPath, image.path, () => {
-        });
-
-        const imageId = new mongoose.Types.ObjectId();
-        await FileModel.create({
-            _id: imageId,
-            ...image,
-        });
 
         const course = await CourseModel.create({
             code: code,

@@ -12,16 +12,16 @@
             </div>
             <form onsubmit="onSubmit(event)">
                 <div>
-                    <input name="code" type="text" value="<%= data?.answer?.code %>" />
+                    <input name="code" type="text" value="<%= data?.answer?.code %>"/>
                 </div>
                 <div>
-                    <input name="name" type="text" value="<%= data?.answer?.name %>" />
+                    <input name="name" type="text" value="<%= data?.answer?.name %>"/>
                 </div>
                 <div>
-                    <input name="score" type="text" min="0" max="10" value="<%= data?.answer?.score || '10' %>" />
+                    <input name="score" type="text" min="0" max="10" value="<%= data?.answer?.score || '10' %>"/>
                 </div>
                 <div>
-                    <input name="note" type="text" value="<%= data?.answer?.note %>" />
+                    <input name="note" type="text" value="<%= data?.answer?.note %>"/>
                 </div>
                 <div>
                     <button type="submit">SUBMIT</button>
@@ -32,180 +32,169 @@
     <%= JSON.stringify(data) %>
 </div>
 
-<input name="id" type="hidden" value="<%= data?.answer?._id %>" />
-<input name="questionId" type="hidden" value="<%= data?.question %>" />
+<input name="id" type="hidden" value="<%= data?.answer?._id %>"/>
+<input name="questionId" type="hidden" value="<%= data?.questionId %>"/>
 
 <script>
-  let isContainBlocksGlobal = false;
-  let workspace;
-  let toolbox;
-  let blocksLocal;
-  let blocksGlobal;
-  let blocks;
+    let isContainBlocksGlobal = false;
+    let workspace;
+    let toolbox;
+    let blocksLocal;
+    let blocksGlobal;
+    let blocks;
 
-  (async () => {
-    const questionId = document.querySelector('input[name="questionId"]')?.value;
-    const id = document.querySelector('input[name="id"]')?.value;
+    (async () => {
+        const questionId = document.querySelector('input[name="questionId"]')?.value;
+        const id = document.querySelector('input[name="id"]')?.value;
 
-    await loadBlocks();
+        await loadBlocks();
 
-    workspace = initWorkspace({
-      node: document.getElementById('workspace'),
-    });
+        workspace = K.initWorkspace({
+            node: document.getElementById('workspace'),
+        });
 
-    loadToolbox();
+        loadToolbox();
 
-    await (async () => {
-      if (questionId && id) {
-        try {
-          const answerRes = await axios.get(`/api/questions/${questionId}/answers/${id}`);
-          if (!answerRes?.data?.result?.answer?.content) {
-            return;
-          }
+        await (async () => {
+            if (questionId && id) {
+                try {
+                    const answerRes = await axios.get(`/api/questions/${questionId}/answers/${id}`);
+                    if (!answerRes?.data?.result?.answer?.content) {
+                        return;
+                    }
 
-          Blockly.serialization.workspaces.load(answerRes?.data?.result?.answer?.content, workspace);
-        } catch (error) {
-          handleApiError(error);
-        }
-      }
+                    Blockly.serialization.workspaces.load(answerRes?.data?.result?.answer?.content, workspace);
+                } catch (error) {
+                    handleApiError(error);
+                }
+            }
+        })();
     })();
-  })();
 
-  async function toggleBlocksGlobal() {
-    isContainBlocksGlobal = !isContainBlocksGlobal;
-    loadToolbox();
-  }
-
-  function initWorkspace(props) {
-    const { node } = { ...props };
-
-    return Blockly.inject(node, {
-      toolbox: {
-        kind: 'flyoutToolbox',
-        contents: [],
-      },
-    });
-  }
-
-  async function loadToolbox(props) {
-    const { hasLoadBlocks } = {
-      hasLoadBlocks: false,
-      ...props,
-    };
-
-    if (hasLoadBlocks) {
-      await loadBlocks();
+    async function toggleBlocksGlobal() {
+        isContainBlocksGlobal = !isContainBlocksGlobal;
+        loadToolbox();
     }
 
-    toolbox = {
-      kind: 'flyoutToolbox',
-      contents: (isContainBlocksGlobal ? blocks : blocksLocal).map(block => {
-        return {
-          kind: 'block',
-          type: block?.type,
+    async function loadToolbox(props) {
+        const {hasLoadBlocks} = {
+            hasLoadBlocks: false,
+            ...props,
         };
-      }),
-    };
-    workspace?.updateToolbox(toolbox);
-  }
 
-  async function loadBlocks() {
-    const innerBlocksLocal = await (async () => {
-      const questionId = document.querySelector('input[name="questionId"]')?.value;
-      if (!questionId) {
-        return [];
-      }
-
-      try {
-        const blocksRes = await axios.get('/api/blocks', {
-          params: {
-            questionId: questionId,
-          },
-        });
-        return blocksRes?.data?.result?.blocks || [];
-      } catch (error) {
-        handleApiError(error);
-        return [];
-      }
-    })();
-
-    const innerBlocksGlobal = await (async () => {
-      try {
-        const blocksRes = await axios.get('/api/blocks', {
-          params: {
-            questionId: null,
-          },
-        });
-        return blocksRes?.data?.result?.blocks || [];
-      } catch (error) {
-        handleApiError(error);
-        return [];
-      }
-    })();
-
-    blocksLocal = innerBlocksLocal;
-    blocksGlobal = innerBlocksGlobal;
-    blocks = [...blocksLocal, ...blocksGlobal];
-
-    for (const block of blocks) {
-      Blockly.Blocks[block.type] = {
-        init: function () {
-          this.jsonInit(block);
-        },
-      };
-    }
-  }
-
-  async function onSubmit(event) {
-    event.preventDefault();
-
-    const id = document.querySelector('input[name="id"]')?.value;
-    const questionId = document.querySelector('input[name="questionId"]')?.value;
-    const content = Blockly.serialization.workspaces.save?.(workspace);
-
-    const formData = new FormData(event.target);
-    obj2FormData(formData, content, 'content');
-
-    try {
-      const res = await (async () => {
-        if (id) {
-          return await axios.put(`/api/questions/${questionId}/answers/${id}`, formData);
-        } else {
-          return await axios.post(`/api/questions/${questionId}/answers`, formData);
+        if (hasLoadBlocks) {
+            await loadBlocks();
         }
-      })();
 
-      if (!res?.data?.result?.success) {
-        throw new Error('Failed to submit');
-      }
-
-      window.location.href = `/questions/${questionId}/answers`;
-    } catch (error) {
-      handleApiError(error);
+        toolbox = {
+            kind: 'flyoutToolbox',
+            contents: (isContainBlocksGlobal ? blocks : blocksLocal).map(block => {
+                return {
+                    kind: 'block',
+                    type: block?.type,
+                };
+            }),
+        };
+        workspace?.updateToolbox(toolbox);
     }
-  }
 
-  function handleApiError(error) {
-    console.error('API Error:', error);
-    Toastify({
-      text: 'An error occurred. Please try again later.',
-      duration: 3000,
-      gravity: 'top',
-      position: 'right',
-      backgroundColor: '#ff6347',
-    }).showToast();
-  }
+    async function loadBlocks() {
+        const innerBlocksLocal = await (async () => {
+            const questionId = document.querySelector('input[name="questionId"]')?.value;
+            if (!questionId) {
+                return [];
+            }
 
-  function obj2FormData(formData, obj, prefix) {
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        let propName = prefix ? `${prefix}[${key}]` : key;
-        if (typeof obj[key] === 'object' && !(obj[key] instanceof File)) {
-          obj2FormData(formData, obj[key], propName);
-        } else {
-          formData.append(propName, obj[key]);
+            try {
+                const blocksRes = await axios.get('/api/blocks', {
+                    params: {
+                        questionId: questionId,
+                    },
+                });
+                return blocksRes?.data?.result?.blocks || [];
+            } catch (error) {
+                handleApiError(error);
+                return [];
+            }
+        })();
+
+        const innerBlocksGlobal = await (async () => {
+            try {
+                const blocksRes = await axios.get('/api/blocks', {
+                    params: {
+                        questionId: null,
+                    },
+                });
+                return blocksRes?.data?.result?.blocks || [];
+            } catch (error) {
+                handleApiError(error);
+                return [];
+            }
+        })();
+
+        blocksLocal = innerBlocksLocal;
+        blocksGlobal = innerBlocksGlobal;
+        blocks = [...blocksLocal, ...blocksGlobal];
+
+        for (const block of blocks) {
+            Blockly.Blocks[block.type] = {
+                init: function () {
+                    this.jsonInit(block);
+                },
+            };
         }
-      }
     }
-  }
+
+    async function onSubmit(event) {
+        event.preventDefault();
+
+        const id = document.querySelector('input[name="id"]')?.value;
+        const questionId = document.querySelector('input[name="questionId"]')?.value;
+        const content = Blockly.serialization.workspaces.save?.(workspace);
+
+        const formData = new FormData(event.target);
+        K.obj2FormData(formData, content, 'content');
+
+        try {
+            const res = await (async () => {
+                if (id) {
+                    return await axios.put(`/api/questions/${questionId}/answers/${id}`, formData);
+                } else {
+                    return await axios.post(`/api/questions/${questionId}/answers`, formData);
+                }
+            })();
+
+            if (!res?.data?.result?.success) {
+                throw new Error('Failed to submit');
+            }
+
+            window.location.href = `/questions/${questionId}/answers`;
+        } catch (error) {
+            handleApiError(error);
+        }
+    }
+
+    function handleApiError(error) {
+        console.error('API Error:', error);
+        Toastify({
+            text: 'An error occurred. Please try again later.',
+            duration: 3000,
+            gravity: 'top',
+            position: 'right',
+            backgroundColor: '#ff6347',
+        }).showToast();
+    }
+
+    function obj2FormData(formData, obj, prefix) {
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                let propName = prefix ? `${prefix}[${key}]` : key;
+                if (typeof obj[key] === 'object' && !(obj[key] instanceof File)) {
+                    obj2FormData(formData, obj[key], propName);
+                } else {
+                    formData.append(propName, obj[key]);
+                }
+            }
+        }
+    }
 </script>

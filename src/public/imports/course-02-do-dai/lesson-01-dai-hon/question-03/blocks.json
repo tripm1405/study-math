@@ -1,0 +1,42 @@
+[
+  {
+    "name": "",
+    "message0": "%1",
+    "args0": [
+      {
+        "type": "field_image",
+        "src": "image01.png",
+        "width": 200  ,
+        "height": 100,
+        "alt": "*"
+      }
+    ],
+    "message1": "Trong hình vẽ trên:",
+    "message2": "Người cao nhất là %1",
+    "args2": [
+      {
+        "type": "field_dropdown",
+        "name": "a",
+        "options": [
+          [ "Cô Lan", "CO_LAN" ],
+          [ "Chú Nam", "CHU_NAM" ],
+          [ "Linh", "LINH" ],
+          [ "Tú", "TU" ]
+        ]
+      }
+    ],
+    "message3": "Người thấp nhất là %1",
+    "args3": [
+      {
+        "type": "field_dropdown",
+        "name": "b",
+        "options": [
+          [ "Cô Lan", "CO_LAN" ],
+          [ "Chú Nam", "CHU_NAM" ],
+          [ "Linh", "LINH" ],
+          [ "Tú", "TU" ]
+        ]
+      }
+    ]
+  }
+]
