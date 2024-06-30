@@ -1,0 +1,39 @@
+[
+  {
+    "name": "",
+    "message0": "%1",
+    "args0": [
+      {
+        "type": "field_image",
+        "src": "image01.png",
+        "width": 200  ,
+        "height": 100,
+        "alt": "*"
+      }
+    ],
+    "message1": "Cây nến dài %1 cm",
+    "args1": [
+      {
+        "type": "field_number",
+        "name": "a"
+      }
+    ],
+    "message2": "%1",
+    "args2": [
+      {
+        "type": "field_image",
+        "src": "image02.png",
+        "width": 200  ,
+        "height": 100,
+        "alt": "*"
+      }
+    ],
+    "message3": "Viên phấn dài %1 cm",
+    "args3": [
+      {
+        "type": "field_number",
+        "name": "b"
+      }
+    ]
+  }
+]

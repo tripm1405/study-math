@@ -1,0 +1,22 @@
+[
+  {
+    "name": "",
+    "message0": "%1",
+    "args0": [
+      {
+        "type": "field_image",
+        "src": "image01.png",
+        "width": 200,
+        "height": 100,
+        "alt": "*"
+      }
+    ],
+    "message1": "Nhãn vở dài %1 cm",
+    "args1": [
+      {
+        "type": "field_number",
+        "name": "a"
+      }
+    ]
+  }
+]
