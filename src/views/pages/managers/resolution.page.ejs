@@ -54,13 +54,16 @@
     <table>
         <thead>
         <tr>
+            <th>STT</th>
             <th>Bài toán</th>
             <th>Học sinh</th>
         </tr>
         </thead>
         <tbody>
+        <% let index = 1; %>
         <% for (const resolution of data?.resolutions || []) { %>
         <tr onclick="onDetail('<%= resolution?._id %>')">
+            <th scope="row"><%= resolution?.index  %></th>
             <td>
                 <%= resolution?.question?.name %>
             </td>
@@ -71,6 +74,21 @@
         <% } %>
         </tbody>
     </table>
+    <nav>
+        <ul class="pagination">
+            <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+            </li>
+            <% for (let i = 1; i <= data.totalPages; i++) { %>
+                <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                </li>
+            <% } %>
+            <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+            </li>
+        </ul>
+      </nav>
 </div>
 
 <script>

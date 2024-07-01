@@ -34,7 +34,7 @@
     <% let index = 1; %>
     <% for (const block of (data?.blocks || [])) { %>
         <tr onClick="upsert('<%= block?._id %>')">
-            <th scope="row"><%= index++ %></th>
+            <th scope="row"><%= block?.index  %></th>
             <td><%= block?.name %></td>
             <td><%= block?.createdBy?.fullName %></td>
             <td><%= block.createdAt.getFullYear() + '-' + String(block.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(block.createdAt.getDate()).padStart(2, '0') + ' ' + String(block.createdAt.getHours()).padStart(2, '0') + ':' + String(block.createdAt.getMinutes()).padStart(2, '0') %></td>
@@ -45,6 +45,21 @@
     <% } %>
     </tbody>
 </table>
+<nav>
+  <ul class="pagination">
+      <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
+          <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
+      </li>
+      <% for (let i = 1; i <= data.totalPages; i++) { %>
+          <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          </li>
+      <% } %>
+      <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
+          <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
+      </li>
+  </ul>
+</nav>
 
 <div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog">

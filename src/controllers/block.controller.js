@@ -2,15 +2,26 @@ import mongoose from "mongoose";
 import ViewUtil from "#root/utils/view.util.js";
 import BlockModel from "#root/models/block.model.js";
 
+const ITEMS_PER_PAGE = 10;
+
 export default {
   get: async (req, res) => {
-    const blocks = await BlockModel.find({});
-    const newId = new mongoose.Types.ObjectId();
+    const page = parseInt(req.query.page) || 1;
+    const blocks = await BlockModel.find({})
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE);
+    const totalBlocks = await BlockModel.countDocuments();
+
+    const indexedBlocks = blocks.map((block, index) => ({
+      ...block.toObject(),
+      index: (page - 1) * ITEMS_PER_PAGE + index + 1,
+    }));
 
     res.render('pages/managers/block.page.ejs', ViewUtil.getOptions({
       data: {
-        blocks: blocks,
-        newId: newId,
+        blocks: indexedBlocks,
+        currentPage: page,
+        totalPages: Math.ceil(totalBlocks / ITEMS_PER_PAGE),
       },
     }));
   },
@@ -27,8 +38,7 @@ export default {
     const blockContent = (() => {
       try {
         return JSON.parse(block?.content);
-      }
-      catch {
+      } catch {
         return {
           args0: [
             {
@@ -73,7 +83,7 @@ export default {
     const { id } = req?.params;
     const { name, content, note } = req.body;
 
-    const block = await BlockModel.findByIdAndUpdate(id,{
+    const block = await BlockModel.findByIdAndUpdate(id, {
       name: name,
       content: content,
       note: note,
