@@ -1,1 +1,85 @@
-<%= JSON.stringify(data) %>
+<div class="w-full h-full">
+    <div style="padding-bottom: 20px;">
+        <h2>Các khóa học</h2>
+        <div class="k-container">
+            <% for (const course of (data?.courses || [])) { %>
+                <div onclick="onCourseDetail('<%= course?._id %>')" class="k-card">
+                    <img src="<%= course?.image || '/images/course-default.jpg'%>">
+                    <div class="k-title"><%= course?.name %></div>
+                    <div class="f-info"><%= course?.createdBy?.fullName %></div>
+                    <div class="k-info">
+                        <%= ((date) => {
+                            const d = new Date(date);
+                            const year = d.getFullYear();
+                            const month = String(d.getMonth() + 1).padStart(2, '0');
+                            const dayOfMonth = String(d.getDate()).padStart(2, '0');
+                            const hour = String(d.getHours()).padStart(2, '0');
+                            const minute = String(d.getMinutes()).padStart(2, '0');
+                            return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`;
+                        })(course.createdAt) %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <div style="padding-bottom: 20px;">
+        <h2>Các bài học</h2>
+        <div class="k-container">
+            <% for (const lesson of (data?.lessons || [])) { %>
+                <div onclick="onLessonDetail('<%= lesson?._id %>')" class="k-card">
+                    <img src="<%= lesson?.image || '/images/lesson-default.png'%>">
+                    <div class="k-title"><%= lesson?.name %></div>
+                    <div class="k-info"><%= lesson?.createdBy?.fullName %></div>
+                    <div class="k-info">
+                        <%= ((date) => {
+                            const d = new Date(date);
+                            const year = d.getFullYear();
+                            const month = String(d.getMonth() + 1).padStart(2, '0');
+                            const dayOfMonth = String(d.getDate()).padStart(2, '0');
+                            const hour = String(d.getHours()).padStart(2, '0');
+                            const minute = String(d.getMinutes()).padStart(2, '0');
+                            return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`;
+                        })(lesson.createdAt) %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <div style="padding-bottom: 20px;">
+        <h2>Các bài toán</h2>
+        <div class="k-container">
+            <% for (const question of (data?.questions || [])) { %>
+                <div onclick="onQuestionDetail('<%= question?._id %>')" class="k-card">
+                    <img src="<%= question?.image || '/images/question-default.png'%>">
+                    <div class="k-title"><%= question?.name %></div>
+                    <div class="f-info"><%= question?.createdBy?.fullName %></div>
+                    <div class="k-info">
+                        <%= ((date) => {
+                            const d = new Date(date);
+                            const year = d.getFullYear();
+                            const month = String(d.getMonth() + 1).padStart(2, '0');
+                            const dayOfMonth = String(d.getDate()).padStart(2, '0');
+                            const hour = String(d.getHours()).padStart(2, '0');
+                            const minute = String(d.getMinutes()).padStart(2, '0');
+                            return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`;
+                        })(question.createdAt) %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+    function onCourseDetail(id) {
+        window.location.href = `/courses/${id}`;
+    }
+
+    function onLessonDetail(id) {
+        window.location.href = `/lessons/${id}`;
+    }
+
+    function onQuestionDetail(id) {
+        window.location.href = `/questions/${id}`;
+    }
+</script>
