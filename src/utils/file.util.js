@@ -8,7 +8,7 @@ export default class FileUtil {
   }
 
   static RootPaths = class {
-    static Blockly = 'http://localhost:5500/blockly';
+    static Blockly = `${process.env.host || 'http://localhost:5500/'}blockly`;
   }
 
   static Keys = class {
