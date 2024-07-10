@@ -1,1 +1,74 @@
-<%= JSON.stringify(data) %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .user-profile {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .user-profile h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center; 
+        }
+        .user-profile p {
+            margin-bottom: 10px;
+            padding: 5px 0;
+            margin-left: 30px;
+        }
+        .user-profile strong {
+            font-weight: bold;
+            text-align: left;
+            display: inline-block;
+            width: 120px;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px; 
+            margin-left: 38%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="user-profile">
+        <h1>User Profile</h1>
+        <img class="avatar" src="./images/avt.jpeg" alt="Avatar">
+        <p><strong>ID:</strong></p>
+        <p><%= data.user._id %></p>
+        <p><strong>Username:</strong></p>
+        <p><%= data.user.username %></p>
+        <p><strong>Full Name:</strong></p>
+        <p><%= data.user.fullName %></p>
+        <p><strong>Email:</strong></p>
+        <p><%= data.user.email || '(not provided)' %></p>
+        <p><strong>Type:</strong></p>
+        <p><%= data.user.type %></p>
+        <p><strong>Code:</strong></p>
+        <p><%= data.user.code %></p>
+        <p><strong>Classes:</strong></p>
+        <p><%= JSON.stringify(data.user.classes) %></p>
+        <p><strong>Class IDs:</strong></p>
+        <p><%= JSON.stringify(data.user.classIds) %></p>
+        <p><strong>Created At:</strong></p>
+        <p><%= new Date(data.user.createdAt).toLocaleString() %></p>
+        <p><strong>Updated At:</strong></p>
+        <p><%= new Date(data.user.updatedAt).toLocaleString() %></p>
+    </div>
+</body>
+</html>
