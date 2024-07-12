@@ -1,9 +1,7 @@
 import ViewUtil from "#root/utils/view.util.js";
-import mongoose, {Mongoose} from "mongoose";
+import mongoose from "mongoose";
 import CourseModel from "#root/models/course.model.js";
-import AuthUtil from "#root/utils/auth.util.js";
 import LessonModel from "#root/models/lesson.model.js";
-import UserModel from "#root/models/user.model.js";
 import CommonUtil from "#root/utils/common.util.js";
 import fs from "fs";
 import FileUtil from "#root/utils/file.util.js";
@@ -13,7 +11,7 @@ export default {
     get: async (req, res) => {
         const newId = new mongoose.Types.ObjectId();
         const {
-            page: page,
+            currentPage: currentPage,
             totalPages: totalPages,
             models: models,
         } = await CommonUtil.Pagination.get({
@@ -37,7 +35,7 @@ export default {
                 courses: models,
                 newId: newId,
                 totalPages: totalPages,
-                currentPage: page,
+                currentPage: currentPage,
             },
         }));
     },

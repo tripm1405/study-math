@@ -40,7 +40,7 @@ export default {
         });
 
         const {
-            page: page,
+            currentPage: currentPage,
             totalPages: totalPages,
             models: usersInClass,
         } = await CommonUtil.Pagination.get({

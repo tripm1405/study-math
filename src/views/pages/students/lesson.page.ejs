@@ -1,24 +1,21 @@
-<div class="w-full h-full">
-    <h1>Các bài học</h1>
-    <div class="k-container">
-        <% for (const lesson of (data?.lessons || [])) { %>
-            <div onclick="onDetail('<%= lesson?._id %>')" class="k-card">
-                <img src="<%= lesson?.image || '/images/lesson-default.png'%>" alt="Lớp 1 - Nguyễn Anh">
-                <div class="k-title"><%= lesson?.name %></div>
-                <div class="k-info"><%= lesson?.createdBy?.fullName %></div>
-                <div class="k-info">
-                    <%= ((date) => {
-                        const year = date.getFullYear();
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const dayOfMonth = String(date.getDate()).padStart(2, '0');
-                        const hour = String(date.getHours()).padStart(2, '0');
-                        const minute = String(date.getMinutes()).padStart(2, '0');
-                        return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
-                    })(lesson.createdAt) %>
-                </div>
+<h1>Các bài học</h1>
+<div class="k-container">
+    <% for (const lesson of (data?.lessons || [])) { %>
+        <div onclick="onDetail('<%= lesson?._id %>')" class="k-card">
+            <img src="<%= lesson?.image || '/images/lesson-default.png'%>" alt="Lớp 1 - Nguyễn Anh">
+            <div class="k-title"><%= lesson?.name %></div>
+            <div class="k-info"><%= lesson?.createdBy?.fullName %></div>
+            <div class="k-info">
+                    <%- include(partialPath + '/datetime.partial.ejs', { datetime: lesson?.createdAt }) %>
             </div>
-        <% } %>
-    </div>
+        </div>
+    <% } %>
+</div>
+<div class="mt-3">
+    <%- include(partialPath + '/pagination.partial.ejs', {
+    model: undefined,
+    ...(data || {}),
+    }) %>
 </div>
 
 <script>

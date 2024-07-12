@@ -97,7 +97,6 @@ class K {
             };
 
             const searchJson = K.Search.parse();
-            console.log('searchJson', searchJson);
             const newSearch = {
                 ...(keep ? searchJson : {}),
                 ...search,
@@ -105,19 +104,29 @@ class K {
 
             window.location.href = axios
                 .getUri({
-                    url: '/search',
+                    url: window.location.pathname,
                     params: newSearch,
                 });
         }
 
         static onSendSearch = function(model, page) {
+            if (!model) {
+                K.Search.send({
+                    search: {
+                        page: page,
+                    },
+                });
+
+                return;
+            }
+
             K.Search.send({
                 search: {
                     [model]: {
                         page: page,
                     },
                 },
-            })
+            });
         }
     }
 
