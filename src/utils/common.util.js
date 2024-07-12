@@ -23,7 +23,7 @@ export default class CommonUtil {
 
             const skip = (query.page - 1) * query.pageSize;
 
-            const total = await CourseModel.countDocuments(filter);
+            const total = await Model.countDocuments(filter);
             const totalPages = Math.ceil(total / query.pageSize);
             const models = await extendGet(Model.find(filter)
                 .skip(skip)
@@ -31,7 +31,7 @@ export default class CommonUtil {
                 .lean());
 
             return {
-                page: query.page,
+                currentPage: Number(query.page),
                 totalPages: totalPages,
                 models: models.map((model, index) => {
                     return {
