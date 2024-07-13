@@ -13,6 +13,7 @@ export default class CommonUtil {
                 extendGet,
             } = {
                 extendGet: get => get,
+                filter: {},
                 ...props,
                 query: {
                     page: CommonUtil.Pagination.PAGE_DEFAULT,

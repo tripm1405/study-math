@@ -164,3 +164,7 @@
 .h-full {
     height: 100%;
 }
+
+.k-cursor-pointer {
+    cursor: pointer;
+}

@@ -7,27 +7,28 @@ import BlockModel from "#root/models/block.model.js";
 import ResolutionModel from "#root/models/resolution.model.js";
 import AnswerModel from "#root/models/answer.model.js";
 import UserModel from "#root/models/user.model.js";
+import CommonUtil from "#root/utils/common.util.js";
+import CourseModel from "#root/models/course.model.js";
 
 export default {
     get: async (req, res) => {
-        const page = parseInt(req?.query?.page) || 1;
-
-        const total = await QuestionModel.countDocuments();
-        const paging = ViewUtil.Paging.getPaging({
-            total: total,
-            currentPage: page,
-        });
         const newId = new mongoose.Types.ObjectId();
-        const questions = await QuestionModel.find({})
-            .skip((page - 1) * paging.pageSize)
-            .limit(paging.pageSize);
+        const {
+            currentPage: currentPage,
+            totalPages: totalPages,
+            models: questions,
+        } = await CommonUtil.Pagination.get({
+            query: req.query,
+            Model: QuestionModel,
+        })
 
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question.page.ejs`;
         res.render(view, ViewUtil.getOptions({
             data: {
-                questions: questions,
                 newId: newId,
-                ...paging,
+                questions: questions,
+                currentPage: currentPage,
+                totalPages: totalPages,
             },
         }));
     },
@@ -213,7 +214,9 @@ export default {
         const resolutions = await ResolutionModel.find({
             question: id,
         }).lean();
-        const resolutionStudentIdSet = new Set(resolutions.map(resolution => resolution.studentId?.toString()));
+        const resolutionStudentIdSet = new Set(resolutions.map(resolution => resolution.student?.toString()));
+
+        console.log('resolutions', resolutions);
 
         const students = await UserModel.find({
             type: AuthUtil.UserType.Student,
