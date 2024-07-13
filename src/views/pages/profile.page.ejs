@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+    <!-- Include Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            padding: 20px;
-        }
         .user-profile {
             max-width: 600px;
             margin: 0 auto;
@@ -17,22 +14,32 @@
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            position: relative;
         }
         .user-profile h1 {
             font-size: 24px;
             margin-bottom: 20px;
             text-align: center; 
         }
-        .user-profile p {
+        .user-profile .field {
+            display: flex;
+            align-items: center;
             margin-bottom: 10px;
             padding: 5px 0;
-            margin-left: 30px;
         }
-        .user-profile strong {
+        .user-profile .field label {
+            flex: 0 0 150px;
             font-weight: bold;
-            text-align: left;
-            display: inline-block;
-            width: 120px;
+        }
+        .user-profile .field input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .avatar-container {
+            position: relative;
+            text-align: center;
         }
         .avatar {
             width: 120px;
@@ -40,35 +47,74 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 20px; 
-            margin-left: 38%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .user-profile .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+        .user-profile button {
+            padding: 5px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .user-profile button:hover {
+            background-color: #0056b3;
+        }
+        .user-profile .file-input-container {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            border-radius: 20%;
+            padding: 0px 5px;
+            cursor: pointer;
+        }
+        .user-profile .file-input {
+            display: none;
+        }
+        .user-profile .file-input-label {
+        color:aquamarine;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
     <div class="user-profile">
-        <h1>User Profile</h1>
-        <img class="avatar" src="./images/avt.jpeg" alt="Avatar">
-        <p><strong>ID:</strong></p>
-        <p><%= data.user._id %></p>
-        <p><strong>Username:</strong></p>
-        <p><%= data.user.username %></p>
-        <p><strong>Full Name:</strong></p>
-        <p><%= data.user.fullName %></p>
-        <p><strong>Email:</strong></p>
-        <p><%= data.user.email || '(not provided)' %></p>
-        <p><strong>Type:</strong></p>
-        <p><%= data.user.type %></p>
-        <p><strong>Code:</strong></p>
-        <p><%= data.user.code %></p>
-        <p><strong>Classes:</strong></p>
-        <p><%= JSON.stringify(data.user.classes) %></p>
-        <p><strong>Class IDs:</strong></p>
-        <p><%= JSON.stringify(data.user.classIds) %></p>
-        <p><strong>Created At:</strong></p>
-        <p><%= new Date(data.user.createdAt).toLocaleString() %></p>
-        <p><strong>Updated At:</strong></p>
-        <p><%= new Date(data.user.updatedAt).toLocaleString() %></p>
+        <h1>Thông tin cá nhân</h1>
+        <div class="avatar-container">
+            <img class="avatar" src="./images/avt.jpeg" alt="Avatar">
+            <div class="file-input-container">
+                <input type="file" id="fileInput" class="file-input" accept="image/*" />
+                <label for="fileInput" class="file-input-label"><i class="fas fa-edit"></i></label>
+            </div>
+        </div>
+        <div class="field">
+            <label for="usernameInput">Tên người dùng:</label>
+            <input type="text" id="usernameInput" value="<%= data.user.username %>" />
+        </div>
+        <div class="field">
+            <label for="fullNameInput">Họ và tên:</label>
+            <input type="text" id="fullNameInput" value="<%= data.user.fullName %>" />
+        </div>
+        <div class="field">
+            <label for="emailInput">Email:</label>
+            <input type="text" id="emailInput" value="<%= data.user.email || '(not provided)' %>" />
+        </div>
+        <div class="field">
+            <label for="dobInput">Ngày sinh:</label>
+            <input type="text" id="dobInput" value="<%= data.user.dob || '(not provided)' %>" />
+        </div>
+        <div class="field">
+            <label for="classesInput">Lớp:</label>
+            <input type="text" id="classesInput" value="<%= JSON.stringify(data.user.classes) %>" />
+        </div>
+        <div class="button-container">
+            <button type="submit">Lưu</button>
+        </div>
     </div>
 </body>
 </html>
