@@ -15,69 +15,54 @@
         cursor: pointer;
     }
 </style>
-<div class="h-100 w-100">
-    <div style="justify-content:space-between; display:flex">
-        <h1>Quản lí tài khoản</h1>
-        <button
-                style="background-color:#008080; border:none; color: white; padding: 5px 10px; text-align: center; font-size: 18px; margin: 4px 2px; cursor: pointer; border-radius: 12px; transition: background-color 0.3s, box-shadow 0.3s;height:40px;"
-                onClick="upsert('<%= data?.newId %>')">
-            Tạo tài khoản
-        </button>
+
+<div style="justify-content:space-between; display:flex">
+    <h1>Quản lí tài khoản</h1>
+    <button
+            style="background-color:#008080; border:none; color: white; padding: 5px 10px; text-align: center; font-size: 18px; margin: 4px 2px; cursor: pointer; border-radius: 12px; transition: background-color 0.3s, box-shadow 0.3s;height:40px;"
+            onClick="upsert('<%= data?.newId %>')">
+        Tạo tài khoản
+    </button>
+</div>
+<div>
+    <div>
+        <form method="GET">
+            <input name="code" type="text" placeholder="Mã..." value="<%= data?.filters?.code %>" />
+            <input name="email" type="text" placeholder="Email..." value="<%= data?.filters?.email %>" />
+            <button type="submit">Lọc</button>
+        </form>
     </div>
     <div>
-        <div>
-            <form method="GET">
-                <input name="code" type="text" placeholder="Mã..." value="<%= data?.filters?.code %>" />
-                <input name="email" type="text" placeholder="Email..." value="<%= data?.filters?.email %>" />
-                <button type="submit">Lọc</button>
-            </form>
-        </div>
-        <div>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Mã tài khoản</th>
-                    <th scope="col">Chức danh</th>
-                    <th scope="col">Họ tên</th>
-                    <th scope="col">Email</th>
-                    <th style="width: 50px;"></th>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Mã tài khoản</th>
+                <th scope="col">Chức danh</th>
+                <th scope="col">Họ tên</th>
+                <th scope="col">Email</th>
+                <th style="width: 50px;"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% data.users.forEach((user) => { %>
+                <tr onClick="upsert('<%= user._id %>')">
+                    <th scope="row"><%= user.index %></th>
+                    <td><%= user.code %></td>
+                    <td><%= user.type %></td>
+                    <td><%= user.fullName %></td>
+                    <td><%= user.email %></td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
+                                    class="fas fa-trash-alt"></i></button>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                <% data.users.forEach((user) => { %>
-                    <tr onClick="upsert('<%= user._id %>')">
-                        <th scope="row"><%= user.index %></th>
-                        <td><%= user.code %></td>
-                        <td><%= user.type %></td>
-                        <td><%= user.fullName %></td>
-                        <td><%= user.email %></td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
-                                        class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
-                <% }) %>
-                </tbody>
-            </table>
-        </div>
-        <div>
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-                    </li>
-                    <% for(let i = 1; i <= data.totalPages; i++) { %>
-                        <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                        </li>
-                    <% } %>
-                    <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+            <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
     </div>
 </div>
 

@@ -37,7 +37,9 @@
                     <td><%= course?.code %></td>
                     <td><%= course?.name %></td>
                     <td><%= course?.createdBy?.fullName %></td>
-                    <td><%= course.createdAt.getFullYear() + '-' + String(course.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(course.createdAt.getDate()).padStart(2, '0') + ' ' + String(course.createdAt.getHours()).padStart(2, '0') + ':' + String(course.createdAt.getMinutes()).padStart(2, '0') %></td>
+                    <td>
+                        <%- include(partialPath + '/datetime.partial.ejs', { datetime: course?.createdAt, }) %>
+                    </td>
                     <td class="align-middle">
                         <button class="btn btn-danger btn-sm" onClick="del('<%= course._id %>')"><i
                                     class="fas fa-trash-alt"></i></button>
@@ -46,21 +48,10 @@
             <% } %>
             </tbody>
         </table>
-        <nav>
-            <ul class="pagination">
-                <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-                    <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-                </li>
-                <% for(let i = 1; i <= data.totalPages; i++) { %>
-                    <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                    </li>
-                <% } %>
-                <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-                    <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-                </li>
-            </ul>
-        </nav>
+
+        <div>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+        </div>
     </div>
 </div>
 

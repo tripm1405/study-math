@@ -19,12 +19,11 @@
             </tr>
             </thead>
             <tbody>
-            <% let index = 1; %>
             <% for (const question of (data?.questions || [])) { %>
                 <tr onClick="upsert('<%= question?._id %>')">
-                    <th scope="row"><%= index++ %></th>
+                    <td><%= question.index %></td>
                     <td><%= question?.code %></td>
-                    <td >
+                    <td>
                         <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= question?._id %>')">
                             <i class="fas fa-trash-alt"></i>
                         </button>
@@ -33,30 +32,20 @@
             <% } %>
             </tbody>
         </table>
-        <nav>
-            <ul class="pagination">
-                <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-                    <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-                </li>
-                <% for(let i = 1; i <= data.totalPages; i++) { %>
-                    <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                    </li>
-                <% } %>
-                <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-                    <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-                </li>
-            </ul>
-        </nav>
+
+        <div>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+        </div>
     </div>
 </div>
 
 <script>
-  function upsert(id) {
-    window.location.href = `/questions/${id}`;
-  }
-  async function del(id) {
-    await axios.delete(`/questions/${id}`);
-    location.reload()
-  }
+    function upsert(id) {
+        window.location.href = `/questions/${id}`;
+    }
+
+    async function del(id) {
+        await axios.delete(`/questions/${id}`);
+        location.reload()
+    }
 </script>

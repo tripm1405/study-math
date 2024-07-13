@@ -55,7 +55,7 @@ export default {
             data: {
                 class: _class,
                 users: users,
-                page: page,
+                currentPage: currentPage,
                 totalPages: totalPages,
                 usersInClass: usersInClass,
             },

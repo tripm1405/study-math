@@ -37,7 +37,9 @@
             <th scope="row"><%= block?.index  %></th>
             <td><%= block?.name %></td>
             <td><%= block?.createdBy?.fullName %></td>
-            <td><%= block.createdAt.getFullYear() + '-' + String(block.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(block.createdAt.getDate()).padStart(2, '0') + ' ' + String(block.createdAt.getHours()).padStart(2, '0') + ':' + String(block.createdAt.getMinutes()).padStart(2, '0') %></td>
+            <td>
+                <%- include(partialPath + '/datetime.partial.ejs', { datetime: block?.createdAt, }) %>
+            </td>
             <td class="align-middle">
                 <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
             </td>
@@ -45,21 +47,9 @@
     <% } %>
     </tbody>
 </table>
-<nav>
-  <ul class="pagination">
-      <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-          <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-      </li>
-      <% for (let i = 1; i <= data.totalPages; i++) { %>
-          <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-          </li>
-      <% } %>
-      <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-          <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-      </li>
-  </ul>
-</nav>
+<div>
+    <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+</div>
 
 <div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog">

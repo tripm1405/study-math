@@ -5,46 +5,41 @@
         padding: 20px;
         color: white;
     }
+
     .buttonMark button {
         padding: 10px 20px;
         background-color: #ffffff;
         color: #4CAF50;
-        border: 2px solid #ceffd0;        
+        border: 2px solid #ceffd0;
         border-radius: 5px;
         cursor: pointer;
         font-size: 16px;
     }
+
     .buttonMark button:hover {
         background-color: #45a049;
         color: #ffffff;
     }
+
     table {
         width: 100%;
         border-collapse: collapse;
         margin: 0;
     }
+
     table thead {
         background-color: #f2f2f2;
     }
+
     table th, table td {
         padding: 15px;
         text-align: left;
         border-bottom: 1px solid #ddd;
     }
+
     table tr:hover {
         background-color: #f1f1f1;
         cursor: pointer;
-    }
-    .btn-secondary {
-        padding: 5px 10px;
-        background-color: #6c757d;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .btn-secondary:hover {
-        background-color: #5a6268;
     }
 </style>
 <div class="w-full h-full">
@@ -60,35 +55,23 @@
         </tr>
         </thead>
         <tbody>
-        <% let index = 1; %>
         <% for (const resolution of data?.resolutions || []) { %>
-        <tr onclick="onDetail('<%= resolution?._id %>')">
-            <th scope="row"><%= resolution?.index  %></th>
-            <td>
-                <%= resolution?.question?.name %>
-            </td>
-            <td>
-                <%= resolution?.student?.fullName %>
-            </td>
-        </tr>
+            <tr onclick="onDetail('<%= resolution?._id %>')">
+                <td><%= resolution?.index %></td>
+                <td>
+                    <%= resolution?.question?.name %>
+                </td>
+                <td>
+                    <%= resolution?.student?.fullName %>
+                </td>
+            </tr>
         <% } %>
         </tbody>
     </table>
-    <nav>
-        <ul class="pagination">
-            <li class="page-item <%= data.currentPage === 1 ? 'disabled' : '' %>">
-                <a class="page-link" href="?page=<%= data.currentPage - 1 %>">Previous</a>
-            </li>
-            <% for (let i = 1; i <= data.totalPages; i++) { %>
-                <li class="page-item <%= data.currentPage === i ? 'active' : '' %>">
-                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                </li>
-            <% } %>
-            <li class="page-item <%= data.currentPage === data.totalPages ? 'disabled' : '' %>">
-                <a class="page-link" href="?page=<%= data.currentPage + 1 %>">Next</a>
-            </li>
-        </ul>
-      </nav>
+
+    <div>
+        <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+    </div>
 </div>
 
 <script>
