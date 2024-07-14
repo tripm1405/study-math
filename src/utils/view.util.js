@@ -50,30 +50,7 @@ const menuItems = {
 };
 
 export default class ViewUtil {
-    static Paging = class {
-        static size = 10;
-
-        static getPaging(paging) {
-            const {
-                pageSize,
-                total,
-                currentPage,
-            } = {
-                pageSize: ViewUtil.Paging.size,
-                currentPage: 1,
-                ...paging,
-            };
-
-            const totalPages = Math.ceil(total / pageSize);
-
-            return {
-                pageSize: pageSize,
-                total: total,
-                totalPages: totalPages,
-                currentPage: currentPage,
-            };
-        }
-    };
+    static WS_HREF = process.env.wsHref || 'ws://localhost:5500';
 
     static menus = {
         manager: [
@@ -96,9 +73,10 @@ export default class ViewUtil {
         ],
     };
 
-    static getOptions = (options, isManager = false) => {
+    static getOptions = (options) => {
         return {
             partialPath: `${viewPath}/partials`,
+            wsHref: ViewUtil.WS_HREF,
             layout: 'layouts/main.layout.ejs',
             ...options,
             data: {

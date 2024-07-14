@@ -1,6 +1,41 @@
-import CourseModel from "#root/models/course.model.js";
-
 export default class CommonUtil {
+    static List = class {
+        static SKIP_DEFAULT = 0;
+        static COUNT_DEFAULT = 5;
+
+        static async get(props) {
+            const {
+                query: {
+                    skip,
+                    count,
+                },
+                Model,
+                filter,
+                extendGet,
+            } = {
+                filter: {},
+                extendGet: get => get,
+                ...props,
+                query: {
+                    skip: CommonUtil.List.SKIP_DEFAULT,
+                    count: CommonUtil.List.COUNT_DEFAULT,
+                    ...props.query,
+                },
+            };
+
+            const total = await Model.countDocuments(filter);
+            const models = await extendGet(Model.find(filter)
+                .skip(skip)
+                .limit(count)
+                .lean());
+
+            return {
+                total: total,
+                models: models,
+            };
+        }
+    }
+
     static Pagination = class {
         static PAGE_DEFAULT = 1;
         static PAGE_SIZE_DEFAULT = 10;
@@ -19,7 +54,7 @@ export default class CommonUtil {
                     page: CommonUtil.Pagination.PAGE_DEFAULT,
                     pageSize: CommonUtil.Pagination.PAGE_SIZE_DEFAULT,
                     ...props.query,
-                }
+                },
             };
 
             const skip = (query.page - 1) * query.pageSize;

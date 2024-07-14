@@ -9,6 +9,8 @@ import AnswerModel from "#root/models/answer.model.js";
 import UserModel from "#root/models/user.model.js";
 import CommonUtil from "#root/utils/common.util.js";
 import CourseModel from "#root/models/course.model.js";
+import NotificationModel, {Status, Type} from "#root/models/notification.model.js";
+import NotificationService from "#root/services/notification.service.js";
 
 export default {
     get: async (req, res) => {
@@ -20,7 +22,7 @@ export default {
         } = await CommonUtil.Pagination.get({
             query: req.query,
             Model: QuestionModel,
-        })
+        });
 
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question.page.ejs`;
         res.render(view, ViewUtil.getOptions({
@@ -159,14 +161,33 @@ export default {
             content,
         } = req.body;
         const {
-            id
+            id,
         } = req.params;
 
-        await ResolutionModel.findOneAndUpdate({
+        const resolution = await ResolutionModel.findOneAndUpdate({
             question: id,
             createdBy: res.locals.currentUser?._id,
         }, {
             content: content,
+        });
+
+        const question = await QuestionModel.findById(id);
+
+        await NotificationModel.create({
+            type: Type.RESOLUTION_SUBMIT,
+            content: {
+                resolutionId: resolution?._id?.toString(),
+                title: NotificationService.generateTitle({
+                    type: Type.RESOLUTION_SUBMIT,
+                }),
+                text: NotificationService.generateText({
+                    type: Type.RESOLUTION_SUBMIT,
+                    student: res.locals.currentUser,
+                    question: question,
+                })
+            },
+            status: Status.NEW,
+            receivers: [question.createdBy],
         });
 
         res.redirect(`/questions/${id}`);

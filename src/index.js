@@ -6,6 +6,7 @@ import {fileURLToPath} from 'url';
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import multer from 'multer';
+import expressWs from 'express-ws';
 
 import Router from '#root/routes/index.js';
 import ApiUtil from "#root/utils/api.util.js";
@@ -18,10 +19,11 @@ try {
     console.log('connect database error');
 }
 
-
 const PORT = process.env.PORT || 5500;
 
 const app = express();
+
+expressWs(app);
 
 const rootPath = dirname(fileURLToPath(import.meta.url));
 
@@ -77,7 +79,7 @@ app.use((err, req, res, next) => {
         success: false,
         errors: 'Server error!',
     }));
-})
+});
 
 app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);

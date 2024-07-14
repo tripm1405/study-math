@@ -56,32 +56,7 @@
 </head>
 <body>
 <div class="d-flex flex-column" style="width: 100vw; height: 100vh; overflow: hidden;">
-    <header class="header">
-        <div class="header-content">
-            <img src="/images/logo.png" alt="Study Math Logo" class="logo">
-            <div class="search-bar">
-                <form action="/search" method="GET">
-                    <input name="search" type="text" value="<%= data?.search %>" class="form-control"
-                           placeholder="Tìm kiếm...">
-                </form>
-            </div>
-            <div class="ml-auto d-flex align-items-center">
-                <button class="btn transparent-btn" type="button">
-                    <i class="fas fa-bell"></i>
-                </button>
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle transparent-btn" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                        <%= currentUser?.fullName %>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="/profile" id="info">Thông tin cá nhân</a></li>
-                        <li><a class="dropdown-item" href="/sign-out" id="logout">Đăng xuất</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </header>
+    <%- include(partialPath + '/headers/main-header.partial.ejs', { search: data?.search, currentUser: currentUser, }) %>
     <div class="d-flex h-full" style="flex: 1 1; overflow: hidden;">
         <div class="h-full">
             <nav class="sidebar"

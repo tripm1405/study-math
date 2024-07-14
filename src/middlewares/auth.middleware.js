@@ -9,14 +9,14 @@ export default {
       return;
     }
 
-    const {_id, username, type} = await UserModel.findOne({
+    const {_id, username, fullName, type} = await UserModel.findOne({
       username: req?.cookies?.user?.username,
     });
 
     res.locals.currentUser = {
       _id: _id,
       username: username,
-      fullName: username,
+      fullName: fullName,
       type: type,
     };
     res.locals.menus = AuthUtil.checkManager(type)
