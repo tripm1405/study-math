@@ -46,6 +46,19 @@
     <div class="buttonMark">
         <button onclick="markByAnswer()">Chấm điểm bằng đáp án</button>
     </div>
+    <div class="container mt-4 mb-4">
+        <form method="GET" class="row ">
+            <div class="col-md-4">
+                <input name="question" type="text" class="form-control" placeholder="Bài toán..." value="<%= data?.filters?.question?.name %>" />
+            </div>
+            <div class="col-md-4">
+                <input name="student" type="text" class="form-control" placeholder="Học sinh..." value="<%= data?.filters?.student?.fullName %>" />
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Lọc</button>
+            </div>
+        </form>
+    </div>
     <table>
         <thead>
         <tr>

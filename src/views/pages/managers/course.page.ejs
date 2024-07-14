@@ -17,6 +17,19 @@
             data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khóa học
         </button>
     </div>
+    <div class="container mt-4 mb-4">
+        <form method="GET" class="row ">
+            <div class="col-md-4">
+                <input name="code" type="text" class="form-control" placeholder="Mã khóa học..." value="<%= data?.filters?.code %>" />
+            </div>
+            <div class="col-md-4">
+                <input name="name" type="text" class="form-control" placeholder="Tên khóa học..." value="<%= data?.filters?.name %>" />
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Lọc</button>
+            </div>
+        </form>
+    </div>
     <div>
         <table class="table table-striped mt-3">
             <thead>

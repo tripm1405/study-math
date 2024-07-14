@@ -19,7 +19,19 @@
     <button class="btn btn-primary" onClick="onExport()">EXPORT</button>
   </div>
 </div>
-
+<div class="container mt-4 mb-4">
+  <form method="GET" class="row ">
+      <div class="col-md-4">
+          <input name="question" type="text" class="form-control" placeholder="Bài toán..." value="<%= data?.filters?.name %>" />
+      </div>
+      <div class="col-md-4">
+          <input name="student" type="text" class="form-control" placeholder="Người tạo..." value="<%= data?.filters?.createdBy?.fullName %>" />
+      </div>
+      <div class="col-md-4">
+          <button type="submit" class="btn btn-primary">Lọc</button>
+      </div>
+  </form>
+</div>
 <table class="table table-striped mt-3">
     <thead>
     <tr>
