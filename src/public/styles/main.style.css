@@ -2,6 +2,7 @@
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 1000;
 }
 
 .sticky + .content {
@@ -14,9 +15,8 @@
     padding: 20px;
     position: -webkit-sticky;
     position: sticky;
-    height: 100%;
-    left: 0;
     top: 0;
+    height: 100%;
     overflow-x: hidden;
 }
 
@@ -40,7 +40,7 @@
 .header {
     width: 100%;
     background-color: #6497a7;
-    padding: 10px 20px;
+    padding: 5px 10px;
     display: flex;
     align-items: center;
     position: sticky;
@@ -52,17 +52,19 @@
     display: flex;
     align-items: center;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 .logo {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     margin-right: 20px;
 }
 
 .search-bar {
     flex-grow: 1;
-    margin: 0 400px;
+    margin: 0 5%;
+    min-width: 100px;
 }
 
 .search-bar .form-control {
@@ -78,6 +80,7 @@
     background: none;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
 .dropdown-menu {
@@ -154,7 +157,7 @@
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s, box-shadow 0.3s;
-    height:40px;
+    height: 40px;
 }
 
 .w-full {
