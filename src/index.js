@@ -84,10 +84,6 @@ app.use((err, req, res, next) => {
     }));
 });
 
-socket.on('connection', (socket) => {
-    console.log('a user connected');
-});
-
 server.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
 });

@@ -2,13 +2,14 @@ import dotenv from "dotenv";
 import bcrypt from 'bcryptjs';
 
 import ViewUtil from "#root/utils/view.util.js";
-import UserModel from "#root/models/user.model.js";
+import UserModel, {Type as UserType} from "#root/models/user.model.js";
 import CourseModel from "#root/models/course.model.js";
 import LessonModel from "#root/models/lesson.model.js";
 import QuestionModel from "#root/models/question.model.js";
 import AuthUtil from "#root/utils/auth.util.js";
 import ResolutionModel from "#root/models/resolution.model.js";
 import CommonUtil from "#root/utils/common.util.js";
+import DatetimeUtil from "#root/utils/datetime.util.js";
 
 dotenv.config();
 
@@ -199,8 +200,69 @@ export default {
         }));
     },
     getStatistics: async (req, res) => {
+        const resolutionAmountByDayOfMonth = await (async () => {
+            const date = DatetimeUtil.getStartEndOfCurrentMonth();
+
+            const resolutions = await ResolutionModel.find({
+                content: {
+                    $ne: undefined,
+                },
+                createdAt: {
+                    $gte: date?.start,
+                    $lt: date?.end,
+                },
+            });
+
+            return resolutions
+                .map(resolution => {
+                    return {
+                        ...resolution,
+                        key: DatetimeUtil.Format.get({
+                            type: DatetimeUtil.Format.type.DATE,
+                            date: resolution.createdAt,
+                        })
+                    }
+                })
+                .reduce((result, current) => {
+                    return {
+                        ...result,
+                        [current.key]: (result[current.key] || 0) + 1,
+                    }
+                }, {});
+        })();
+        const studentAmount = await UserModel.countDocuments({
+            type: UserType.STUDENT,
+        });
+        const questionAmount = await UserModel.countDocuments({});
+        const question = await (async () => {
+            const resolutions = await ResolutionModel.find({});
+            const resolutionAmountByQuestionId = resolutions
+                .reduce((result, current) => {
+                    return {
+                        ...result,
+                        [current.question]: (result[current.question] || 0) + 1,
+                    }
+                }, {});
+            const questionId = Object.keys(resolutionAmountByQuestionId)
+                .map(key => {
+                    return {
+                        key: key,
+                        value: resolutionAmountByQuestionId[key],
+                    };
+                })
+                .reduce((result, current) => {
+                    return result?.value > current?.value ? result : current;
+                }, undefined).key;
+            return await QuestionModel.findById(questionId);
+        })();
+
         res.render('pages/statistics.page.ejs', ViewUtil.getOptions({
-            data: {},
+            data: {
+                resolutionAmountByDayOfMonth: resolutionAmountByDayOfMonth,
+                studentAmount: studentAmount,
+                questionAmount: questionAmount,
+                question: question,
+            },
         }));
     },
 }

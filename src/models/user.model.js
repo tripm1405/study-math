@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 import ModelNameConstant from "#root/models/model-name.constant.js";
+import {Status} from "#root/models/notification.model.js";
+
+export const Type = {
+    ADMIN: 'Admin',
+    TEACHER: 'Teacher',
+    STUDENT: 'Student',
+};
 
 const schema = new mongoose.Schema({
     code: {
@@ -20,7 +27,10 @@ const schema = new mongoose.Schema({
         type: String,
     },
     type: {
-        type: String, // ['Admin', 'GiaoVien', 'HocSinh']
+        type: String,
+        enum: Object.values(Type),
+        default: Type.STUDENT,
+        require: true,
     },
     classes: [{
         type: mongoose.Schema.Types.ObjectId,
