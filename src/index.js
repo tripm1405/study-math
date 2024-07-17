@@ -1,12 +1,13 @@
 import express from 'express';
 import expressEjsLayouts from 'express-ejs-layouts';
 import cookieParser from 'cookie-parser';
-import {dirname} from 'path';
-import {fileURLToPath} from 'url';
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import multer from 'multer';
-import expressWs from 'express-ws';
+import { createServer } from 'node:http';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { Server as SocketServer } from "socket.io";
 
 import Router from '#root/routes/index.js';
 import ApiUtil from "#root/utils/api.util.js";
@@ -22,13 +23,15 @@ try {
 const PORT = process.env.PORT || 5500;
 
 const app = express();
-
-expressWs(app);
+const server = createServer(app);
+const socket = new SocketServer(server);
 
 const rootPath = dirname(fileURLToPath(import.meta.url));
 
 app.set('views', `${rootPath}/views`);
 app.set('view engine', 'ejs');
+app.set('rootPath', rootPath);
+app.set('socket', socket);
 
 app.use(express.static(`${rootPath}/public`));
 app.use(expressEjsLayouts);
@@ -81,7 +84,11 @@ app.use((err, req, res, next) => {
     }));
 });
 
-app.listen(PORT, () => {
+socket.on('connection', (socket) => {
+    console.log('a user connected');
+});
+
+server.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
 });
 

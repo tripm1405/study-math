@@ -50,6 +50,7 @@ const menuItems = {
 };
 
 export default class ViewUtil {
+    static PARTIAL_PATH = `${viewPath}/partials`;
     static WS_HREF = process.env.wsHref || 'ws://localhost:5500';
 
     static menus = {
@@ -75,7 +76,7 @@ export default class ViewUtil {
 
     static getOptions = (options) => {
         return {
-            partialPath: `${viewPath}/partials`,
+            partialPath: ViewUtil.PARTIAL_PATH,
             wsHref: ViewUtil.WS_HREF,
             layout: 'layouts/main.layout.ejs',
             ...options,

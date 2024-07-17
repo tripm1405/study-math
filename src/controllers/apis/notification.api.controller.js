@@ -7,6 +7,11 @@ export default {
         const notificationList = await CommonUtil.List.get({
             query: req.query,
             Model: NotificationModel,
+            extendGet: (get) => {
+                return get.sort({
+                    createdAt: 'desc'
+                });
+            }
         });
 
         res.json(ApiUtil.JsonRes({

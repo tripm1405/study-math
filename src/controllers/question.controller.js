@@ -173,7 +173,7 @@ export default {
 
         const question = await QuestionModel.findById(id);
 
-        await NotificationModel.create({
+        const notification = await NotificationModel.create({
             type: Type.RESOLUTION_SUBMIT,
             content: {
                 resolutionId: resolution?._id?.toString(),
@@ -189,6 +189,10 @@ export default {
             status: Status.NEW,
             receivers: [question.createdBy],
         });
+
+
+        const socket = req.app.get('socket');
+        socket.emit('notification', notification);
 
         res.redirect(`/questions/${id}`);
     },

@@ -2,6 +2,7 @@
     .k-notification {
         cursor: pointer;
     }
+
     .k-notification:hover {
         background-color: #ccccccff;
     }
@@ -35,6 +36,7 @@
         cursor: pointer;
         text-align: center;
     }
+
     .k-notification-more:hover {
         color: #007bff;
         text-decoration: #007bff 1px underline solid;
@@ -56,7 +58,8 @@
         </div>
         <div class="ml-auto d-flex align-items-center">
             <div class="dropdown">
-                <button type="button"  class="btn transparent-btn"data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <button type="button" class="btn transparent-btn" data-bs-toggle="dropdown" aria-expanded="false"
+                        data-bs-auto-close="outside">
                     <i class="fas fa-bell"></i>
                 </button>
                 <div class="dropdown-menu p-2" style="min-width: 400px;">
@@ -98,9 +101,18 @@
         count: 5,
     };
 
-    (async () => {
+
+    window.addEventListener('load', async () => {
+        const socket = io();
+        socket.on('notification', (notification) => {
+            const notificationContainerNode = document.querySelector('.k-notification-list');
+            notificationContainerNode.insertAdjacentElement('afterbegin', generateNotificationNode({
+                ...notification,
+            }));
+        });
+
         loadNotification();
-    })();
+    });
 
     function onLoadNotification() {
         loadNotification({
@@ -132,7 +144,7 @@
             }));
         }
         notification.skip = skip + count;
-        if (notificationRes?.data?.result?.total === notification.skip) {
+        if (notificationRes?.data?.result?.total <= notification.skip) {
             (e => e.style.display = 'none')(document.querySelector('.k-notification-more'));
         }
     }
