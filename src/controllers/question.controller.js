@@ -12,7 +12,7 @@ import CourseModel from "#root/models/course.model.js";
 import NotificationModel, {Status, Type} from "#root/models/notification.model.js";
 import NotificationService from "#root/services/notification.service.js";
 
-export default {
+const controllers = {
     get: async (req, res) => {
         const newId = new mongoose.Types.ObjectId();
         const {
@@ -192,7 +192,8 @@ export default {
 
 
         const socket = req.app.get('socket');
-        socket.emit('notification', notification);
+        socket.to(question.createdBy?.toString()).emit('notification', notification);
+        console.log('id', question.createdBy?.toString());
 
         res.redirect(`/questions/${id}`);
     },
@@ -283,4 +284,17 @@ export default {
             },
         }));
     },
+};
+
+export default {
+    get: controllers.get,
+    getDetail: controllers.getDetail,
+    post: controllers.post,
+    put: controllers.put,
+    delete: controllers.delete,
+    getSolve: controllers.getSolve,
+    putSolve: controllers.putSolve,
+    getAnswers: controllers.getAnswers,
+    getAnswer: controllers.getAnswer,
+    getAssign: controllers.getAssign,
 }

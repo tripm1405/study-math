@@ -10,7 +10,9 @@ import { dirname } from 'path';
 import { Server as SocketServer } from "socket.io";
 
 import Router from '#root/routes/index.js';
-import ApiUtil from "#root/utils/api.util.js";
+import CommonMiddleware from "#root/middlewares/common.middleware.js";
+import cookie from "cookie";
+import UserModel from "#root/models/user.model.js";
 
 dotenv.config();
 
@@ -21,11 +23,9 @@ try {
 }
 
 const PORT = process.env.PORT || 5500;
-
 const app = express();
 const server = createServer(app);
 const socket = new SocketServer(server);
-
 const rootPath = dirname(fileURLToPath(import.meta.url));
 
 app.set('views', `${rootPath}/views`);
@@ -40,49 +40,29 @@ app.use(express.urlencoded({extended: true}));
 app.use(multer({dest: `${rootPath}/uploads`}).any());
 app.use(cookieParser());
 
-app.use((req, res, next) => {
-    const {
-        method,
-        url,
-        body,
-        query,
-        files,
-    } = req;
-
-    if (url === '/favicon.ico') {
+socket.use(async (socket, next) => {
+    try {
+        const cookies = cookie.parse(socket.handshake.headers.cookie);
+        const {
+            username
+        } = {
+            ...(JSON.parse(cookies.user.replace(new RegExp(/j\:/g), '')) || {}),
+        };
+        socket.user = await UserModel.findOne({
+            username: username,
+        });
         next();
-        return;
+    } catch (e) {
+        next(new Error("unknown user"));
     }
-
-    console.log({
-        method,
-        url,
-        body,
-        query,
-        files: files?.map(file => file?.originalname),
-    });
-
-    next();
 });
+socket.on('connection', (socket) => {
+    socket.join(socket.user?._id?.toString());
+})
 
+app.use(CommonMiddleware.preLog);
 app.use(Router);
-
-app.use((err, req, res, next) => {
-    console.log(err);
-    if (err.name === 'ValidationError') {
-        res.json(ApiUtil.JsonRes({
-            success: false,
-            errors: err?.errors?.content,
-        }));
-
-        return;
-    }
-
-    res.json(ApiUtil.JsonRes({
-        success: false,
-        errors: 'Server error!',
-    }));
-});
+app.use(CommonMiddleware.handleError);
 
 server.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);

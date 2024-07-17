@@ -13,7 +13,7 @@ import DatetimeUtil from "#root/utils/datetime.util.js";
 
 dotenv.config();
 
-export default {
+const commonController = {
     getHome: async (req, res) => {
         const questions = await QuestionModel.find({}).lean();
         const questionMappingById = questions.reduce((result, question) => {
@@ -88,7 +88,7 @@ export default {
                 const resolutions = await ResolutionModel.find({
                     score: undefined,
                     content: undefined,
-                    studentId: res.locals.currentUser?._id,
+                    student: res.locals.currentUser?._id,
                 });
 
                 res.render('pages/home.page.ejs', ViewUtil.getOptions({
@@ -265,4 +265,15 @@ export default {
             },
         }));
     },
-}
+};
+
+export default {
+    getHome: commonController.getHome,
+    getProfile: commonController.getProfile,
+    getSearch: commonController.getSearch,
+    getSignIn: commonController.getSignIn,
+    postSignIn: commonController.postSignIn,
+    getSignOut: commonController.getSignOut,
+    getNotFound: commonController.getNotFound,
+    getStatistics: commonController.getStatistics,
+};

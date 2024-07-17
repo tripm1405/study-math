@@ -11,7 +11,10 @@ export default {
                 return get.sort({
                     createdAt: 'desc'
                 });
-            }
+            },
+            filter: {
+                receivers: res.locals.currentUser?._id,
+            },
         });
 
         res.json(ApiUtil.JsonRes({
