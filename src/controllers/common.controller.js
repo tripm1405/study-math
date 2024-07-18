@@ -131,6 +131,12 @@ const commonController = {
             filter: filter,
         });
 
+        const classes = await CommonUtil.Pagination.get({
+            query: req.query.classes,
+            Model: ClassModel,
+            filter: filter,
+        });
+
         const lessons = await CommonUtil.Pagination.get({
             query: req.query.lessons,
             Model: LessonModel,
@@ -142,11 +148,12 @@ const commonController = {
             Model: QuestionModel,
             filter: filter,
         });
-
+        console.log(classes);
         res.render('pages/search.page.ejs', ViewUtil.getOptions({
             data: {
                 search: search,
                 courses: courses,
+                classes: classes,
                 lessons: lessons,
                 questions: questions,
             },

@@ -113,6 +113,9 @@
             <% } %>
             </tbody>
         </table>
+        <div>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...(data.classes || {}), model: 'classes', }) %>
+        </div>
     </div>
 <% } %>
 
