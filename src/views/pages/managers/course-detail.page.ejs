@@ -69,12 +69,12 @@
             </thead>
             <tbody>
             <% let stt = 1; %>
-            <% for (const lesson of (data?.lessons || [])) { %>
+            <% for (const lesson of (data?.lessons?.models || [])) { %>
                 <tr onClick="upsertLesson('<%= lesson._id %>')">
                     <td><%= stt++ %></td>
                     <td><%= lesson?.code %></td>
                     <td><%= lesson?.name %></td>
-                    <td><%= lesson?.teacher %></td>
+                    <td><%= lesson?.createdBy?.fullName %></td>
                     <td><%= lesson.createdAt.getFullYear() + '-' + String(lesson.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(lesson.createdAt.getDate()).padStart(2, '0') + ' ' + String(lesson.createdAt.getHours()).padStart(2, '0') + ':' + String(lesson.createdAt.getMinutes()).padStart(2, '0') %></td>
                     <td><%= lesson?.endAt %></td>
                     <td><%= lesson?.participants %></td>
@@ -86,6 +86,9 @@
             <% } %>
             </tbody>
         </table>
+        <div>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...(data.lessons || {}), model: 'lessons', }) %>
+        </div>
     <% } %>
 </div>
 

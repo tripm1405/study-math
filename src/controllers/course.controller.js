@@ -49,10 +49,16 @@ export default {
             .populate('createdBy')
             .populate('image') || {};
 
-        const lessons = await LessonModel.find({
-            course: course?._id,
+        const lessons = await CommonUtil.Pagination.get({
+            query: req.query.lessons,
+            Model: LessonModel,
+            filter: {course: course?._id},
+            extendGet: get => {
+                return get
+                    .populate('createdBy')
+                    .lean();
+            },        
         });
-
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/course-detail.page.ejs`;
         res.render(view, ViewUtil.getOptions({
             data: {

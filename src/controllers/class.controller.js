@@ -35,8 +35,12 @@ export default {
 
         const _class = await ClassModel
             .findById(id) || {};
-        const users = await UserModel.find({
-            type: AuthUtil.UserType.Student,
+            
+        const users = await CommonUtil.Pagination.get({
+            query: req.query.users,
+            Model: UserModel,
+            filter: {classess: _class?.id},
+            usersInClass: usersInClass,
         });
 
         const {

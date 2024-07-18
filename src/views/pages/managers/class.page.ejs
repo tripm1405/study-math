@@ -44,10 +44,9 @@
             </tr>
             </thead>
             <tbody>
-            <% let index = 1; %>
             <% for (const _class of (data?.classes || [])) { %>
                 <tr onClick="upsert('<%= _class?._id %>')">
-                    <th scope="row"><%= _class?.index %></th>
+                    <td><%= _class?.index %></td>
                     <td><%= _class?.code %></td>
                     <td><%= _class?.name %></td>
                     <td><%= _class?.teacher %></td>

@@ -1,14 +1,3 @@
-<style>
-    .btn:hover {
-        background-color: aquamarine;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    table tr:hover {
-        background-color: #f1f1f1;
-        cursor: pointer;
-    }
-</style>
 <div class="h-full w-full">
     <div>
         <h1 style="margin-bottom: 20px; color: #333;">Chi tiết lớp học</h1>
@@ -22,9 +11,9 @@
                         id="code"
                         name="code"
                         type="text"
-                        value="<%= data?.class?.code %>"
+                        value="<%= data.class && data.class.code %>"
                         placeholder="Nhập mã lớp..."
-                        <%= data?.class?.code && 'disabled' %>
+                        <%= data.class && data.class.code ? 'disabled' : '' %>
                         class="form-control"
                 />
             </div>
@@ -34,7 +23,7 @@
                         id="name"
                         name="name"
                         type="text"
-                        value="<%= data?.class?.name %>"
+                        value="<%= data.class && data.class.name %>"
                         placeholder="Nhập tên lớp..."
                         class="form-control"
                 />
@@ -42,11 +31,13 @@
             <div class="mb-3">
                 <label for="users" class="form-label">Danh sách học sinh</label>
                 <select name="userIds[]" id="users" class="js-select2 form-control" multiple>
-                    <% for (const user of (data?.users || [])) { %>
-                        <option
-                                value="<%= user?._id %>"
-                                <%= data?.class?.users?.includes(user?._id) ? 'selected' : null %>
-                        ><%= user?.code %></option>
+                    <% if (Array.isArray(data.users)) { %>
+                        <% for (const user of data.users) { %>
+                            <option
+                                    value="<%= user._id %>"
+                                    <%= data.class && data.class.users && data.class.users.includes(user._id) ? 'selected' : '' %>
+                            ><%= user.code %></option>
+                        <% } %>
                     <% } %>
                 </select>
             </div>
@@ -55,7 +46,7 @@
                 <textarea class="form-control"
                           id="note"
                           name="note"
-                          placeholder="Nhập ghi chú..."><%= data?.class?.note %></textarea>
+                          placeholder="Nhập ghi chú..."><%= data.class && data.class.note %></textarea>
             </div>
             <div style="display: flex; justify-content: flex-end;">
                 <button type="submit" class="btn btn-primary">Lưu</button>
@@ -63,7 +54,7 @@
         </form>
     </div>
 
-    <% if (data?.class?._id) { %>
+    <% if (data.class && data.class._id && Array.isArray(data.usersInClass)) { %>
         <div style="margin-top: 40px;">
             <h2 style="margin-bottom: 20px; color: #333;">Danh sách học sinh</h2>
             <table class="table table-striped mt-3">
@@ -77,25 +68,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% for (const user of data?.usersInClass || []) { %>
-                    <tr onClick="upsert('<%= user._id %>')">
-                        <th scope="row"><%= user.index %></th>
-                        <td><%= user.code %></td>
-                        <td><%= user.fullName %></td>
-                        <td><%= user.email %></td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
-                                        class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
-                <% } %>
+                    <% for (const user of data.usersInClass?.models) { %>
+                        <tr onClick="upsert('<%= user._id %>')">
+                            <th scope="row"><%= user.index %></th>
+                            <td><%= user.code %></td>
+                            <td><%= user.fullName %></td>
+                            <td><%= user.email %></td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
+                                            class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                    <% } %>
                 </tbody>
             </table>
+            <div>
+                <%- include(partialPath + '/pagination.partial.ejs', { ...(data.users || {}), model: 'users', }) %>
+            </div>
         </div>
     <% } %>
 </div>
 
-<input name="id" type="hidden" id="id" value="<%= data?.class?._id %>"/>
+<input name="id" type="hidden" id="id" value="<%= data.class && data.class._id %>"/>
 
 <script>
     async function onSubmit(event) {

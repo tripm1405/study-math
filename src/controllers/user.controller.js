@@ -97,7 +97,6 @@ export default {
                     .lean();
             },        
         });
-       console.log(classes);
         res.render('pages/managers/user-detail.page.ejs', ViewUtil.getOptions({
             data: {
                 user: user,
