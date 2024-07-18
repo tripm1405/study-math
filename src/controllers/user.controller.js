@@ -7,6 +7,7 @@ import ViewUtil from "#root/utils/view.util.js";
 import AuthUtil from "#root/utils/auth.util.js";
 import ClassModel from "#root/models/class.model.js";
 import FilterUtil from "#root/utils/filter.util.js";
+import CommonUtil from "#root/utils/common.util.js";
 
 dotenv.config();
 
@@ -83,11 +84,20 @@ export default {
             success: false,
             id: id,
         });
-        const user = await UserModel.findById(id).lean() || {};
-        const classes = await ClassModel.find({
-            users: user?._id,
-        });
 
+        const user = await UserModel.findById(id).lean() || {};
+
+        const classes = await CommonUtil.Pagination.get({
+            query: req.query.classes,
+            Model: ClassModel,
+            filter: {users: user?._id},
+            extendGet: get => {
+                return get
+                    .populate('createdBy')
+                    .lean();
+            },        
+        });
+       console.log(classes);
         res.render('pages/managers/user-detail.page.ejs', ViewUtil.getOptions({
             data: {
                 user: user,
