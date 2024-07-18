@@ -72,10 +72,9 @@
             </tr>
             </thead>
             <tbody>
-            <% let stt = 1; %>
             <% for (const question of (data?.questions || [])) { %>
                 <tr onClick="editQuestion('<%= question._id %>')">
-                    <td><%= stt++ %></td>
+                    <td><%= question?.index %></td>
                     <td><%= question?.code %></td>
                     <td><%= question?.name %></td>
                     <td>

@@ -16,7 +16,6 @@ export default {
             .limit(ITEMS_PER_PAGE);
         const totalClasses = await ClassModel.countDocuments();
         const newId = new mongoose.Types.ObjectId();
-
         res.render('pages/managers/class.page.ejs', ViewUtil.getOptions({
             data: {
                 classes: classes,

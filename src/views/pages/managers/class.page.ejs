@@ -49,7 +49,7 @@
                     <td><%= _class?.index %></td>
                     <td><%= _class?.code %></td>
                     <td><%= _class?.name %></td>
-                    <td><%= _class?.teacher %></td>
+                    <td><%= _class?.createdBy?.fullName %></td>
                     <td><%= _class?.studentsCount %></td>
                     <td>
                         <button class="btn btn-danger btn-sm" onClick="del('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
