@@ -56,8 +56,6 @@ const controllers = {
             question: new mongoose.Types.ObjectId(id),
         });
 
-        console.log('lesson', question?.lesson);
-
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question-detail.page.ejs`;
         res.render(view, ViewUtil.getOptions({
             data: {
@@ -193,7 +191,6 @@ const controllers = {
 
         const socket = req.app.get('socket');
         socket.to(question.createdBy?.toString()).emit('notification', notification);
-        console.log('id', question.createdBy?.toString());
 
         res.redirect(`/questions/${id}`);
     },
@@ -241,8 +238,6 @@ const controllers = {
             question: id,
         }).lean();
         const resolutionStudentIdSet = new Set(resolutions.map(resolution => resolution.student?.toString()));
-
-        console.log('resolutions', resolutions);
 
         const students = await UserModel.find({
             type: AuthUtil.UserType.Student,

@@ -40,7 +40,6 @@ export default {
     } = req.params;
 
     const question = await QuestionModel.findById(id).lean();
-    console.log(question);
     const answers = question?.answers || [];
 
     res.json(ApiUtil.JsonRes({

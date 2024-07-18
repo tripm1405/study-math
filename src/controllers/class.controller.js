@@ -104,7 +104,6 @@ export default {
         for (const user of users.filter(user => {
             return !userIds.includes(user._id.toString());
         })) {
-            console.log(user.username);
             await UserModel.findByIdAndUpdate(user._id, {
                 classes: (user?.classes || []).filter(classId => {
                     return classId.toString() !== id.toString();
@@ -116,10 +115,8 @@ export default {
                 return user._id.toString() === userId.toString();
             });
         })) {
-            // const classes = (await UserModel.findById(userId)).classes || [];
             const user = await UserModel.findById(userId);
             const classes = user.classes || [];
-            console.log();
             await UserModel.findByIdAndUpdate(userId, {
                 classes: [...classes, id],
             });

@@ -96,7 +96,6 @@
         try {
             const res = await axios.put('/api/resolutions/mark-by-answer', {});
             if (!res?.data?.result?.success) {
-                console.log('errors', res?.data?.result?.errors);
                 return;
             }
             window.location.reload();

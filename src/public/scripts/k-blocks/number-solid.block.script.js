@@ -8,7 +8,6 @@ Blockly.defineBlocksWithJsonArray([{
 }]);
 
 javascript.javascriptGenerator.forBlock['number-solid'] = function(block, generator) {
-  console.log({ block, generator });
   const n = block.getFieldValue('n');
   return n;
 }

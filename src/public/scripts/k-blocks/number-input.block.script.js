@@ -13,7 +13,6 @@ Blockly.defineBlocksWithJsonArray([{
 }]);
 
 javascript.javascriptGenerator.forBlock['number-input'] = function(block, generator) {
-  console.log({ block, generator });
   const n = block.getFieldValue('n');
   return n;
 }

@@ -60,7 +60,6 @@
       K.obj2FormData(formData, body);
 
       const res = await axios.post(`/api/questions/${id}/assign`, formData);
-      console.log('res', res);
 
       if (!res?.data?.success) {
         return;

@@ -18,7 +18,6 @@ Blockly.defineBlocksWithJsonArray([{
 }]);
 
 javascript.javascriptGenerator.forBlock['number-select'] = function(block, generator) {
-  console.log({ block, generator });
   const n = block.getFieldValue('n');
   // moveForward is a function you would have to define yourself and provide
   // within your execution context.

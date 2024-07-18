@@ -111,11 +111,6 @@ export default class CommonUtil {
             obj2,
             keyCurrent,
         } = props;
-        console.log({
-            obj1,
-            obj2,
-            keyCurrent,
-        });
         const value1 = keyCurrent ? obj1[keyCurrent] : obj1;
         const value2 = keyCurrent ? obj2[keyCurrent] : obj2;
 

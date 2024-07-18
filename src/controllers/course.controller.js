@@ -49,8 +49,6 @@ export default {
             .populate('createdBy')
             .populate('image') || {};
 
-        console.log('course', course);
-
         const lessons = await LessonModel.find({
             course: course?._id,
         });
