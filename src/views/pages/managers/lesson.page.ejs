@@ -1,15 +1,9 @@
-<style>
-    table tr:hover {
-        background-color: #f1f1f1;
-        cursor: pointer;
-    }
-</style>
 <div class="w-100">
     <div style="justify-content:space-between; display:flex">
         <h1>Quản lí bài học</h1>
         <button class="k-btn-create btn" onclick="upsert('<%= data?.newId %>')">Tạo bài học</button>
     </div>
-    <div class="container mt-4 mb-4">
+    <div class="my-2">
         <form method="GET" class="row ">
             <div class="col-md-4">
                 <input name="code" type="text" class="form-control" placeholder="Mã bài học..." value="<%= data?.filters?.code %>" />
@@ -23,25 +17,25 @@
         </form>
     </div>
     <div>
-        <table class="table table-striped mt-3">
+        <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
             <thead>
             <tr>
-                <th scope="col">STT</th>
-                <th scope="col">Mã bài học</th>
-                <th scope="col">Tên bài học</th>
-                <th scope="col">Giáo viên</th>
-                <th scope="col">Thời gian tạo</th>
-                <th scope="col" style="width: 50px;"></th>
+                <th style="width: 80px;">STT</th>
+                <th>Mã bài học</th>
+                <th>Tên bài học</th>
+                <th>Giáo viên</th>
+                <th style="width: 160px;">Thời gian tạo</th>
+                <th style="width: 50px;"></th>
             </tr>
             </thead>
             <tbody>
             <% for (const lesson of data?.lessons?.models) { %>
                 <tr onclick="upsert('<%= lesson._id %>')">
-                    <td><%= lesson.index %></td>
+                    <td style="text-align: right;"><%= lesson.index %></td>
                     <td><%= lesson.code %></td>
                     <td><%= lesson.name %></td>
                     <td><%= lesson.createdBy?.fullName %></td>
-                    <td>
+                    <td style="text-align: center;">
                         <%- include(partialPath + '/datetime.partial.ejs', { datetime: lesson?.createdAt, }) %>
                     </td>
                     <td class="align-middle">

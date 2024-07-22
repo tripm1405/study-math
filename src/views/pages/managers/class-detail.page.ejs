@@ -57,20 +57,20 @@
     <% if (data.class && data.class._id && Array.isArray(data.usersInClass)) { %>
         <div style="margin-top: 40px;">
             <h2 style="margin-bottom: 20px; color: #333;">Danh sách học sinh</h2>
-            <table class="table table-striped mt-3">
+            <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
                 <thead>
                 <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Mã tài khoản</th>
-                    <th scope="col">Họ tên</th>
-                    <th scope="col">Email</th>
+                    <th style="width: 80px;">STT</th>
+                    <th>Mã tài khoản</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
                     <th style="width: 50px;"></th>
                 </tr>
                 </thead>
                 <tbody>
                     <% for (const user of data.usersInClass?.models) { %>
                         <tr onClick="upsert('<%= user._id %>')">
-                            <th scope="row"><%= user.index %></th>
+                            <td style="text-align: right;"><%= user.index %></td>
                             <td><%= user.code %></td>
                             <td><%= user.fullName %></td>
                             <td><%= user.email %></td>

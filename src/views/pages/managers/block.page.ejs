@@ -1,10 +1,3 @@
-<style>
-  table tr:hover {
-    background-color: #f1f1f1;
-    cursor: pointer;
-}
-</style>
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
@@ -15,7 +8,7 @@
     <button class="btn btn-primary" onClick="onExport()">EXPORT</button>
   </div>
 </div>
-<div class="container mt-4 mb-4">
+<div class="my-2">
   <form method="GET" class="row ">
       <div class="col-md-4">
           <input name="question" type="text" class="form-control" placeholder="Bài toán..." value="<%= data?.filters?.name %>" />
@@ -28,24 +21,23 @@
       </div>
   </form>
 </div>
-<table class="table table-striped mt-3">
+<table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
     <thead>
     <tr>
-        <th>STT</th>
+        <th style="width: 80px;">STT</th>
         <th>Mã</th>
         <th>Người tạo</th>
-        <th>Ngày tạo</th>
+        <th style="width: 160px;">Ngày tạo</th>
         <th style="width: 50px;"></th>
     </tr>
     </thead>
     <tbody>
-    <% let index = 1; %>
-    <% for (const block of (data?.blocks || [])) { %>
+    <% for (const block of data?.blocks?.models) { %>
         <tr onClick="upsert('<%= block?._id %>')">
-            <th scope="row"><%= block?.index  %></th>
+            <td style="text-align: right;"><%= block?.index  %></td>
             <td><%= block?.name %></td>
             <td><%= block?.createdBy?.fullName %></td>
-            <td>
+            <td style="text-align: center;">
                 <%- include(partialPath + '/datetime.partial.ejs', { datetime: block?.createdAt, }) %>
             </td>
             <td class="align-middle">
@@ -56,7 +48,7 @@
     </tbody>
 </table>
 <div>
-    <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+    <%- include(partialPath + '/pagination.partial.ejs', { ...data?.blocks, model: 'blocks', }) %>
 </div>
 
 <div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

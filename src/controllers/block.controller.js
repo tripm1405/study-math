@@ -1,27 +1,26 @@
 import mongoose from "mongoose";
 import ViewUtil from "#root/utils/view.util.js";
 import BlockModel from "#root/models/block.model.js";
+import CommonUtil from "#root/utils/common.util.js";
+import ClassModel from "#root/models/class.model.js";
 
 const ITEMS_PER_PAGE = 10;
 
 export default {
   get: async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const blocks = await BlockModel.find({})
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE);
-    const totalBlocks = await BlockModel.countDocuments();
-
-    const indexedBlocks = blocks.map((block, index) => ({
-      ...block.toObject(),
-      index: (page - 1) * ITEMS_PER_PAGE + index + 1,
-    }));
+      const blocks = await CommonUtil.Pagination.get({
+          query: req.query?.blocks,
+          Model: BlockModel,
+          extendGet: get => {
+              return get
+                  .populate('createdBy')
+                  .lean();
+          },
+      });
 
     res.render('pages/managers/block.page.ejs', ViewUtil.getOptions({
       data: {
-        blocks: indexedBlocks,
-        currentPage: page,
-        totalPages: Math.ceil(totalBlocks / ITEMS_PER_PAGE),
+        blocks: blocks,
       },
     }));
   },

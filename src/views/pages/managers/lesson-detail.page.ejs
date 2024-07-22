@@ -62,19 +62,19 @@
 
     <% if (data?.lesson?._id) { %>
         <h2 style="margin-top: 40px; margin-bottom: 10px; color: #333;">Danh sách bài toán</h2>
-        <table class="table">
+        <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
             <thead>
             <tr>
-                <th scope="col">STT</th>
-                <th scope="col">Mã bài toán</th>
-                <th scope="col">Tên bài toán</th>
-                <th scope="col" style="width: 50px;"></th>
+                <th style="width: 80px;">STT</th>
+                <th>Mã bài toán</th>
+                <th>Tên bài toán</th>
+                <th style="width: 50px;"></th>
             </tr>
             </thead>
             <tbody>
             <% for (const question of (data?.questions || [])) { %>
                 <tr onClick="editQuestion('<%= question._id %>')">
-                    <td><%= question?.index %></td>
+                    <td style="text-align: right;"><%= question?.index %></td>
                     <td><%= question?.code %></td>
                     <td><%= question?.name %></td>
                     <td>
