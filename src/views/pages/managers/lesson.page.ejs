@@ -1,8 +1,4 @@
 <style>
-    .btn:hover {
-        background-color: aquamarine;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
     table tr:hover {
         background-color: #f1f1f1;
         cursor: pointer;
@@ -11,7 +7,7 @@
 <div class="w-100">
     <div style="justify-content:space-between; display:flex">
         <h1>Quản lí bài học</h1>
-        <button class="k-btn-create" onclick="upsert('<%= data?.newId %>')">Tạo bài học</button>
+        <button class="k-btn-create btn" onclick="upsert('<%= data?.newId %>')">Tạo bài học</button>
     </div>
     <div class="container mt-4 mb-4">
         <form method="GET" class="row ">

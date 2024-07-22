@@ -1,8 +1,4 @@
 <style>
-    .btn:hover {
-        background-color: aquamarine;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
     table tr:hover {
         background-color: #f1f1f1;
         cursor: pointer;
@@ -11,19 +7,17 @@
 <div class="w-100">
     <div style="justify-content:space-between; display:flex">
         <h1>Quản lí khóa học</h1>
-        <button
-            style="background-color:#008080; border:none; color: white; text-align: center; font-size: 16px; cursor: pointer; border-radius: 8px; transition: background-color 0.3s, box-shadow 0.3s;
-            height:40px"
-            data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">Tạo khóa học
-        </button>
+        <button class="k-btn-create btn" onClick="upsert('<%= data?.newId %>')">Tạo khóa học</button>
     </div>
     <div class="container mt-4 mb-4">
         <form method="GET" class="row ">
             <div class="col-md-4">
-                <input name="code" type="text" class="form-control" placeholder="Mã khóa học..." value="<%= data?.filters?.code %>" />
+                <input name="code" type="text" class="form-control" placeholder="Mã khóa học..."
+                       value="<%= data?.filters?.code %>"/>
             </div>
             <div class="col-md-4">
-                <input name="name" type="text" class="form-control" placeholder="Tên khóa học..." value="<%= data?.filters?.name %>" />
+                <input name="name" type="text" class="form-control" placeholder="Tên khóa học..."
+                       value="<%= data?.filters?.name %>"/>
             </div>
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary">Lọc</button>
@@ -82,23 +76,23 @@
 
 <script>
     function upsert(id) {
-      window.location.href = `/courses/${id}`;
+        window.location.href = `/courses/${id}`;
     }
-  
-    async function del(id) {
-      try {
-          await axios.delete(`/courses/${id}`);
-          location.reload();
-      } catch (error) {
-          console.error('Delete Error:', error);
-          const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-          errorToast.show();
-      }
-    }
-  </script>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    async function del(id) {
+        try {
+            await axios.delete(`/courses/${id}`);
+            location.reload();
+        } catch (error) {
+            console.error('Delete Error:', error);
+            const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+            errorToast.show();
+        }
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
