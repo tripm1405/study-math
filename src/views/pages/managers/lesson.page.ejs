@@ -39,10 +39,9 @@
             </tr>
             </thead>
             <tbody>
-            <% let index = 1; %>
-            <% for (const lesson of (data?.lessons || [])) { %>
+            <% for (const lesson of data?.lessons?.models) { %>
                 <tr onclick="upsert('<%= lesson._id %>')">
-                    <th scope="row"><%= index++ %></th>
+                    <td><%= lesson.index %></td>
                     <td><%= lesson.code %></td>
                     <td><%= lesson.name %></td>
                     <td><%= lesson.createdBy?.fullName %></td>
@@ -59,7 +58,7 @@
         </table>
 
         <div>
-            <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...data?.lessons, model: 'lessons', }) %>
         </div>
     </div>
 </div>
