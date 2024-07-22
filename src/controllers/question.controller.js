@@ -167,6 +167,7 @@ const controllers = {
             createdBy: res.locals.currentUser?._id,
         }, {
             content: content,
+            solvedAt: new Date(),
         });
 
         const question = await QuestionModel.findById(id);

@@ -3,23 +3,19 @@
         background-color: aquamarine;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
-    table tr:hover {
-        background-color: #f1f1f1;
-        cursor: pointer;
-    }
 </style>
-<div class="w-full h-full">
+<div class="w-full">
     <div style="display: flex; justify-content: space-between;">
         <h1>Quản lí lớp học</h1>
         <button
                 class="btn"
                 style="background-color: #008080; color: white; font-size: 16px; cursor: pointer; border-radius: 8px; height: 40px;"
-                data-bs-toggle="modal" data-bs-target="#accountModal" onClick="upsert('<%= data?.newId %>')">
+                onClick="upsert('<%= data?.newId %>')">
             Tạo lớp học
         </button>
     </div>
-    <div class="container mt-4 mb-4">
-        <form method="GET" class="row ">
+    <div class="my-2">
+        <form method="GET" class="row">
             <div class="col-md-4">
                 <input name="code" type="text" class="form-control" placeholder="Mã lớp..." value="<%= data?.filters?.code %>" />
             </div>
@@ -32,7 +28,7 @@
         </form>
     </div>
     <div>
-        <table class="table table-striped mt-3">
+        <table class="k-table-pointer table table-hover table-striped mt-3">
             <thead>
             <tr>
                 <th>STT</th>
@@ -44,13 +40,13 @@
             </tr>
             </thead>
             <tbody>
-            <% for (const _class of (data?.classes || [])) { %>
+            <% for (const _class of data?.classes?.models) { %>
                 <tr onClick="upsert('<%= _class?._id %>')">
                     <td><%= _class?.index %></td>
                     <td><%= _class?.code %></td>
                     <td><%= _class?.name %></td>
                     <td><%= _class?.createdBy?.fullName %></td>
-                    <td><%= _class?.studentsCount %></td>
+                    <td><%= _class?.users?.length %></td>
                     <td>
                         <button class="btn btn-danger btn-sm" onClick="del('<%= _class?._id %>')"><i class="fas fa-trash-alt"></i></button>
                     </td>
@@ -59,7 +55,7 @@
             </tbody>
         </table>
         <div>
-            <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...(data?.classes || {}), model: 'classes', }) %>
         </div>
     </div>
 </div>

@@ -27,7 +27,7 @@ export default {
                     .populate('createdBy')
                     .lean();
             },
-        })
+        });
 
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/course.page.ejs`;
         res.render(view, ViewUtil.getOptions({

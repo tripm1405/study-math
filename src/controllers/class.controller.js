@@ -2,26 +2,29 @@ import mongoose from "mongoose";
 import ViewUtil from "#root/utils/view.util.js";
 import ClassModel from "#root/models/class.model.js";
 import UserModel from "#root/models/user.model.js";
-import AuthUtil from "#root/utils/auth.util.js";
 import CommonUtil from "#root/utils/common.util.js";
 import userModel from "#root/models/user.model.js";
 
-const ITEMS_PER_PAGE = 10;
-
 export default {
     get: async (req, res) => {
-        const page = parseInt(req.query.page) || 1;
-        const classes = await ClassModel.find({})
-            .skip((page - 1) * ITEMS_PER_PAGE)
-            .limit(ITEMS_PER_PAGE);
-        const totalClasses = await ClassModel.countDocuments();
         const newId = new mongoose.Types.ObjectId();
-        res.render('pages/managers/class.page.ejs', ViewUtil.getOptions({
+        const classes = await CommonUtil.Pagination.get({
+            query: req.query?.classes,
+            Model: ClassModel,
+            extendGet: get => {
+                return get
+                    .populate('createdBy')
+                    .lean();
+            },
+        });
+
+        const views = 'pages/managers/class.page.ejs';
+        res.render(views, ViewUtil.getOptions({
             data: {
-                classes: classes,
                 newId: newId,
-                currentPage: page,
-                totalPages: Math.ceil(totalClasses / ITEMS_PER_PAGE),
+                classes: {
+                    ...classes,
+                },
             },
         }));
     },

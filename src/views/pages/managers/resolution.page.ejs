@@ -1,89 +1,72 @@
 <style>
-    .buttonMark {
-        display: flex;
-        justify-content: flex-end;
-        padding: 20px;
-        color: white;
-    }
-
-    .buttonMark button {
-        padding: 10px 20px;
-        background-color: #ffffff;
-        color: #4CAF50;
-        border: 2px solid #ceffd0;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .buttonMark button:hover {
-        background-color: #45a049;
-        color: #ffffff;
-    }
-
     table {
         width: 100%;
         border-collapse: collapse;
         margin: 0;
     }
-
-    table thead {
-        background-color: #f2f2f2;
-    }
-
-    table th, table td {
-        padding: 15px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    table tr:hover {
-        background-color: #f1f1f1;
-        cursor: pointer;
-    }
 </style>
-<div class="w-full h-full">
-    <div class="buttonMark">
-        <button onclick="markByAnswer()">Chấm điểm bằng đáp án</button>
+<div class="w-full">
+    <div style="display:flex; align-items: center; justify-content:space-between;">
+        <h1>Quản lí bài học</h1>
+        <div class="buttonMark">
+            <button class="btn btn-success" onclick="markByAnswer()">Chấm điểm bằng đáp án</button>
+        </div>
     </div>
-    <div class="container mt-4 mb-4">
-        <form method="GET" class="row ">
-            <div class="col-md-4">
-                <input name="question" type="text" class="form-control" placeholder="Bài toán..." value="<%= data?.filters?.question?.name %>" />
-            </div>
-            <div class="col-md-4">
-                <input name="student" type="text" class="form-control" placeholder="Học sinh..." value="<%= data?.filters?.student?.fullName %>" />
-            </div>
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-primary">Lọc</button>
-            </div>
-        </form>
-    </div>
-    <table>
-        <thead>
-        <tr>
-            <th>STT</th>
-            <th>Bài toán</th>
-            <th>Học sinh</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% for (const resolution of data?.resolutions || []) { %>
-            <tr onclick="onDetail('<%= resolution?._id %>')">
-                <td><%= resolution?.index %></td>
-                <td>
-                    <%= resolution?.question?.name %>
-                </td>
-                <td>
-                    <%= resolution?.student?.fullName %>
-                </td>
-            </tr>
-        <% } %>
-        </tbody>
-    </table>
-
     <div>
-        <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+        <div class="my-4">
+            <form method="GET" class="row">
+                <div class="col-md-4">
+                    <input
+                            name="question"
+                            type="text"
+                            class="form-control"
+                            placeholder="Bài toán..."
+                            value="<%= data?.filters?.question?.name %>"/>
+                </div>
+                <div class="col-md-4">
+                    <input
+                            name="student"
+                            type="text"
+                            class="form-control"
+                            placeholder="Học sinh..."
+                            value="<%= data?.filters?.student?.fullName %>"/>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                </div>
+            </form>
+        </div>
+        <div class="my-4">
+            <table class="k-table k-table-pointer table table-hover table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 80px;">STT</th>
+                    <th>Bài toán</th>
+                    <th>Học sinh</th>
+                    <th style="width: 160px;">Thời gian nộp</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for (const resolution of data?.resolutions?.models) { %>
+                    <tr onclick="onDetail('<%= resolution?._id %>')">
+                        <td style="text-align: right;"><%= resolution?.index %></td>
+                        <td>
+                            <%= resolution?.question?.name %>
+                        </td>
+                        <td>
+                            <%= resolution?.student?.fullName %>
+                        </td>
+                        <td style="text-align: center;">
+                            <%- include(partialPath + '/datetime.partial.ejs', { datetime: resolution?.solvedAt, }) %>
+                        </td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...data?.resolutions, model: 'resolutions', }) %>
+        </div>
     </div>
 </div>
 

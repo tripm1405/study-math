@@ -159,6 +159,10 @@
     transition: background-color 0.3s, box-shadow 0.3s;
     height: 40px;
 }
+.k-btn-create:hover {
+    background-color: aquamarine;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
 
 .w-full {
     width: 100%;
@@ -169,5 +173,13 @@
 }
 
 .k-cursor-pointer {
+    cursor: pointer;
+}
+
+.k-table thead tr th {
+    text-align: center;
+}
+
+.k-table-pointer tbody tr {
     cursor: pointer;
 }
