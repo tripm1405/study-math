@@ -19,6 +19,8 @@
             <tr>
                 <th style="width: 80px; text-align: center;">STT</th>
                 <th>Mã bài toán</th>
+                <th>Người tạo</th>
+                <th style="width: 160px;">Ngày tạo</th>
                 <th style="width: 50px;"></th>
             </tr>
             </thead>
@@ -27,6 +29,10 @@
                 <tr onClick="upsert('<%= question?._id %>')">
                     <td style="text-align: right;"><%= question.index %></td>
                     <td><%= question?.code %></td>
+                    <td><%= question?.createdBy?.fullName %></td>
+                    <td style="text-align: center;">
+                        <%- include(partialPath + '/datetime.partial.ejs', { datetime: question?.createdAt, }) %>
+                    </td>
                     <td>
                         <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= question?._id %>')">
                             <i class="fas fa-trash-alt"></i>

@@ -22,6 +22,11 @@ const controllers = {
         } = await CommonUtil.Pagination.get({
             query: req.query,
             Model: QuestionModel,
+            extendGet: get => {
+                return get
+                    .populate('createdBy')
+                    .lean();
+            },
         });
 
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question.page.ejs`;
