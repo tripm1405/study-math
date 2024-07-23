@@ -8,11 +8,13 @@ import { createServer } from 'node:http';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { Server as SocketServer } from "socket.io";
+import cookie from "cookie";
 
 import Router from '#root/routes/index.js';
 import CommonMiddleware from "#root/middlewares/common.middleware.js";
-import cookie from "cookie";
 import UserModel from "#root/models/user.model.js";
+
+import "#root/services/cron.service.js";
 
 dotenv.config();
 
@@ -67,5 +69,7 @@ app.use(CommonMiddleware.handleError);
 server.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
 });
+
+
 
 export default app;
