@@ -2,7 +2,6 @@
     <div>
         <h1 style="margin-bottom: 20px; color: #333;">Chi tiết lớp học</h1>
     </div>
-
     <div>
         <form onsubmit="onSubmit(event)">
             <div class="mb-3">
@@ -31,13 +30,11 @@
             <div class="mb-3">
                 <label for="users" class="form-label">Danh sách học sinh</label>
                 <select name="userIds[]" id="users" class="js-select2 form-control" multiple>
-                    <% if (Array.isArray(data.users)) { %>
-                        <% for (const user of data.users) { %>
-                            <option
-                                    value="<%= user._id %>"
-                                    <%= data.class && data.class.users && data.class.users.includes(user._id) ? 'selected' : '' %>
-                            ><%= user.code %></option>
-                        <% } %>
+                    <% for (const user of data.userOptions) { %>
+                        <option
+                                value="<%= user._id %>"
+                                <%= data.class && data.class.users && data.class.users.includes(user._id) ? 'selected' : '' %>
+                        ><%= user.code %></option>
                     <% } %>
                 </select>
             </div>
@@ -54,7 +51,7 @@
         </form>
     </div>
 
-    <% if (data.class && data.class._id && Array.isArray(data.users.models)) { %>
+    <% if (data.class?._id) { %>
         <div style="margin-top: 40px;">
             <h2 style="margin-bottom: 20px; color: #333;">Danh sách học sinh</h2>
             <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">

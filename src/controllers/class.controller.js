@@ -5,6 +5,7 @@ import UserModel from "#root/models/user.model.js";
 import CommonUtil from "#root/utils/common.util.js";
 import userModel from "#root/models/user.model.js";
 import FilterUtil from "#root/utils/filter.util.js";
+import CourseModel from "#root/models/course.model.js";
 
 export default {
     get: async (req, res) => {
@@ -50,19 +51,39 @@ export default {
 
         const _class = await ClassModel
             .findById(id) || {};
-            
+
         const users = await CommonUtil.Pagination.get({
             query: req.query.users,
             Model: UserModel,
             filter: {
-                classes: id,
+                _id: _class.users,
+            },
+            extendGet: get => {
+                return get
+                    .populate('createdBy')
+                    .lean();
             },
         });
+
+        console.log('users', users);
+
+        const userOptions = await UserModel.find({
+            classes: id,
+        });
+            
+        // const users = await CommonUtil.Pagination.get({
+        //     query: req.query.users,
+        //     Model: UserModel,
+        //     filter: {
+        //         classes: id,
+        //     },
+        // });
 
         const view = 'pages/managers/class-detail.page.ejs';
         res.render(view, ViewUtil.getOptions({
             data: {
                 class: _class,
+                userOptions: userOptions,
                 users: users,
             },
         }));
