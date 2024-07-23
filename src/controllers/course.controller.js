@@ -6,10 +6,14 @@ import CommonUtil from "#root/utils/common.util.js";
 import fs from "fs";
 import FileUtil from "#root/utils/file.util.js";
 import FileModel from "#root/models/file.model.js";
+import FilterUtil from "#root/utils/filter.util.js";
 
 export default {
     get: async (req, res) => {
         const newId = new mongoose.Types.ObjectId();
+        const filter = FilterUtil.Course({
+            filters: req.query,
+        });
         const {
             currentPage: currentPage,
             totalPages: totalPages,
@@ -18,9 +22,14 @@ export default {
             query: req.query,
             Model: CourseModel,
             filter: {
-                type: {
-                    $ne: 'Admin',
-                },
+                $and: [
+                    {
+                        type: {
+                            $ne: 'Admin',
+                        },
+                    },
+                    filter,
+                ],
             },
             extendGet: get => {
                 return get
@@ -36,6 +45,7 @@ export default {
                 newId: newId,
                 totalPages: totalPages,
                 currentPage: currentPage,
+                filters: req.query,
             },
         }));
     },

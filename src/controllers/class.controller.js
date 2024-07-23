@@ -4,13 +4,18 @@ import ClassModel from "#root/models/class.model.js";
 import UserModel from "#root/models/user.model.js";
 import CommonUtil from "#root/utils/common.util.js";
 import userModel from "#root/models/user.model.js";
+import FilterUtil from "#root/utils/filter.util.js";
 
 export default {
     get: async (req, res) => {
         const newId = new mongoose.Types.ObjectId();
+        const filter = FilterUtil.Class({
+            filters: req.query,
+        });
         const classes = await CommonUtil.Pagination.get({
             query: req.query?.classes,
             Model: ClassModel,
+            filter: filter,
             extendGet: get => {
                 return get
                     .populate('createdBy')
@@ -25,6 +30,7 @@ export default {
                 classes: {
                     ...classes,
                 },
+                filters: req.query,
             },
         }));
     },

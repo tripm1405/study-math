@@ -11,10 +11,7 @@
 <div class="my-2">
   <form method="GET" class="row ">
       <div class="col-md-4">
-          <input name="question" type="text" class="form-control" placeholder="Bài toán..." value="<%= data?.filters?.name %>" />
-      </div>
-      <div class="col-md-4">
-          <input name="student" type="text" class="form-control" placeholder="Người tạo..." value="<%= data?.filters?.createdBy?.fullName %>" />
+          <input name="name" type="text" class="form-control" placeholder="Tên..." value="<%= data?.filters?.name %>" />
       </div>
       <div class="col-md-4">
           <button type="submit" class="btn btn-primary">Lọc</button>
@@ -25,7 +22,7 @@
     <thead>
     <tr>
         <th style="width: 80px;">STT</th>
-        <th>Mã</th>
+        <th>Tên</th>
         <th>Người tạo</th>
         <th style="width: 160px;">Ngày tạo</th>
         <th style="width: 50px;"></th>

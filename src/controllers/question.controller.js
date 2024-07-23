@@ -11,10 +11,14 @@ import CommonUtil from "#root/utils/common.util.js";
 import CourseModel from "#root/models/course.model.js";
 import NotificationModel, {Status, Type} from "#root/models/notification.model.js";
 import NotificationService from "#root/services/notification.service.js";
+import FilterUtil from "#root/utils/filter.util.js";
 
 const controllers = {
     get: async (req, res) => {
         const newId = new mongoose.Types.ObjectId();
+        const filter = FilterUtil.Question({
+            filters: req.query,
+        });
         const {
             currentPage: currentPage,
             totalPages: totalPages,
@@ -22,6 +26,7 @@ const controllers = {
         } = await CommonUtil.Pagination.get({
             query: req.query,
             Model: QuestionModel,
+            filter: filter,
             extendGet: get => {
                 return get
                     .populate('createdBy')
@@ -36,6 +41,7 @@ const controllers = {
                 questions: questions,
                 currentPage: currentPage,
                 totalPages: totalPages,
+                filters: req.query,
             },
         }));
     },
