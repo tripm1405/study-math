@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Display</title>
+    <style>
+        .container {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .section li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            <h2>Resolution Amount by Day of Month</h2>
+            <ul id="resolution-list"></ul>
+        </div>
+        <div class="section">
+            <h2>Total Students</h2>
+            <p id="student-amount"></p>
+        </div>
+        <div class="section">
+            <h2>Total Questions</h2>
+            <p id="question-amount"></p>
+        </div>
+        <div class="section">
+            <h2>Question Details</h2>
+            <p id="question-id"></p>
+            <p id="question-code"></p>
+            <p id="question-name"></p>
+            <p id="question-created-at"></p>
+            <p id="question-updated-at"></p>
+        </div>
+    </div>
+
+    <script>
+        const data = {
+            "resolutionAmountByDayOfMonth": {
+                "2024-07-13": 1,
+                "2024-07-14": 3,
+                "2024-07-16": 1,
+                "2024-07-18": 2,
+                "2024-07-22": 1
+            },
+            "studentAmount": 11,
+            "questionAmount": 15,
+            "question": {
+                "_id": "666ab240a50d291b9267a23b",
+                "code": "Q01",
+                "name": "Q 01",
+                "blocksDefault": "{\"blocks\":{\"languageVersion\":0,\"blocks\":[{\"type\":\"Compare\",\"id\":\".V./pT4PkvSulpYMrxY-\",\"x\":23,\"y\":33,\"fields\":{\"operator\":\"BIGGER\"}}]}}",
+                "toolbox": "{}",
+                "answers": [],
+                "createdById": "665ccdacdb904b6d147d1f10",
+                "createdAt": "2024-06-13T08:48:00.146Z",
+                "updatedAt": "2024-07-14T06:52:22.283Z",
+                "__v": 0,
+                "createdBy": "665ccdacdb904b6d147d1f10"
+            }
+        };
+
+        const resolutionList = document.getElementById('resolution-list');
+        const studentAmount = document.getElementById('student-amount');
+        const questionAmount = document.getElementById('question-amount');
+        const questionId = document.getElementById('question-id');
+        const questionCode = document.getElementById('question-code');
+        const questionName = document.getElementById('question-name');
+        const questionCreatedAt = document.getElementById('question-created-at');
+        const questionUpdatedAt = document.getElementById('question-updated-at');
+
+        Object.entries(data.resolutionAmountByDayOfMonth).forEach(([date, amount]) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${date}: ${amount}`;
+            resolutionList.appendChild(listItem);
+        });
+
+        studentAmount.textContent = `Total Students: ${data.studentAmount}`;
+        questionAmount.textContent = `Total Questions: ${data.questionAmount}`;
+
+        questionId.textContent = `Question ID: ${data.question._id}`;
+        questionCode.textContent = `Question Code: ${data.question.code}`;
+        questionName.textContent = `Question Name: ${data.question.name}`;
+        questionCreatedAt.textContent = `Created At: ${new Date(data.question.createdAt).toLocaleString()}`;
+        questionUpdatedAt.textContent = `Updated At: ${new Date(data.question.updatedAt).toLocaleString()}`;
+    </script>
+</body>
+</html>
+
 <%= JSON.stringify(data) %>
