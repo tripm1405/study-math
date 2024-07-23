@@ -54,7 +54,7 @@
         </form>
     </div>
 
-    <% if (data.class && data.class._id && Array.isArray(data.usersInClass)) { %>
+    <% if (data.class && data.class._id && Array.isArray(data.users.models)) { %>
         <div style="margin-top: 40px;">
             <h2 style="margin-bottom: 20px; color: #333;">Danh sách học sinh</h2>
             <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
@@ -68,7 +68,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <% for (const user of data.usersInClass?.models) { %>
+                    <% for (const user of data.users?.models) { %>
                         <tr onClick="upsert('<%= user._id %>')">
                             <td style="text-align: right;"><%= user.index %></td>
                             <td><%= user.code %></td>
@@ -83,7 +83,7 @@
                 </tbody>
             </table>
             <div>
-                <%- include(partialPath + '/pagination.partial.ejs', { ...(data.users || {}), model: 'users', }) %>
+                <%- include(partialPath + '/pagination.partial.ejs', { ...data.users, model: 'users', }) %>
             </div>
         </div>
     <% } %>

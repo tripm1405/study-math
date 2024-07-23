@@ -35,11 +35,18 @@ export default {
         }));
     },
     getDetail: async (req, res) => {
-        const {id} = req?.params;
-        if (!id) return res.json({
-            success: false,
-            id: id,
-        });
+        const {
+            id,
+        } = {
+            ...req?.params,
+        };
+        if (!id) {
+            res.json({
+                success: false,
+                id: id,
+            });
+            return;
+        }
 
         const _class = await ClassModel
             .findById(id) || {};
@@ -47,29 +54,16 @@ export default {
         const users = await CommonUtil.Pagination.get({
             query: req.query.users,
             Model: UserModel,
-            filter: {classess: _class?.id},
-            usersInClass: usersInClass,
-        });
-
-        const {
-            currentPage: currentPage,
-            totalPages: totalPages,
-            models: usersInClass,
-        } = await CommonUtil.Pagination.get({
-            query: req.query,
-            Model: userModel,
             filter: {
                 classes: id,
             },
         });
 
-        res.render('pages/managers/class-detail.page.ejs', ViewUtil.getOptions({
+        const view = 'pages/managers/class-detail.page.ejs';
+        res.render(view, ViewUtil.getOptions({
             data: {
                 class: _class,
                 users: users,
-                currentPage: currentPage,
-                totalPages: totalPages,
-                usersInClass: usersInClass,
             },
         }));
     },
