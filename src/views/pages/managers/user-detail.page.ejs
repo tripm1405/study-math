@@ -30,6 +30,7 @@
                     type="text"
                     value="<%= data?.user?.username %>"
                     placeholder="Username..."
+                    <%= data?.user?.username && 'disabled' %>
                     class="form-control"
             />
         </div>
@@ -41,6 +42,7 @@
                     type="password"
                     value="<%= data?.user?.password %>"
                     placeholder="Password..."
+                    <%= data?.user?.password && 'disabled' %>
                     class="form-control"
             />
         </div>
@@ -52,6 +54,7 @@
                     type="text"
                     value="<%= data?.user?.fullName %>"
                     placeholder="Họ và tên..."
+                    <%= data?.user?.fullName && 'disabled' %>
                     class="form-control"
             />
         </div>
@@ -63,6 +66,7 @@
                     type="email"
                     value="<%= data?.user?.email %>"
                     placeholder="Email..."
+                    <%= data?.user?.email && 'disabled' %>
                     class="form-control"
             />
         </div>
@@ -72,24 +76,21 @@
                     id="type"
                     name="type"
                     class="form-select"
+                    <%= data?.user?.type && 'disabled' %>
             >
                 <option value="Teacher" <%= data?.user?.type === 'Teacher' && 'selected' %>>Giáo viên</option>
                 <option value="Student" <%= data?.user?.type === 'Student' && 'selected' %>>Học sinh</option>
             </select>
-        </div>
-        <div style="display: flex; justify-content: flex-end;">
-            <button type="submit" class="btn btn-primary">Lưu</button>
         </div>
     </form>
 </div>
 
 <input name="id" type="hidden" id="id" value="<%= data?.user?._id %>"/>
 
-<!-- Table to display additional data, e.g., classes the user is part of -->
 <% if (data?.user?._id && data?.user?.type === 'Student') { %>
     <div style="margin-top: 40px;">
         <h2 style="margin-bottom: 20px; color: #333;">Danh sách lớp học</h2>
-        <table class="table table-striped table-bordered my-2">
+        <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
             <thead>
             <tr>
                 <th style="width: 80px;">STT</th>
@@ -100,7 +101,7 @@
             </thead>
             <tbody>
             <% for (const _class of (data?.classes?.models || [])) { %>
-                <tr>
+                <tr onClick="upsert('<%= _class?._id %>')">
                     <td style="text-align: right;"><%= _class?.index %></td>
                     <td><%= _class?.code %></td>
                     <td><%= _class?.name %></td>
@@ -140,6 +141,10 @@
     } catch (error) {
       console.error('There was an error!', error);
     }
+  }
+
+  function upsert(classId) {
+    window.location.href = `/classes/${classId}`;
   }
 </script>
 </body>
