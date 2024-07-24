@@ -5,7 +5,10 @@
     }
 </style>
 <div class="w-full">
-    <h1 style="text-align: center; margin-bottom: 20px; color: #333;">Chi tiết bài học</h1>
+    <h1 style="text-align: left; margin-bottom: 20px; color: #333;">Chi tiết bài học</h1>
+    <div style="text-align: right;">
+        <button class="k-btn-create btn" onclick="upsert('<%= %>')">Khóa học</button>
+    </div>    
     <form onsubmit="onSubmit(event)">
         <div class="mb-3">
             <label for="code" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Mã bài học</label>
@@ -127,5 +130,9 @@
         } catch (error) {
             console.error('Error deleting question', error);
         }
+    }
+
+    function upsert() {
+        window.location.href = `/courses`;
     }
   </script>

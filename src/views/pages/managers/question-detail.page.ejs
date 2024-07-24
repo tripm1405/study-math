@@ -1,11 +1,14 @@
 <div class="w-full">
     <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
-        <h1 style="margin: 0;color: #333;">Quản lí bài toán</h1>
+        <h1 style="margin: 0;color: #333;">Quản lí bài toán</h1> 
         <div style="display: flex; align-items: center; border: 2px dashed green; border-radius: 8px; background-color: #cdfdc5; padding: 5px 0px;">
             <p style="margin: 0 10px; font-size: 16px; font-weight: bold; color: #555;">Mức độ:</p>
             <p style="margin: 0 10px; font-size: 20px; color: #4be14d;">Dễ</p>
         </div>
     </div>
+    <div style="text-align: right;">
+        <button class="k-btn-create btn" onclick="upsert('<%= %>')">Bài học</button>
+    </div> 
 
     <div class="w-full">
         <div class="mb-3">
@@ -156,5 +159,7 @@
 
 <script src="/scripts/managers/question-detail.script.js"></script>
 <script>
-
+    function upsert() {
+        window.location.href = `/lessons`;
+    }
 </script>
