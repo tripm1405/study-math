@@ -65,19 +65,7 @@ export default {
             },
         });
 
-        console.log('users', users);
-
-        const userOptions = await UserModel.find({
-            classes: id,
-        });
-            
-        // const users = await CommonUtil.Pagination.get({
-        //     query: req.query.users,
-        //     Model: UserModel,
-        //     filter: {
-        //         classes: id,
-        //     },
-        // });
+        const userOptions = await UserModel.find({});
 
         const view = 'pages/managers/class-detail.page.ejs';
         res.render(view, ViewUtil.getOptions({
