@@ -13,68 +13,28 @@ dotenv.config();
 
 export default {
     get: async (req, res) => {
-        const filter = (() => {
-            const filterDefault = {
-                type: {
-                    $ne: 'Admin',
-                },
-            };
+        const filter = FilterUtil.User({
+            filters: req.query,
+            useDefault: true,
+            user: res.locals.currentUser,
+        });
 
-            const filterByRole = (() => {
-                switch (res.locals.currentUser?.type) {
-                    case AuthUtil.UserType.Teacher: {
-                        return {
-                            type: {
-                                $eq: AuthUtil.UserType.Student,
-                            },
-                        };
-                    }
-                    default: {
-                        return {};
-                    }
-                }
-            })();
+        console.log('user', res.locals.currentUser);
+        console.log('filter', filter);
 
-            const filterByQuery = FilterUtil.Account({
-                filters: req.query,
-            });
-
-            return {
-                $and: [
-                    filterDefault,
-                    filterByRole,
-                    filterByQuery,
-                ],
-            };
-        })();
-
-        const page = parseInt(req.query.page) || 1;
-        const pageSize = 10;
-        const totalUsers = await UserModel.countDocuments(filter);
-        const totalPages = Math.ceil(totalUsers / pageSize);
-
-        const users = await UserModel.find(filter)
-            .skip((page - 1) * pageSize)
-            .limit(pageSize);
-
-        if (users.length === 0 && page > 1) {
-            return res.redirect(`/users?page=${page - 1}`);
-        }
-
-        const paginatedUsers = users.map((user, index) => ({
-            ...user.toObject(),
-            index: (page - 1) * pageSize + index + 1
-        }));
+        const users = await CommonUtil.Pagination.get({
+            query: req.query?.users,
+            Model: UserModel,
+            filter: filter,
+        });
 
         const newId = new mongoose.Types.ObjectId();
 
         res.render('pages/managers/user.page.ejs', ViewUtil.getOptions({
             data: {
                 filters: req.query,
-                users: paginatedUsers,
+                users: users,
                 newId: newId,
-                totalPages: totalPages,
-                currentPage: page,
             },
         }));
     },
@@ -87,22 +47,18 @@ export default {
 
         const user = await UserModel.findById(id).lean() || {};
 
+        const classFilter = {
+            users: user?._id
+        };
         const classes = await CommonUtil.Pagination.get({
             query: req.query.classes,
             Model: ClassModel,
-            filter: {users: user?._id},
+            filter: classFilter,
             extendGet: get => {
                 return get
                     .populate('createdBy')
                     .lean();
             },        
-        });
-
-        const classOptions = await ClassModel.find({});
-
-        res.render('profile.page', {
-            user: user,
-            classOptions: classOptions || [],
         });
 
         res.render('pages/managers/user-detail.page.ejs', ViewUtil.getOptions({

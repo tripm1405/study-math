@@ -1,23 +1,53 @@
-export default class FilterUtil {
-    static Account = (props) => {
-        const {
-            code,
-            email,
-        } = props.filters;
+import {Type as UserType} from "#root/models/user.model.js";
+import mongoose from "mongoose";
+import AuthUtil from "#root/utils/auth.util.js";
 
-        const result = {};
+export default class FilterUtil {
+    static User = (props) => {
+        const {
+            filters: {
+                code,
+                email,
+            },
+            user,
+            useDefault,
+        } = {
+            useDefault: false,
+            ...props,
+        };
+
+        const filter = {};
+        if (user?.type !== UserType.ADMIN) {
+            filter.createdBy = new mongoose.Types.ObjectId(user?._id);
+        }
+        if (user?.type === UserType.TEACHER) {
+            if (filter.type) {
+                filter.type = AuthUtil.UserType.Student;
+            }
+        }
         if (code) {
-            result.code = {
+            filter.code = {
                 $regex : new RegExp(code, 'i'),
             };
         }
         if (email) {
-            result.email = {
+            filter.email = {
                 $regex : new RegExp(email, 'i'),
             };
         }
 
-        return result;
+        return useDefault
+            ? {
+                $and: [
+                    {
+                        type: {
+                            $ne: 'Admin',
+                        },
+                    },
+                    filter,
+                ],
+            }
+            : filter;
     }
 
     static Question = (props) => {

@@ -38,7 +38,7 @@
             </tr>
             </thead>
             <tbody>
-            <% data.users.forEach((user) => { %>
+            <% for (const user of data?.users?.models) { %>
                 <tr onClick="upsert('<%= user._id %>')">
                     <td style="text-align: right;"><%= user.index %></td>
                     <td><%= user.code %></td>
@@ -50,12 +50,12 @@
                                     class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
-            <% }) %>
+            <% } %>
             </tbody>
         </table>
     </div>
     <div>
-        <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+        <%- include(partialPath + '/pagination.partial.ejs', { ...data?.users, model: 'users', }) %>
     </div>
 </div>
 

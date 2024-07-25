@@ -82,6 +82,11 @@
                 <option value="Student" <%= data?.user?.type === 'Student' && 'selected' %>>Học sinh</option>
             </select>
         </div>
+        <% if (!data?.user?._id) { %>
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+        <% } %>
     </form>
 </div>
 
@@ -100,7 +105,7 @@
             </tr>
             </thead>
             <tbody>
-            <% for (const _class of (data?.classes?.models || [])) { %>
+            <% for (const _class of data?.classes?.models) { %>
                 <tr onClick="upsert('<%= _class?._id %>')">
                     <td style="text-align: right;"><%= _class?.index %></td>
                     <td><%= _class?.code %></td>
@@ -111,7 +116,7 @@
             </tbody>
         </table>
         <div>
-            <%- include(partialPath + '/pagination.partial.ejs', { ...(data.classes || {}), model: 'classes', }) %>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...data.classes, model: 'classes', }) %>
         </div>
     </div>
 <% } %>
