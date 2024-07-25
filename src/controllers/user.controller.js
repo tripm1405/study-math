@@ -97,6 +97,14 @@ export default {
                     .lean();
             },        
         });
+
+        const classOptions = await ClassModel.find({});
+
+        res.render('profile.page', {
+            user: user,
+            classOptions: classOptions || [],
+        });
+
         res.render('pages/managers/user-detail.page.ejs', ViewUtil.getOptions({
             data: {
                 user: user,

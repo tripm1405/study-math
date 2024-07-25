@@ -8,12 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .user-profile {
-            max-width: 600px;
             margin: 0 auto;
-            background: #f9f9f9;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
             position: relative;
         }
         .user-profile h1 {
@@ -31,7 +27,8 @@
             flex: 0 0 150px;
             font-weight: bold;
         }
-        .user-profile .field input {
+        .user-profile .field input, 
+        .user-profile .field select {
             flex: 1;
             padding: 5px;
             border: 1px solid #ccc;
@@ -77,7 +74,7 @@
             display: none;
         }
         .user-profile .file-input-label {
-        color:aquamarine;
+            color: aquamarine;
             font-size: 16px;
         }
     </style>
@@ -94,8 +91,13 @@
         </div>
         <div class="field">
             <label for="usernameInput">Tên người dùng:</label>
-            <input type="text" id="usernameInput" value="<%= data.user.username %>" />
-        </div>
+            <input 
+                type="text" 
+                id="usernameInput" 
+                value="<%= data.user?.username %>" 
+                <%= data.user?.username ? 'disabled' : '' %>
+            />
+        </div>        
         <div class="field">
             <label for="fullNameInput">Họ và tên:</label>
             <input type="text" id="fullNameInput" value="<%= data.user.fullName %>" />
@@ -110,8 +112,19 @@
         </div>
         <div class="field">
             <label for="classesInput">Lớp:</label>
-            <input type="text" id="classesInput" value="<%= JSON.stringify(data.user.classes) %>" />
-        </div>
+            <select name="classIds[]" id="classesInput" class="js-select2 form-control" multiple>
+                <% if (Array.isArray(data.classOptions)) { %>
+                    <% for (const _class of data.classOptions) { %>
+                        <option
+                            value="<%= _class._id %>"
+                            <%= data.user?.classes?.includes(_class._id) ? 'selected' : '' %>
+                        ><%= _class.code %></option>
+                    <% } %>
+                <% } else { %>
+                    <option disabled>Không có lớp học nào</option>
+                <% } %>
+            </select>
+        </div>        
         <div class="button-container">
             <button type="submit">Lưu</button>
         </div>
