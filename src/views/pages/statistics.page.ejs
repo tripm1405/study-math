@@ -1,13 +1,4 @@
 <style>
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
     .chart-container {
         position: relative;
         width: 100%; /* Ensure container takes full width */
@@ -77,67 +68,47 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="container">
+<div class="w-full">
     <div class="chart-container">
         <canvas id="myChart"></canvas>
     </div>
     <div class="stats">
         <div class="stat-item">
             <h3>Tổng số học sinh học</h3>
-            <p>79 học sinh</p>
-        </div>
-        <div class="stat-item">
-            <h3>Tổng số lượt truy cập</h3>
-            <p>200 lượt truy cập</p>
+            <p><%= data?.studentAmount %> học sinh</p>
         </div>
         <div class="stat-item">
             <h3>Tổng số bài toán</h3>
-            <p>79 bài toán</p>
+            <p><%= data?.questionAmount %> bài toán</p>
         </div>
         <div class="stat-item">
             <h3>Bài toán có nhiều lượt truy cập nhiều nhất</h3>
-            <p><strong>TỔNG CÁC SỐ TỰ NHIÊN</strong><br>100 lượt truy cập</p>
+            <p><strong><%= data?.question?.name %></strong></p>
         </div>
     </div>
 </div>
 
 <script>
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'],
-            datasets: [
-                {
-                    label: 'Tổng số học sinh học',
-                    data: [12, 6, 8, 5, 7, 10, 15],
-                    borderColor: 'blue',
-                    fill: false
-                },
-                {
-                    label: 'Tổng số học sinh truy cập',
-                    data: [3, 5, 7, 8, 6, 7, 12],
-                    borderColor: 'red',
-                    fill: false
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Ngày trong tuần'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Số lượng'
-                    }
-                }
-            }
-        }
-    })
+    (async () => {
+        const statisticsRes = await axios.get('/api/statistics');
+        const statistics = statisticsRes?.data?.result;
+        const chart = statistics?.resolutionAmountByDayOfMonth;
+        const labels = Object.keys(chart).sort();
+        const data = labels.map(label => {
+            return chart[label];
+        });
+
+        new Chart(document.getElementById('myChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Bài đã giải',
+                        data: data,
+                    },
+                ]
+            },
+        })
+    })();
 </script>

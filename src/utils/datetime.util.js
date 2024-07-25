@@ -1,4 +1,11 @@
 export default class DatetimeUtil {
+    static Length = class {
+        static SECOND = 1000;
+        static MINUTE = 60 * 1000;
+        static HOUR =  60 * 60 * 1000;
+        static DAY =  24 * 60 * 60 * 1000;
+    }
+
     static Format = class {
         static type = {
             DATE: 'Date',
@@ -34,10 +41,24 @@ export default class DatetimeUtil {
             }
         }
     }
+
+    static getBeginDay(props) {
+        const {
+            date,
+        } = {
+            ...props,
+        };
+
+        return new Date(date - (date % DatetimeUtil.Length.DAY));
+    }
+
+
     static getStartEndOfCurrentMonth() {
         const start = (() => {
             const date = new Date().setDate(1);
-            return new Date(date - (date % (24 * 60 * 60 * 1000)))
+            return new Date(DatetimeUtil.getBeginDay({
+                date: date,
+            }));
         })()
 
         const end = ((start) => {
@@ -49,5 +70,27 @@ export default class DatetimeUtil {
             start: start,
             end: end
         };
+    }
+
+    static getRange(props) {
+        const {
+            start,
+            end,
+        } = {
+            ...props,
+        };
+
+        const startBegin = Number(DatetimeUtil.getBeginDay({
+            date: start,
+        }));
+        const endBegin = Number(DatetimeUtil.getBeginDay({
+            date: end,
+        }));
+
+        const range = [];
+        for (let i = startBegin; i <= endBegin; i = i + DatetimeUtil.Length.DAY) {
+            range.push(new Date(i));
+        }
+        return range;
     }
 }
