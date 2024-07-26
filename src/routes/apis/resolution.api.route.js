@@ -4,6 +4,7 @@ import resolutionApiController from "#root/controllers/apis/resolution.api.contr
 
 const Router = express.Router();
 
+Router.put('/:id/transfer-answer', resolutionApiController.putTransferAnswer);
 Router.put('/:id/mark', resolutionApiController.putMark);
 Router.put('/mark-by-answer', resolutionApiController.putMarkByAnswer);
 Router.get('/solve', resolutionApiController.getSolve);

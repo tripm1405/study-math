@@ -1,109 +1,157 @@
 <style>
-  input[type="text"], input[type="number"], select {
-    width: 35%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  .review-workspace {
-    height: 100%;
-    width: 100%;
-  }
-  .button-section {
-    display: flex;
-    align-items:flex-start;
-    gap: 10px;
-    padding: 10px;
-  }
-  .button-section button {
-    padding: 10px 20px;
-    background-color: #ffffff;
-    color: #4CAF50;
-    border: 2px solid #ceffd0;        
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    align-items:flex-end;
-  }
-  .button-section button:hover {
-    background-color: #45a049;
-    color: #ffffff;
-  }
+    input[type="text"], input[type="number"], select {
+        width: 35%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .review-workspace {
+        height: 100%;
+        width: 100%;
+    }
+
+    .button-section {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .button-section button {
+        padding: 10px 20px;
+        background-color: #ffffff;
+        color: #4CAF50;
+        border: 2px solid #ceffd0;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        align-items: flex-end;
+    }
+
+    .button-section button:hover {
+        background-color: #45a049;
+        color: #ffffff;
+    }
 </style>
 
-<div class="w-100 row">
-  <div class="h-100 col-8 border" style="position: relative;">
-    <div style="height: 100%; width: 100%;">
-      <div class="w-full">
-        <div id="review-workspace" class="review-workspace"></div>
-      </div>
+<div class="w-full row">
+    <div class="h-100 col-8 border">
+        <div class="w-full">
+            <div id="review-workspace" class="review-workspace"></div>
+        </div>
     </div>
-  </div>
-  <div class="col-4 d-flex button-section">
-    <input name="score" type="number" min="0" max="10" value="10" />
-    <button onclick="submit()">CHẤM ĐIỂM</button>
-  </div>
+    <div class="col-4">
+        <div class="my-2">
+            <button class="btn btn-primary" onclick="onMark()">Chấm điểm</button>
+        </div>
+        <div class="my-2">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#transfer-answer">Làm đáp án</button>
+        </div>
+        <div class="my-2">
+            <label for="score" class="form-label">Điểm: </label>
+            <input name="score" class="form-control" id="score" type="number" min="0" max="10" value="10"/>
+        </div>
+    </div>
 </div>
 
-<input name="id" type="hidden" value="<%= data?.resolution?._id %>" />
-<input name="questionId" type="hidden" value="<%= data?.resolution?.question %>" />
+<div class="modal fade" id="transfer-answer" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form onsubmit="onTransferAnswer(event)">
+                <div class="modal-body">
+                        <div>
+                            <input name="code" type="text" />
+                        </div>
+                        <div>
+                            <input name="name" type="text" />
+                        </div>
+                        <div>
+                            <input name="score" type="text" min="0" max="10" />
+                        </div>
+                        <div>
+                            <input name="note" type="text" />
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<input name="id" type="hidden" value="<%= data?.resolution?._id %>"/>
+<input name="questionId" type="hidden" value="<%= data?.resolution?.question %>"/>
 
 <script>
-  let solveWorkspace;
+    let solveWorkspace;
 
-  // init
-  (async () => {
-    const id = document.querySelector('input[name="id"]')?.value;
-    const questionId = document.querySelector('input[name="questionId"]')?.value;
+    // init
+    (async () => {
+        const id = document.querySelector('input[name="id"]')?.value;
+        const questionId = document.querySelector('input[name="questionId"]')?.value;
 
-    await K.loadBlocks({
-      params: {
-        all: true,
-      },
-    });
+        await K.loadBlocks({
+            params: {
+                all: true,
+            },
+        });
 
-    const questionRes = await axios.get(`/api/questions/${questionId}`);
-    const question = questionRes?.data?.result?.question;
-    const toolboxContents = question?.toolbox?.blocks?.blocks?.map(block => {
-      return {
-        kind: 'block',
-        type: block.type,
-      }
-    }) || [];
+        const questionRes = await axios.get(`/api/questions/${questionId}`);
+        const question = questionRes?.data?.result?.question;
+        const toolboxContents = question?.toolbox?.blocks?.blocks?.map(block => {
+            return {
+                kind: 'block',
+                type: block.type,
+            }
+        }) || [];
 
-    solveWorkspace = K.initWorkspace({
-      node: document.getElementById('review-workspace'),
-      options: {
-        toolbox: {
-          contents: toolboxContents,
-        },
-        readOnly: true,
-      },
-    });
+        solveWorkspace = K.initWorkspace({
+            node: document.getElementById('review-workspace'),
+            options: {
+                toolbox: {
+                    contents: toolboxContents,
+                },
+                readOnly: true,
+            },
+        });
 
-    const resolution = await (async () => {
-      const res = await axios.get(`/api/resolutions/${id}`);
-      return res?.data?.result?.resolution;
+        const resolution = await (async () => {
+            const res = await axios.get(`/api/resolutions/${id}`);
+            return res?.data?.result?.resolution;
+        })();
+
+        Blockly.serialization.workspaces.load(resolution?.content, solveWorkspace);
     })();
 
-    Blockly.serialization.workspaces.load(resolution?.content, solveWorkspace);
-  })();
+    async function onMark() {
+        const id = document.querySelector('input[name="id"]')?.value;
+        const score = document.querySelector('input[name="score"]')?.value;
+        const formData = new FormData();
+        formData.set('score', score);
+        await axios.put(`/api/resolutions/${id}/mark`, formData);
 
-  async function submit() {
-    const id = document.querySelector('input[name="id"]')?.value;
-    const score = document.querySelector('input[name="score"]')?.value;
-    const formData = new FormData();
-    formData.set('score', score);
-    await axios.put(`/api/resolutions/${id}/mark`, formData);
+        window.location.href = `/resolutions`;
+    }
 
-    window.location.href = `/resolutions`;
-  }
+    async function onTransferAnswer(event) {
+        event.preventDefault();
 
-  async function initBlocks() {
-    const blocksRes = await axios.get('/api/blocks', {
-      params: {
-        all: true,
-      },
-    });
-    return blocksRes?.data?.result?.blocks || [];
-  }
+        const id = document.querySelector('input[name="id"]')?.value;
+
+        const formData = new FormData(event.target);
+        await axios.put(`/api/resolutions/${id}/transfer-answer`, formData);
+
+        window.location.href = `/resolutions`;
+    }
+
+    async function initBlocks() {
+        const blocksRes = await axios.get('/api/blocks', {
+            params: {
+                all: true,
+            },
+        });
+        return blocksRes?.data?.result?.blocks || [];
+    }
 </script>
