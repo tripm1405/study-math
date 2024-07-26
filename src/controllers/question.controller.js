@@ -19,11 +19,7 @@ const controllers = {
         const filter = FilterUtil.Question({
             filters: req.query,
         });
-        const {
-            currentPage: currentPage,
-            totalPages: totalPages,
-            models: questions,
-        } = await CommonUtil.Pagination.get({
+        const questions = await CommonUtil.Pagination.get({
             query: req.query,
             Model: QuestionModel,
             filter: filter,
@@ -39,8 +35,6 @@ const controllers = {
             data: {
                 newId: newId,
                 questions: questions,
-                currentPage: currentPage,
-                totalPages: totalPages,
                 filters: req.query,
             },
         }));

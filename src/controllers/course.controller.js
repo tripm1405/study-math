@@ -14,11 +14,7 @@ export default {
         const filter = FilterUtil.Course({
             filters: req.query,
         });
-        const {
-            currentPage: currentPage,
-            totalPages: totalPages,
-            models: models,
-        } = await CommonUtil.Pagination.get({
+        const courses = await CommonUtil.Pagination.get({
             query: req.query,
             Model: CourseModel,
             filter: {
@@ -41,10 +37,8 @@ export default {
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/course.page.ejs`;
         res.render(view, ViewUtil.getOptions({
             data: {
-                courses: models,
+                courses: courses,
                 newId: newId,
-                totalPages: totalPages,
-                currentPage: currentPage,
                 filters: req.query,
             },
         }));

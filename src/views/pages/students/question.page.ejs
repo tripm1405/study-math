@@ -1,6 +1,6 @@
 <h1>Các bài toán</h1>
 <div class="k-container">
-    <% for (const question of (data?.questions || [])) { %>
+    <% for (const question of data?.questions?.models) { %>
         <div onclick="onDetail('<%= question?._id %>')" class="k-card">
             <img src="<%= question?.image || '/images/question-default.png'%>" alt="Lớp 2 - Nguyễn Anh">
             <div class="k-title"><%= question?.name %></div>
@@ -12,10 +12,7 @@
     <% } %>
 </div>
 <div class="mt-3">
-    <%- include(partialPath + '/pagination.partial.ejs', {
-    model: undefined,
-    ...(data || {}),
-    }) %>
+    <%- include(partialPath + '/pagination.partial.ejs', { ...data?.questions, model: 'questions', }) %>
 </div>
 
 <script>

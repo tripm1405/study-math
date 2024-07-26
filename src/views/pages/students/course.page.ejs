@@ -1,6 +1,6 @@
 <h1>Các khóa học</h1>
 <div class="k-container">
-    <% for (const course of (data?.courses || [])) { %>
+    <% for (const course of data?.courses?.models) { %>
         <div onclick="onDetail('<%= course?._id %>')" class="k-card">
             <img src="<%= course?.image || '/images/course-default.jpg'%>" alt="Lớp 2 - Nguyễn Anh">
             <div class="k-title"><%= course?.name %></div>
@@ -12,10 +12,7 @@
     <% } %>
 </div>
 <div class="mt-3">
-    <%- include(partialPath + '/pagination.partial.ejs', {
-    model: undefined,
-    ...(data || {}),
-    }) %>
+    <%- include(partialPath + '/pagination.partial.ejs', { ...data?.courses, model: 'courses', }) %>
 </div>
 
 <script>

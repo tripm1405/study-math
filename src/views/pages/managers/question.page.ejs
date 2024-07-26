@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            <% for (const question of (data?.questions || [])) { %>
+            <% for (const question of data?.questions?.models) { %>
                 <tr onClick="upsert('<%= question?._id %>')">
                     <td style="text-align: right;"><%= question.index %></td>
                     <td><%= question?.code %></td>
@@ -44,7 +44,7 @@
         </table>
 
         <div>
-            <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...data?.questions, model: 'questions', }) %>
         </div>
     </div>
 </div>

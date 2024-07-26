@@ -31,7 +31,7 @@
             </tr>
             </thead>
             <tbody>
-            <% for (const course of (data?.courses || [])) { %>
+            <% for (const course of data?.courses?.models) { %>
                 <tr onClick="upsert('<%= course._id %>')">
                     <td style="text-align: right;"><%= course?.index %></td>
                     <td><%= course?.code %></td>
@@ -50,7 +50,7 @@
         </table>
 
         <div>
-            <%- include(partialPath + '/pagination.partial.ejs', { ...(data || {}), model: undefined, }) %>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...data?.courses, model: 'courses', }) %>
         </div>
     </div>
 </div>
