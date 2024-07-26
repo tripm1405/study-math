@@ -16,9 +16,10 @@
             </div>
         </div>
         <div style="flex: 0 0 250px;">
-            <div>
-                <button class="btn btn-sm btn-primary" onclick="onSolve('<%= data?.question?._id %>')">Xem bài làm
+            <div style="display: flex; justify-content:flex-start; align-items: center; margin: 20px 0; gap: 5%">
+                <button class="k-btn-create btn" onclick="onSolve('<%= data?.question?._id %>')">Xem bài làm
                 </button>
+                <button class="k-btn-create btn" onclick="onLessonDetail('<%= data?.question?.lesson %>')">Bài học</button>
             </div>
             <% if (data?.resolution?.content) { %>
                 <% if (data?.resolution?.score !== null && data?.resolution?.score !== undefined) { %>
@@ -34,5 +35,8 @@
 <script>
   function onSolve(id) {
     window.location.href = `/questions/${id}/solve`;
+  }
+  function onLessonDetail(id) {
+    window.location.href = `/lessons/${id}`;
   }
 </script>
