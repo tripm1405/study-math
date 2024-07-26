@@ -3,87 +3,61 @@
         <h1>Chi tiết bài học</h1>
         <button class="k-btn-create btn" onclick="onCourseDetail('<%= data?.lesson?.course %>')">Khóa học</button>
     </div>
-    <div class="w-full">
-        <div class="mb-3">
-            <label for="code" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Mã bài học</label>
-            <input 
-                id="code"
-                name="code" 
-                type="text" 
-                value="<%= data?.lesson?.code %>" 
-                placeholder="Mã bài học..." 
-                <%= data?.lesson?.code && 'disabled' %> 
-                class="form-control"
-            />
-        </div>        
-        <div class="mb-3">
-            <label for="name" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Tên bài học</label>
-            <input 
-                id="name"
-                name="name" 
-                type="text" 
-                value="<%= data?.lesson?.name %>" 
-                <%= data?.lesson?.name && 'disabled'%>                class="form-control"
-            />
-        </div> 
-        <div class="mb-3">
-            <label for="name" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Người tạo</label>
-            <input 
-                id="name"
-                name="name" 
-                type="text" 
-                value="<%= data?.lesson?.createdBy?.fullName %>" 
-                disabled      
-                class="form-control"
-            />
-        </div>       
-        
-        <div class="mb-3">
-            <label for="name" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Tạo lúc</label>
-            <input 
-                id="name"
-                name="name" 
-                type="text" 
-                value=" <%= ((date) => {
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const dayOfMonth = String(date.getDate()).padStart(2, '0');
-                    const hour = String(date.getHours()).padStart(2, '0');
-                    const minute = String(date.getMinutes()).padStart(2, '0');
-                    return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
-                })(data?.lesson?.createdAt) %>" 
-                <%= ((date) => {
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const dayOfMonth = String(date.getDate()).padStart(2, '0');
-                    const hour = String(date.getHours()).padStart(2, '0');
-                    const minute = String(date.getMinutes()).padStart(2, '0');
-                    return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
-                })(data?.lesson?.createdAt) && 'disabled'%>                class="form-control"
-            />
-        </div>   
-        <div class="mb-3">
-            <label for="note" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Ghi chú</label>
-            <textarea id="note"
-                name="note" 
-                type="text" 
-                value="<%= data?.lesson?.note %>" 
-                disabled      
-                class="form-control"
-            ></textarea>
-        </div>    
-    </div>
+    <div class="container mt-4">
+        <div class="row mb-3">
+          <div class="col-md-2 fw-bold">
+            Mã:
+          </div>
+          <div class="col-md-10">
+            <span><%= data?.lesson?.code %></span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-2 fw-bold">
+            Tên:
+          </div>
+          <div class="col-md-10">
+            <span><%= data?.lesson?.name %></span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-2 fw-bold">
+            Người tạo:
+          </div>
+          <div class="col-md-10">
+            <span><%= data?.lesson?.createdBy?.fullName %></span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-2 fw-bold">
+            Tạo lúc:
+          </div>
+          <div class="col-md-10">
+            <span><%= ((date) => {
+              const year = date.getFullYear();
+              const month = String(date.getMonth() + 1).padStart(2, '0');
+              const dayOfMonth = String(date.getDate()).padStart(2, '0');
+              const hour = String(date.getHours()).padStart(2, '0');
+              const minute = String(date.getMinutes()).padStart(2, '0');
+              return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`;
+            })(new Date(data?.lesson?.createdAt)) %></span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-2 fw-bold">
+            Ghi chú:
+          </div>
+          <div class="col-md-10">
+            <span><%= data?.lesson?.note %></span>
+          </div>
+        </div>
+      </div>
     <div class="w-full">
         <h1>Các bài toán</h1>
         <div class="k-container">
             <% for (const question of data?.questions?.models) { %>
-                <div onclick="onDetail('<%= question?._id %>')" class="k-card">
-                    <img src="<%= question?.image || '/images/img4.png'%>" alt="Lớp 2 - Nguyễn Anh">
+                <div class="k-card">
                     <div class="k-title"><%= question?.name %></div>
-                    <div class="f-info"><%= question?.createdBy?.fullName %></div>
-                    <div class="k-info">
-                        <%- include(partialPath + '/datetime.partial.ejs', { datetime: question?.createdAt }) %>
-                    </div>
                 </div>
             <% } %>
         </div>
@@ -93,7 +67,4 @@
     function onCourseDetail(id) {
       window.location.href = `/courses/${id}`;
     }
-    function onDetailQuestion(id) {
-        window.location.href = `/questios/${id}`;
-      }
 </script>

@@ -1,72 +1,55 @@
 <div class="w-full">
     <div class="w-full">
         <h1>Chi tiết khóa học</h1>
-        <div class="w-full">
-            <div class="mb-3">
-                <label for="code" class="form-label">Mã khóa học</label>
-                <input
-                        id="code"
-                        name="code"
-                        type="text"
-                        value="<%= data?.course?.code %>"
-                        <%= data?.course?.code && 'disabled' %>
-                        class="form-control"/>
-            </div>            
-            <div class="mb-3">
-                <label for="name" class="form-label">Tên khóa học</label>
-                <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value="<%= data?.course?.name %>"
-                        <%= data?.course?.name && 'disabled' %>                        class="form-control"
-                />
-            </div> 
-            <div class="mb-3">
-                <label for="name" class="form-label">Người tạo</label>
-                <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value="<%= data?.course?.createdBy?.fullName %>"
-                        <%= data?.course?.createdBy?.fullName && 'disabled' %>                        class="form-control"
-                />
-            </div>     
-            <div class="mb-3">
-                <label for="name" class="form-label">Tạo lúc</label>
-                <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value="<%= ((date) => {
-                            const year = date.getFullYear();
-                            const month = String(date.getMonth() + 1).padStart(2, '0');
-                            const dayOfMonth = String(date.getDate()).padStart(2, '0');
-                            const hour = String(date.getHours()).padStart(2, '0');
-                            const minute = String(date.getMinutes()).padStart(2, '0');
-                            return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
-                        })(data?.course?.createdAt) %>"
-                        <%= ((date) => {
-                            const year = date.getFullYear();
-                            const month = String(date.getMonth() + 1).padStart(2, '0');
-                            const dayOfMonth = String(date.getDate()).padStart(2, '0');
-                            const hour = String(date.getHours()).padStart(2, '0');
-                            const minute = String(date.getMinutes()).padStart(2, '0');
-                            return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
-                        })(data?.course?.createdAt) && 'disabled'%>
-                        class="form-control"
-                />
-            </div>  
-            <div class="mb-3">
-                <label for="name" class="form-label">Ghi chú</label>
-                <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value="<%= data?.course?.note %>"
-                        <%= data?.course?.note && 'disabled' %>                        class="form-control"
-                />
-            </div>     
+        <div class="container mt-4">
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">
+                Mã khóa học:
+              </div>
+              <div class="col-md-9">
+                <span><%= data?.course?.code %></span>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">
+                Tên khóa học:
+              </div>
+              <div class="col-md-9">
+                <span><%= data?.course?.name %></span>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">
+                Người tạo:
+              </div>
+              <div class="col-md-9">
+                <span><%= data?.course?.createdBy?.fullName %></span>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">
+                Tạo lúc:
+              </div>
+              <div class="col-md-9">
+                <span><%= ((date) => {
+                  const year = date.getFullYear();
+                  const month = String(date.getMonth() + 1).padStart(2, '0');
+                  const dayOfMonth = String(date.getDate()).padStart(2, '0');
+                  const hour = String(date.getHours()).padStart(2, '0');
+                  const minute = String(date.getMinutes()).padStart(2, '0');
+                  return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`;
+                })(new Date(data?.course?.createdAt)) %></span>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">
+                Ghi chú:
+              </div>
+              <div class="col-md-9">
+                <span><%= data?.course?.note %></span>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
 
