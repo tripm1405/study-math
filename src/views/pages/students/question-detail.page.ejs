@@ -1,9 +1,17 @@
 <div class="w-full">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+        <h1>Chi tiết bài toán</h1>
+        <div style="display: flex; justify-content:flex-start">
+            <button class="k-btn-create btn"  onclick="onSolve('<%= data?.question?._id %>')" style="margin-right:5px">Xem bài làm
+            </button>
+            <button class="k-btn-create btn" onclick="onLessonDetail('<%= data?.question?.lesson %>')">Bài học</button>
+        </div>
+    </div>
     <div class="w-full d-flex">
         <div style="flex: 1 1;">
             <div>Mã <%= data?.question?.code %></div>
             <div>Tên <%= data?.question?.name %></div>
-            <div>Người tạo <%= data?.question?.createdBy?.name %></div>
+            <div>Người tạo <%= data?.question?.createdBy?.fullName %></div>
             <div>Tạo lúc
                 <%= ((date) => {
                     const year = date.getFullYear();
@@ -16,11 +24,6 @@
             </div>
         </div>
         <div style="flex: 0 0 250px;">
-            <div style="display: flex; justify-content:flex-start; align-items: center; margin: 20px 0; gap: 5%">
-                <button class="k-btn-create btn" onclick="onSolve('<%= data?.question?._id %>')">Xem bài làm
-                </button>
-                <button class="k-btn-create btn" onclick="onLessonDetail('<%= data?.question?.lesson %>')">Bài học</button>
-            </div>
             <% if (data?.resolution?.content) { %>
                 <% if (data?.resolution?.score !== null && data?.resolution?.score !== undefined) { %>
                     <div><%= data?.resolution?.score %> điểm</div>
