@@ -5,6 +5,7 @@ import CourseModel from "#root/models/course.model.js";
 import AuthUtil from "#root/utils/auth.util.js";
 import CommonUtil from "#root/utils/common.util.js";
 import ClassModel from "#root/models/class.model.js";
+import QuestionModel from "#root/models/question.model.js";
 import FilterUtil from "#root/utils/filter.util.js";
 
 export default {
@@ -40,8 +41,20 @@ export default {
             id: id,
         });
 
-        const lesson = await LessonModel.findById(id) || {};
+        const lesson = await LessonModel.findById(id) 
+            .populate('createdBy')|| {};  
+
         const courses = await CourseModel.find({}) || [];
+        const questions = await CommonUtil.Pagination.get({
+            query: req.query.questions,
+            Model: QuestionModel,
+            filter: {lesson: lesson?._id},
+            extendGet: get => {
+                return get
+                    .populate('createdBy')
+                    .lean();
+            },        
+        });
 
         switch (res.locals.currentUser?.type) {
             default:
@@ -51,6 +64,7 @@ export default {
                     data: {
                         lesson: lesson,
                         courses: courses,
+                        questions: questions
                     },
                 }));
                 return;
