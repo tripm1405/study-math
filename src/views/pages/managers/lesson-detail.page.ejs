@@ -5,10 +5,12 @@
     }
 </style>
 <div class="w-full">
-    <h1 style="text-align: left; margin-bottom: 20px; color: #333;">Chi tiết bài học</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+        <h1 style="text-align: left; margin-bottom: 20px; color: #333;">Chi tiết bài học</h1>
     <div style="text-align: right;">
-        <button class="k-btn-create btn" onclick="upsert('<%= %>')">Khóa học</button>
-    </div>    
+        <button class="k-btn-create btn" onclick="onCourseDetail('<%= data?.lesson?.course %>')">Khóa học</button>
+    </div> 
+    </div>
     <form onsubmit="onSubmit(event)">
         <div class="mb-3">
             <label for="code" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Mã bài học</label>
@@ -132,7 +134,7 @@
         }
     }
 
-    function upsert() {
-        window.location.href = `/courses`;
+    function onCourseDetail(id) {
+        window.location.href = `/courses/${id}`;
     }
   </script>
