@@ -8,17 +8,17 @@
 
     <div class="w-full">
         <div class="mb-3">
-            <label for="code-input" class="form-label">Mã:</label>
+            <label for="code-input" class="form-label">Mã bài học</label>
             <input name="code" id="code-input" class="form-control" type="text" value="<%= data?.question?.code %>"
                    placeholder="Mã..."/>
         </div>
         <div class="mb-3">
-            <label for="name-input" class="form-label">Tên:</label>
+            <label for="name-input" class="form-label">Tên bài học</label>
             <input name="name" id="name-input" class="form-control" type="text" value="<%= data?.question?.name %>"
                    placeholder="Tên..."/>
         </div>
         <div class="mb-3">
-            <label for="lesson-select" class="form-label">Bài học:</label>
+            <label for="lesson-select" class="form-label">Bài học</label>
             <select name="lessonId" id="lesson-select" class="form-control">
                 <% for (const lesson of data?.lessons) { %>
                     <option value="<%= lesson?._id %>" <%= data?.question?.lesson?.toString?.() === lesson?._id?.toString?.() ? 'selected' : '' %>><%= lesson?.code %></option>
@@ -26,7 +26,7 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="note-input" class="form-label">Ghi chú:</label>
+            <label for="note-input" class="form-label">Ghi chú</label>
             <input name="note" id="note-input" class="form-control" type="text" value="<%= data?.question?.note %>"
                    placeholder="Ghi chú..."/>
         </div>

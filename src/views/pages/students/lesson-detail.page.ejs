@@ -4,21 +4,74 @@
         <button class="k-btn-create btn" onclick="onCourseDetail('<%= data?.lesson?.course %>')">Khóa học</button>
     </div>
     <div class="w-full">
-        <div>Mã <%= data?.lesson?.code %></div>
-        <div>Tên <%= data?.lesson?.name %></div>
-        <div>Người tạo <%= data?.lesson?.createdBy?.fullName %></div>
-        <div>
-            Tạo lúc
-            <%= ((date) => {
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const dayOfMonth = String(date.getDate()).padStart(2, '0');
-                const hour = String(date.getHours()).padStart(2, '0');
-                const minute = String(date.getMinutes()).padStart(2, '0');
-                return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
-            })(data?.lesson?.createdAt) %>
-        </div>
-        <div>Ghi chú <%= data?.lesson?.note %></div>
+        <div class="mb-3">
+            <label for="code" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Mã bài học</label>
+            <input 
+                id="code"
+                name="code" 
+                type="text" 
+                value="<%= data?.lesson?.code %>" 
+                placeholder="Mã bài học..." 
+                <%= data?.lesson?.code && 'disabled' %> 
+                class="form-control"
+            />
+        </div>        
+        <div class="mb-3">
+            <label for="name" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Tên bài học</label>
+            <input 
+                id="name"
+                name="name" 
+                type="text" 
+                value="<%= data?.lesson?.name %>" 
+                <%= data?.lesson?.name && 'disabled'%>                class="form-control"
+            />
+        </div> 
+        <div class="mb-3">
+            <label for="name" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Người tạo</label>
+            <input 
+                id="name"
+                name="name" 
+                type="text" 
+                value="<%= data?.lesson?.createdBy?.fullName %>" 
+                disabled      
+                class="form-control"
+            />
+        </div>       
+        
+        <div class="mb-3">
+            <label for="name" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Tạo lúc</label>
+            <input 
+                id="name"
+                name="name" 
+                type="text" 
+                value=" <%= ((date) => {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const dayOfMonth = String(date.getDate()).padStart(2, '0');
+                    const hour = String(date.getHours()).padStart(2, '0');
+                    const minute = String(date.getMinutes()).padStart(2, '0');
+                    return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
+                })(data?.lesson?.createdAt) %>" 
+                <%= ((date) => {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const dayOfMonth = String(date.getDate()).padStart(2, '0');
+                    const hour = String(date.getHours()).padStart(2, '0');
+                    const minute = String(date.getMinutes()).padStart(2, '0');
+                    return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
+                })(data?.lesson?.createdAt) && 'disabled'%>                class="form-control"
+            />
+        </div>   
+        <div class="mb-3">
+            <label for="note" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Ghi chú</label>
+            <textarea id="note"
+                name="note" 
+                type="text" 
+                value="<%= data?.lesson?.note %>" 
+                disabled      
+                class="form-control"
+            ></textarea>
+        </div>    
     </div>
     <div class="w-full">
         <h1>Các bài toán</h1>
