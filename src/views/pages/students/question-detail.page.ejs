@@ -7,20 +7,34 @@
             <button class="k-btn-create btn" onclick="onLessonDetail('<%= data?.question?.lesson %>')">Bài học</button>
         </div>
     </div>
-    <div class="w-full d-flex">
+    <div class="w-full">
         <div style="flex: 1 1;">
-            <div>Mã <%= data?.question?.code %></div>
-            <div>Tên <%= data?.question?.name %></div>
-            <div>Người tạo <%= data?.question?.createdBy?.fullName %></div>
-            <div>Tạo lúc
-                <%= ((date) => {
+            <div class="mb-3">
+                <label for="code-input" class="form-label">Mã bài học</label>
+                <input name="code" id="code-input" class="form-control" type="text" value="<%= data?.question?.code %>"
+                disabled/>
+            </div>
+            <div class="mb-3">
+                <label for="name-input" class="form-label">Tên bài học</label>
+                <input name="name" id="name-input" class="form-control" type="text" value="<%= data?.question?.name %>"
+                disabled/>
+            </div>
+            <div class="mb-3">
+                <label for="name-input" class="form-label">Người tạo</label>
+                <input name="name" id="name-input" class="form-control" type="text" value="<%= data?.question?.createdBy?.fullName %>"
+                disabled/>
+            </div>
+            <div class="mb-3">
+                <label for="name-input" class="form-label">Tạo lúc</label>
+                <input name="name" id="name-input" class="form-control" type="text" value="<%= ((date) => {
                     const year = date.getFullYear();
                     const month = String(date.getMonth() + 1).padStart(2, '0');
                     const dayOfMonth = String(date.getDate()).padStart(2, '0');
                     const hour = String(date.getHours()).padStart(2, '0');
                     const minute = String(date.getMinutes()).padStart(2, '0');
                     return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`
-                })(data?.question?.createdAt) %>
+                })(data?.question?.createdAt) %>"
+                disabled/>
             </div>
         </div>
         <div style="flex: 0 0 250px;">
