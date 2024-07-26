@@ -8,6 +8,7 @@ import AuthUtil from "#root/utils/auth.util.js";
 import ClassModel from "#root/models/class.model.js";
 import FilterUtil from "#root/utils/filter.util.js";
 import CommonUtil from "#root/utils/common.util.js";
+import MailerService from "#root/services/mailer.service.js";
 
 dotenv.config();
 
@@ -18,9 +19,6 @@ export default {
             useDefault: true,
             user: res.locals.currentUser,
         });
-
-        console.log('user', res.locals.currentUser);
-        console.log('filter', filter);
 
         const users = await CommonUtil.Pagination.get({
             query: req.query?.users,
@@ -82,6 +80,12 @@ export default {
             type: type,
             classIds: classIds,
             createdBy: res?.locals?.currentUser?._id,
+        });
+
+        await MailerService.send({
+            email: email,
+            username: username,
+            password: password,
         });
 
         res.json({

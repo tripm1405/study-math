@@ -1,8 +1,14 @@
 import express from 'express';
+import MailerService from "#root/services/mailer.service.js";
 
 const Router = express.Router();
 
-Router.get('/', (req, res) => {
+Router.get('/', async (req, res) => {
+    await MailerService.send({
+        email: 'krotohmaki@gmail.com',
+        username: 'username',
+        password: 'password',
+    });
 
     res.json({result: '/'});
 });
