@@ -24,7 +24,7 @@
     <div class="w-full">
         <h1>Các bài học</h1>
         <div class="k-container">
-            <% for (const lesson of (data?.lessons || [])) { %>
+            <% for (const lesson of data?.lessons?.models) { %>
                 <div onclick="onDetailLesson('<%= lesson?._id %>')" class="k-card">
                     <img src="/images/img5.png" alt="Lớp 1 - Nguyễn Anh">
                     <div class="k-title"><%= lesson?.name %></div>
