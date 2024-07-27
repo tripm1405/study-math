@@ -8,7 +8,7 @@ import AuthUtil from "#root/utils/auth.util.js";
 import ClassModel from "#root/models/class.model.js";
 import FilterUtil from "#root/utils/filter.util.js";
 import CommonUtil from "#root/utils/common.util.js";
-import MailerService from "#root/services/mailer.service.js";
+import MailerService, {Type as MailType} from "#root/services/mailer.service.js";
 
 dotenv.config();
 
@@ -84,8 +84,11 @@ export default {
 
         await MailerService.send({
             email: email,
-            username: username,
-            password: password,
+            type: MailType.ACCOUNT_LOGIN_INFO,
+            content: {
+                username: username,
+                password: password,
+            },
         });
 
         res.json({

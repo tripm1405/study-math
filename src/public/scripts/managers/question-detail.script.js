@@ -39,6 +39,8 @@ async function onSubmit() {
         const code = document.querySelector('input[name="code"]')?.value;
         const name = document.querySelector('input[name="name"]')?.value;
         const lessonId = document.querySelector('select[name="lessonId"]')?.value;
+        const startDate = document.querySelector('input[name="startDate"]')?.value;
+        const endDate = document.querySelector('input[name="endDate"]')?.value;
         const note = document.querySelector('input[name="note"]')?.value;
         const blocksDefault = Blockly.serialization.workspaces.save?.(workspaceDefault);
         const toolbox = Blockly.serialization.workspaces.save?.(workspaceToolbox);
@@ -46,6 +48,8 @@ async function onSubmit() {
         const formData = new FormData();
         formData.set('code', code);
         formData.set('name', name);
+        formData.set('startDate', startDate);
+        formData.set('endDate', endDate);
         formData.set('lessonId', lessonId);
         formData.set('note', note);
         formData.set('blocksDefault', JSON.stringify(blocksDefault || {}));

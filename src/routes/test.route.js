@@ -1,5 +1,8 @@
 import express from 'express';
-import MailerService from "#root/services/mailer.service.js";
+import MailerService, {Type as MailType} from "#root/services/mailer.service.js";
+import ResolutionModel from "#root/models/resolution.model.js";
+import DatetimeUtil from "#root/utils/datetime.util.js";
+import ApiUtil from "#root/utils/api.util.js";
 
 const Router = express.Router();
 
@@ -11,6 +14,42 @@ Router.get('/', async (req, res) => {
     });
 
     res.json({result: '/'});
+});
+
+Router.get('/remind-question-deadline', async (req, res) => {
+    const resolutions = await (async () => {
+        const date = new Date();
+
+        const resolutions = await ResolutionModel.find({
+            content: undefined,
+            score: undefined,
+        })
+            .populate('question')
+            .populate('student');
+
+        return resolutions.filter(resolution => {
+            return resolution.question.endDate &&
+                resolution.question.endDate > date &&
+                ((Number(resolution.question.endDate) - Number(date)) < DatetimeUtil.Length.DAY);
+        })
+    })();
+
+    for (const resolution of resolutions) {
+        MailerService.send({
+            email: resolution?.student?.email,
+            type: MailType.REMIND_QUESTION_DEADLINE,
+            content: {
+                name: resolution?.question?.name,
+                endDate: resolution?.question?.endDate,
+            },
+        });
+    }
+
+    res.json(ApiUtil.JsonRes({
+        data: {
+            resolutions: resolutions,
+        },
+    }));
 });
 
 Router.post('/', (req, res) => {

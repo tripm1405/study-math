@@ -26,6 +26,28 @@
             </select>
         </div>
         <div class="mb-3">
+            <label for="start-date" class="form-label">Ngày bắt đầu</label>
+            <input
+                    name="startDate"
+                    id="start-date"
+                    class="form-control"
+                    type="date"
+                    value="<%= data?.question?.startDate?.toLocaleDateString('sv-SE') %>"
+                    placeholder="Ngày bắt đầu..."
+            />
+        </div>
+        <div class="mb-3">
+            <label for="end-date" class="form-label">Ngày kết thúc</label>
+            <input
+                    name="endDate"
+                    id="end-date"
+                    class="form-control"
+                    type="date"
+                    value="<%= data?.question?.endDate?.toLocaleDateString('sv-SE') %>"
+                    placeholder="Ngày kết thúc..."
+            />
+        </div>
+        <div class="mb-3">
             <label for="note-input" class="form-label">Ghi chú</label>
             <input name="note" id="note-input" class="form-control" type="text" value="<%= data?.question?.note %>"
                    placeholder="Ghi chú..."/>

@@ -79,7 +79,16 @@ const controllers = {
         }));
     },
     post: async (req, res) => {
-        const {code, name, result, blocksDefault, toolbox, lessonId, answers} = req.body;
+        const {
+            code,
+            name,
+            result,
+            blocksDefault,
+            toolbox,
+            lessonId: lesson,
+            startDate,
+            endDate,
+        } = req.body;
 
         const question = await QuestionModel.create({
             code: code,
@@ -87,8 +96,9 @@ const controllers = {
             blocksDefault: blocksDefault,
             toolbox: toolbox,
             result: result,
-            lesson: lessonId,
-            answers: answers,
+            lesson: lesson,
+            startDate,
+            endDate,
             createdBy: res?.locals?.currentUser?._id,
         });
 
@@ -101,15 +111,24 @@ const controllers = {
     },
     put: async (req, res) => {
         const {id} = req?.params;
-        const {name, result, blocksDefault, toolbox, lessonId, answers} = req.body;
+        const {
+            name,
+            result,
+            blocksDefault,
+            toolbox,
+            lessonId: lesson,
+            startDate,
+            endDate,
+        } = req.body;
 
         const question = await QuestionModel.findByIdAndUpdate(id, {
             name: name,
             result: result,
             blocksDefault: blocksDefault,
             toolbox: toolbox,
-            lesson: lessonId,
-            answers: answers,
+            lesson: lesson,
+            startDate,
+            endDate,
         });
 
         res.json({
