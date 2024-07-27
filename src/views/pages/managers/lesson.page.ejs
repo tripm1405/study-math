@@ -38,7 +38,7 @@
                     <td style="text-align: center;">
                         <%- include(partialPath + '/datetime.partial.ejs', { datetime: lesson?.createdAt, }) %>
                     </td>
-                    <td class="align-middle">
+                    <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
                         <button class="btn btn-danger btn-sm" onclick="deleteLesson('<%= lesson._id %>')"><i
                                     class="fas fa-trash-alt"></i></button>
                     </td>
