@@ -35,14 +35,21 @@ export default {
         }));
     },
     getDetail: async (req, res) => {
+        const {
+            courseId,
+        } = {
+            ...req.query,
+        };
         const {id} = req?.params;
         if (!id) return res.json({
             success: false,
             id: id,
         });
 
+        const newId = new mongoose.Types.ObjectId();
         const lesson = await LessonModel.findById(id) 
-            .populate('createdBy')|| {};  
+            .populate('createdBy')
+            .lean();
 
         const courses = await CourseModel.find({}) || [];
         const questions = await CommonUtil.Pagination.get({
@@ -61,9 +68,13 @@ export default {
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/lesson-detail.page.ejs`;
         res.render(view, ViewUtil.getOptions({
             data: {
-                lesson: lesson,
+                lesson: {
+                    course: courseId,
+                    ...lesson
+                },
                 courses: courses,
-                questions: questions
+                questions: questions,
+                newId: newId,
             },
         }));
     },

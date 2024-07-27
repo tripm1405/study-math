@@ -41,6 +41,11 @@ const controllers = {
         }));
     },
     getDetail: async (req, res) => {
+        const {
+            lessonId,
+        } = {
+            ...req.query,
+        };
         const {id} = req?.params;
         if (!id) return res.json({
             success: false,
@@ -66,6 +71,7 @@ const controllers = {
         res.render(view, ViewUtil.getOptions({
             data: {
                 question: {
+                    lesson: lessonId,
                     ...question,
                     blocksDefault: JSON.parse(question?.blocksDefault || '{}'),
                     toolbox: JSON.parse(question?.toolbox || '{}'),

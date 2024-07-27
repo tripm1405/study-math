@@ -49,6 +49,7 @@ export default {
             success: false, id: id,
         });
 
+        const newId = new mongoose.Types.ObjectId();
         const course = await CourseModel.findById(id)
             .populate('createdBy')
             .populate('image') || {};
@@ -66,7 +67,9 @@ export default {
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/course-detail.page.ejs`;
         res.render(view, ViewUtil.getOptions({
             data: {
-                course: course, lessons: lessons,
+                course: course,
+                lessons: lessons,
+                newId: newId,
             },
         }));
     },

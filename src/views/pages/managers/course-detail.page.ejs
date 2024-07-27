@@ -1,5 +1,13 @@
 <div class="w-full">
-    <h1 style="margin-bottom: 20px; color: #333;">Chi tiết khóa học</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+        <h1 style="margin-bottom: 20px; color: #333;">Chi tiết khóa học</h1>
+        <div style="text-align: right;">
+            <% if (data?.course?._id) { %>
+                <button class="btn btn-primary" onclick="onCreateLesson('<%= data?.course?._id %>', '<%= data?.newId %>')">Tạo bài toán
+                </button>
+            <% } %>
+        </div>
+    </div>
     <form onsubmit="onSubmit(event)">
         <div class="mb-3">
             <label for="image" class="form-label">Hình ảnh</label>
@@ -142,5 +150,9 @@
         } catch (error) {
             console.error('There was an error!', error);
         }
+    }
+
+    function onCreateLesson(id, newId) {
+        window.location.href = `/lessons/${newId}?courseId=${id}`;
     }
 </script>
