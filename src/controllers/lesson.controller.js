@@ -48,7 +48,9 @@ export default {
         const questions = await CommonUtil.Pagination.get({
             query: req.query.questions,
             Model: QuestionModel,
-            filter: {lesson: lesson?._id},
+            filter: {
+                lesson: lesson?._id,
+            },
             extendGet: get => {
                 return get
                     .populate('createdBy')
@@ -56,30 +58,14 @@ export default {
             },        
         });
 
-        switch (res.locals.currentUser?.type) {
-            default:
-            case AuthUtil.UserType.Student: {
-
-                res.render('pages/students/lesson-detail.page.ejs', ViewUtil.getOptions({
-                    data: {
-                        lesson: lesson,
-                        courses: courses,
-                        questions: questions
-                    },
-                }));
-                return;
-            }
-            case AuthUtil.UserType.Admin:
-            case AuthUtil.UserType.Teacher: {
-                res.render('pages/managers/lesson-detail.page.ejs', ViewUtil.getOptions({
-                    data: {
-                        lesson: lesson,
-                        courses: courses,
-                    },
-                }));
-                return;
-            }
-        }
+        const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/lesson-detail.page.ejs`;
+        res.render(view, ViewUtil.getOptions({
+            data: {
+                lesson: lesson,
+                courses: courses,
+                questions: questions
+            },
+        }));
     },
     post: async (req, res) => {
         const {code, name, note, courseId} = req.body;
