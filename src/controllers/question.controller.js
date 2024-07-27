@@ -12,6 +12,7 @@ import CourseModel from "#root/models/course.model.js";
 import NotificationModel, {Status, Type} from "#root/models/notification.model.js";
 import NotificationService from "#root/services/notification.service.js";
 import FilterUtil from "#root/utils/filter.util.js";
+import ClassModel from "#root/models/class.model.js";
 
 const controllers = {
     get: async (req, res) => {
@@ -264,9 +265,12 @@ const controllers = {
         }).lean();
         const resolutionStudentIdSet = new Set(resolutions.map(resolution => resolution.student?.toString()));
 
-        const students = await UserModel.find({
-            type: AuthUtil.UserType.Student,
-        }).lean();
+        const students = await UserModel
+            .find({
+                type: AuthUtil.UserType.Student,
+            })
+            .populate('classes')
+            .lean();
 
         const studentsGroupByAssign = students.reduce((result, student) => {
             const clone = structuredClone(result);
@@ -293,6 +297,24 @@ const controllers = {
         }, {
             studentAssign: [],
             studentNotAssign: [],
+        });
+
+        const classes = await ClassModel
+            .find({})
+            .populate('users')
+            .lean();
+
+        const classesNotAssign = classes.filter(_class => {
+            return _class.users?.find(user => {
+                return studentsGroupByAssign.studentNotAssign?.find(student => {
+                    return String(student.id) === String(user._id);
+                })
+            })
+        });
+        const classesAssign = classes.filter(_class => {
+            return !classesNotAssign?.find(classNotAssign => {
+                return String(classNotAssign._id) === String(_class._id);
+            })
         })
 
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/question-assign.page.ejs`;
@@ -301,6 +323,8 @@ const controllers = {
                 id: id,
                 studentAssign: studentsGroupByAssign.studentAssign,
                 studentNotAssign: studentsGroupByAssign.studentNotAssign,
+                classesNotAssign: classesNotAssign,
+                classesAssign: classesAssign,
             },
         }));
     },

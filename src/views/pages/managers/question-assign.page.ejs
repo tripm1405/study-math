@@ -1,77 +1,156 @@
-<div class="w-full d-flex flex-wrap gap-3">
-    <div class="flex-fill" style="width: 45%; min-width: 400px;">
-        <h3>Học sinh</h3>
+<style>
+    .k-table-container {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
 
-        <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
-            <thead>
-            <tr>
-                <th>Mã tài khoản</th>
-                <th>Email</th>
-                <th style="width: 50px;"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <% for (const student of data?.studentNotAssign) { %>
-                <tr class="k-cursor-pointer" onClick="onDetail('<%= student.id %>')">
-                    <td><%= student.code %></td>
-                    <td><%= student.email %></td>
-                    <td>
-                        <button class="btn btn-primary btn-sm me-1" onClick="onAssign(['<%= student.id %>'])"><i
-                                    class="fas fa-plus"></i></button>
-                    </td>
-                </tr>
-            <% } %>
-            </tbody>
-        </table>
+<div class="w-full">
+    <div>
+        <h1>Quản lí giao bài</h1>
     </div>
-    <div class="flex-fill" style="width: 45%; min-width: 400px;">
-        <h3>Học sinh đã tham gia</h3>
+    <div class="w-full d-flex flex-wrap gap-3">
+        <div class="flex-fill" style="width: 45%; min-width: 400px;">
+            <h3>Lớp</h3>
 
-        <table class="table table-striped table-bordered my-2">
-            <thead>
-            <tr>
-                <th>Mã tài khoản</th>
-                <th>Email</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% for (const student of data?.studentAssign) { %>
-                <tr class="k-cursor-pointer">
-                    <td><%= student.code %></td>
-                    <td><%= student.email %></td>
-                </tr>
-            <% } %>
-            </tbody>
-        </table>
+            <div class="k-table-container">
+                <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
+                    <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Học sinh</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for (const _class of data?.classesNotAssign) { %>
+                        <tr class="k-cursor-pointer" onClick="onDetail('<%= _class.id %>')">
+                            <td><%= _class.code %></td>
+                            <td><%= _class.name %></td>
+                            <td><%= _class.users?.map(user => user?.fullName)?.join(', ') %></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onClick="onAssign(['<%= _class.id %>'])"><i
+                                            class="fas fa-plus"></i></button>
+                            </td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="flex-fill" style="width: 45%; min-width: 400px;">
+            <h3>Lớp đã tham gia</h3>
+
+            <div class="k-table-container">
+                <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
+                    <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Học sinh</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for (const _class of data?.classesAssign) { %>
+                        <tr class="k-cursor-pointer" onClick="onDetail('<%= _class.id %>')">
+                            <td><%= _class.code %></td>
+                            <td><%= _class.name %></td>
+                            <td><%= _class.users?.map(user => user?.fullName)?.join(', ') %></td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="w-full d-flex flex-wrap gap-3">
+        <div class="flex-fill" style="width: 45%; min-width: 400px;">
+            <h3>Học sinh</h3>
+
+            <div class="k-table-container">
+                <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
+                    <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Lớp</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for (const student of data?.studentNotAssign) { %>
+                        <tr class="k-cursor-pointer" onClick="onDetail('<%= student.id %>')">
+                            <td><%= student.code %></td>
+                            <td><%= student.fullName %></td>
+                            <td>
+                                <%= student.classes?.map(_class => _class?.name)?.join(', ') %>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onClick="onAssign(['<%= student.id %>'])"><i
+                                            class="fas fa-plus"></i></button>
+                            </td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="flex-fill" style="width: 45%; min-width: 400px;">
+            <h3>Học sinh đã tham gia</h3>
+
+            <div class="k-table-container">
+                <table class="table table-striped table-bordered my-2">
+                    <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Lớp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for (const student of data?.studentAssign) { %>
+                        <tr class="k-cursor-pointer">
+                            <td><%= student.code %></td>
+                            <td><%= student.fullName %></td>
+                            <td>
+                                <%= student.classes?.map(_class => _class?.name)?.join(', ') %>
+                            </td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<input name="id" type="hidden" value="<%= data?.id %>" />
+<input name="id" type="hidden" value="<%= data?.id %>"/>
 
 <script>
-  async function onAssign(studentIds) {
-    try {
-      const id = document.querySelector('input[name="id"]')?.value;
+    async function onAssign(studentIds) {
+        try {
+            const id = document.querySelector('input[name="id"]')?.value;
 
-      const body = {
-        studentIds: studentIds,
-      };
-      const formData = new FormData();
-      K.obj2FormData(formData, body);
+            const body = {
+                studentIds: studentIds,
+            };
+            const formData = new FormData();
+            K.obj2FormData(formData, body);
 
-      const res = await axios.post(`/api/questions/${id}/assign`, formData);
+            const res = await axios.post(`/api/questions/${id}/assign`, formData);
 
-      if (!res?.data?.success) {
-        return;
-      }
+            if (!res?.data?.success) {
+                return;
+            }
 
-      window.location.reload();
+            window.location.reload();
+        } catch {
+
+        }
     }
-    catch {
 
+    function onDetail(studentId) {
+        window.location.href = `/users/${studentId}`;
     }
-  }
-  function onDetail(studentId) {
-    window.location.href = `/users/${studentId}`;
-  }
 </script>

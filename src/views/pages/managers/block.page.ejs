@@ -2,21 +2,22 @@
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <div style="display: flex; justify-content: space-between;">
-  <h1>Quản lí khối</h1>
-  <div>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-modal">IMPORT</button>
-    <button class="btn btn-primary" onClick="onExport()">EXPORT</button>
-  </div>
+    <h1>Quản lí khối</h1>
+    <div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-modal">IMPORT</button>
+        <button class="btn btn-primary" onClick="onExport()">EXPORT</button>
+    </div>
 </div>
 <div class="my-2">
-  <form method="GET" class="row ">
-      <div class="col-md-4">
-          <input name="name" type="text" class="form-control" placeholder="Tên..." value="<%= data?.filters?.name %>" />
-      </div>
-      <div class="col-md-4">
-          <button type="submit" class="btn btn-primary">Lọc</button>
-      </div>
-  </form>
+    <form method="GET" class="row ">
+        <div class="col-md-4">
+            <input name="name" type="text" class="form-control" placeholder="Tên..."
+                   value="<%= data?.filters?.name %>"/>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Lọc</button>
+        </div>
+    </form>
 </div>
 <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
     <thead>
@@ -31,14 +32,15 @@
     <tbody>
     <% for (const block of data?.blocks?.models) { %>
         <tr onClick="upsert('<%= block?._id %>')">
-            <td style="text-align: right;"><%= block?.index  %></td>
+            <td style="text-align: right;"><%= block?.index %></td>
             <td><%= block?.name %></td>
             <td><%= block?.createdBy?.fullName %></td>
             <td style="text-align: center;">
                 <%- include(partialPath + '/datetime.partial.ejs', { datetime: block?.createdAt, }) %>
             </td>
             <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
-                <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i class="fas fa-trash-alt"></i></button>
+                <button class="btn btn-danger btn-sm" onClick="del('<%= block?._id %>')"><i
+                            class="fas fa-trash-alt"></i></button>
             </td>
         </tr>
     <% } %>
@@ -49,108 +51,108 @@
 </div>
 
 <div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <form onsubmit="onImport(event)">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Import khối</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-        </button>
-      </div>
-      <div class="modal-body">
-          <div>
-              <label for="block">Chọn khối</label>
-              <input id="block" name="block" type="file" />
-          </div>
-          <div>
-              <label for="images">Chọn hình</label>
-              <input id="images" name="images" type="file" multiple />
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="submit" class="btn btn-primary">Đồng ý</button>
-      </div>
-    </form>
-  </div>
-</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form onsubmit="onImport(event)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Import khối</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label for="block">Chọn khối</label>
+                        <input id="block" name="block" type="file"/>
+                    </div>
+                    <div>
+                        <label for="images">Chọn hình</label>
+                        <input id="images" name="images" type="file" multiple/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Đồng ý</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script>
-function upsert(id) {
-  window.location.href = `/blocks/${id}`;
-}
-
-async function del(id) {
-  try {
-    await axios.delete(`/blocks/${id}`);
-    Toastify({
-      text: 'Xóa khối thành công!',
-      duration: 3000,
-      gravity: 'top',
-      position: 'right',
-      backgroundColor: '#4CAF50',
-    }).showToast();
-    location.reload();
-  } catch (error) {
-    console.error('Delete Error:', error);
-    Toastify({
-      text: 'Đã xảy ra lỗi khi xóa khối. Vui lòng thử lại sau.',
-      duration: 3000,
-      gravity: 'top',
-      position: 'right',
-      backgroundColor: '#ff6347',
-    }).showToast();
-  }
-}
-
-async function onImport(event) {
-  event.preventDefault();
-
-  const formData = new FormData(event.target);
-  try {
-    const res = await axios.post('/api/blocks/import', formData);
-
-    if (!res?.data?.success) {
-      Toastify({
-        text: 'Import khối không thành công. Vui lòng thử lại.',
-        duration: 3000,
-        gravity: 'top',
-        position: 'right',
-        backgroundColor: '#ff6347',
-      }).showToast();
-      return;
+    function upsert(id) {
+        window.location.href = `/blocks/${id}`;
     }
 
-    Toastify({
-      text: 'Import khối thành công!',
-      duration: 3000,
-      gravity: 'top',
-      position: 'right',
-      backgroundColor: '#4CAF50',
-    }).showToast();
+    async function del(id) {
+        try {
+            await axios.delete(`/blocks/${id}`);
+            Toastify({
+                text: 'Xóa khối thành công!',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#4CAF50',
+            }).showToast();
+            location.reload();
+        } catch (error) {
+            console.error('Delete Error:', error);
+            Toastify({
+                text: 'Đã xảy ra lỗi khi xóa khối. Vui lòng thử lại sau.',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#ff6347',
+            }).showToast();
+        }
+    }
 
-    window.location.reload();
-  } catch (error) {
-    console.error('Import Error:', error);
-    Toastify({
-      text: 'Đã xảy ra lỗi khi import khối. Vui lòng thử lại sau.',
-      duration: 3000,
-      gravity: 'top',
-      position: 'right',
-      backgroundColor: '#ff6347',
-    }).showToast();
-  }
-}
+    async function onImport(event) {
+        event.preventDefault();
 
-  async function onExport() {
-    const fileRes = await axios.get(`/api/blocks/export`, {
-      params: {
-        questionId: null,
-      }
-    });
-    await K.exportJson({
-      res: fileRes,
-    });
-  }
+        const formData = new FormData(event.target);
+        try {
+            const res = await axios.post('/api/blocks/import', formData);
+
+            if (!res?.data?.success) {
+                Toastify({
+                    text: 'Import khối không thành công. Vui lòng thử lại.',
+                    duration: 3000,
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: '#ff6347',
+                }).showToast();
+                return;
+            }
+
+            Toastify({
+                text: 'Import khối thành công!',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#4CAF50',
+            }).showToast();
+
+            window.location.reload();
+        } catch (error) {
+            console.error('Import Error:', error);
+            Toastify({
+                text: 'Đã xảy ra lỗi khi import khối. Vui lòng thử lại sau.',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#ff6347',
+            }).showToast();
+        }
+    }
+
+    async function onExport() {
+        const fileRes = await axios.get(`/api/blocks/export`, {
+            params: {
+                questionId: null,
+            }
+        });
+        await K.exportJson({
+            res: fileRes,
+        });
+    }
 </script>
