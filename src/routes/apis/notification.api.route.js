@@ -4,6 +4,8 @@ import notificationApiController from "#root/controllers/apis/notification.api.c
 
 const Router = express.Router();
 
+Router.put('/:id/visited', notificationApiController.putVisited);
+Router.get('/check-new', notificationApiController.getCheckNew);
 Router.get('/', notificationApiController.getList);
 
 export default Router;

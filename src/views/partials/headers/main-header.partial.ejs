@@ -13,7 +13,8 @@
         display: none;
     }
 
-    .dropdown-menu {
+    .k-notification-menu {
+        min-width: 400px;
         max-height: 400px;
         overflow-x: hidden;
         overflow-y: auto;
@@ -59,10 +60,13 @@
         <div class="ml-auto d-flex align-items-center">
             <div class="dropdown">
                 <button type="button" class="btn transparent-btn" data-bs-toggle="dropdown" aria-expanded="false"
-                        data-bs-auto-close="outside">
-                    <i class="fas fa-bell"></i>
+                        data-bs-auto-close="outside" onclick="onHiddenNewBadge()">
+                    <span class="position-relative">
+                        <i class="fas fa-bell "></i>
+                        <span class="k-new-badge position-absolute top-0 start-100 translate-middle p-1 bg-danger rounded-circle visually-hidden"></span>
+                    </span>
                 </button>
-                <div class="dropdown-menu p-2" style="min-width: 400px;">
+                <div class="k-notification-menu dropdown-menu p-2">
                     <div class="k-notification-list ">
                     </div>
                     <div class="k-notification-more" onclick="onLoadNotification()">Xem thêm...</div>
@@ -110,10 +114,24 @@
             notificationContainerNode.insertAdjacentElement('afterbegin', generateNotificationNode({
                 ...notification,
             }));
+            onShowNewBadge();
         });
 
         loadNotification();
+
+        const checkNewRes = await axios.get('/api/notifications/check-new');
+        if (checkNewRes?.data?.result?.hasNew) {
+            onShowNewBadge();
+        }
     });
+
+    function onShowNewBadge() {
+        document.querySelector('.k-new-badge')?.classList.remove('visually-hidden');
+    }
+
+    function onHiddenNewBadge() {
+        document.querySelector('.k-new-badge')?.classList.add('visually-hidden');
+    }
 
     function onLoadNotification() {
         loadNotification({
@@ -152,6 +170,7 @@
 
     function generateNotificationNode(props) {
         const {
+            _id,
             status,
             content,
             createdAt,
@@ -164,7 +183,8 @@
         node.querySelector('.k-notification-title').textContent = content?.title;
         node.querySelector('.k-notification-created-at').textContent = K.Common.datetimeFormat(createdAt);
         node.querySelector('.k-notification-content').textContent = content?.text;
-        node.addEventListener('click', () => {
+        node.addEventListener('click', async () => {
+            await axios.put(`/api/notifications/${_id}/visited`, {});
             window.location.href = content?.href;
         });
 
