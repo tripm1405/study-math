@@ -6,6 +6,8 @@ import CommonUtil from "#root/utils/common.util.js";
 import userModel from "#root/models/user.model.js";
 import FilterUtil from "#root/utils/filter.util.js";
 import CourseModel from "#root/models/course.model.js";
+import ModelUtil from "#root/utils/model.util.js";
+import ModelNameConstant from "#root/models/model-name.constant.js";
 
 export default {
     get: async (req, res) => {
@@ -81,8 +83,11 @@ export default {
         }));
     },
     post: async (req, res) => {
-        const {code, name, note, userIds} = req.body;
+        const {name, note, userIds} = req.body;
 
+        const code = await ModelUtil.Code.generate({
+            modelName: ModelNameConstant.USER,
+        })
         const classId = new mongoose.Types.ObjectId();
         const _class = await ClassModel.create({
             _id: classId,

@@ -3,17 +3,21 @@ import MailerService, {Type as MailType} from "#root/services/mailer.service.js"
 import ResolutionModel from "#root/models/resolution.model.js";
 import DatetimeUtil from "#root/utils/datetime.util.js";
 import ApiUtil from "#root/utils/api.util.js";
+import ModelUtil from "#root/utils/model.util.js";
+import ModelNameConstant from "#root/models/model-name.constant.js";
 
 const Router = express.Router();
 
 Router.get('/', async (req, res) => {
-    await MailerService.send({
-        email: 'krotohmaki@gmail.com',
-        username: 'username',
-        password: 'password',
+    const test = await ModelUtil.Code.generate({
+        modelName: ModelNameConstant.USER,
     });
 
-    res.json({result: '/'});
+    console.log('test', test);
+
+    res.json({
+        test: test,
+    })
 });
 
 Router.get('/remind-question-deadline', async (req, res) => {

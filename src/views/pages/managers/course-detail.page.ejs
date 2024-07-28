@@ -21,17 +21,19 @@
                     class="form-control"
             />
         </div>
-        <div class="mb-3">
-            <label for="code" class="form-label">Mã khóa học</label>
-            <input
-                    id="code"
-                    name="code"
-                    type="text"
-                    value="<%= data?.course?.code %>"
-                    placeholder="Nhập mã khóa học..."
-                    <%= data?.course?.code && 'disabled' %>
-                    class="form-control"/>
-        </div>
+        <% if (data?.course?._id) { %>
+            <div class="mb-3">
+                <label for="code" class="form-label">Mã khóa học</label>
+                <input
+                        id="code"
+                        name="code"
+                        type="text"
+                        value="<%= data?.course?.code %>"
+                        placeholder="Nhập mã khóa học..."
+                        <%= data?.course?.code && 'disabled' %>
+                        class="form-control"/>
+            </div>
+        <% } %>
         <div class="mb-3">
             <label for="name" class="form-label">Tên khóa học</label>
             <input

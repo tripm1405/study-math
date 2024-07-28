@@ -16,19 +16,21 @@
         </div>
     </div>
     <form onsubmit="onSubmit(event)">
-        <div class="mb-3">
-            <label for="code" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Mã bài
-                học</label>
-            <input
-                    id="code"
-                    name="code"
-                    type="text"
-                    value="<%= data?.lesson?.code %>"
-                    placeholder="Mã bài học..."
-                    <%= data?.lesson?.code && 'disabled' %>
-                    class="form-control"
-            />
-        </div>
+        <% if (data?.lesson?._id) { %>
+            <div class="mb-3">
+                <label for="code" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Mã bài
+                    học</label>
+                <input
+                        id="code"
+                        name="code"
+                        type="text"
+                        value="<%= data?.lesson?.code %>"
+                        placeholder="Mã bài học..."
+                        <%= data?.lesson?.code && 'disabled' %>
+                        class="form-control"
+                />
+            </div>
+        <% } %>
         <div class="mb-3">
             <label for="name" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Tên bài
                 học</label>

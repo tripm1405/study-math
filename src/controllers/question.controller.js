@@ -13,6 +13,8 @@ import NotificationModel, {Status, Type} from "#root/models/notification.model.j
 import NotificationService from "#root/services/notification.service.js";
 import FilterUtil from "#root/utils/filter.util.js";
 import ClassModel from "#root/models/class.model.js";
+import ModelUtil from "#root/utils/model.util.js";
+import ModelNameConstant from "#root/models/model-name.constant.js";
 
 const controllers = {
     get: async (req, res) => {
@@ -88,7 +90,6 @@ const controllers = {
     },
     post: async (req, res) => {
         const {
-            code,
             name,
             result,
             blocksDefault,
@@ -98,6 +99,10 @@ const controllers = {
             endDate,
         } = req.body;
 
+
+        const code = await ModelUtil.Code.generate({
+            modelName: ModelNameConstant.QUESTION,
+        })
         const question = await QuestionModel.create({
             code: code,
             name: name,

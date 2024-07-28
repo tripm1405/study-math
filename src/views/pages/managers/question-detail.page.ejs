@@ -7,11 +7,13 @@
     </div>
 
     <div class="w-full">
-        <div class="mb-3">
-            <label for="code-input" class="form-label">Mã bài học</label>
-            <input name="code" id="code-input" class="form-control" type="text" value="<%= data?.question?.code %>"
-                   placeholder="Mã..."/>
-        </div>
+        <% if (data?.question?._id) { %>
+            <div class="mb-3">
+                <label for="code-input" class="form-label">Mã bài học</label>
+                <input name="code" id="code-input" class="form-control" type="text" value="<%= data?.question?.code %>"
+                       placeholder="Mã..."/>
+            </div>
+        <% } %>
         <div class="mb-3">
             <label for="name-input" class="form-label">Tên bài học</label>
             <input name="name" id="name-input" class="form-control" type="text" value="<%= data?.question?.name %>"

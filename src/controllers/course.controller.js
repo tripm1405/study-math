@@ -8,6 +8,8 @@ import ViewUtil from "#root/utils/view.util.js";
 import CommonUtil from "#root/utils/common.util.js";
 import FileUtil from "#root/utils/file.util.js";
 import FilterUtil from "#root/utils/filter.util.js";
+import ModelUtil from "#root/utils/model.util.js";
+import ModelNameConstant from "#root/models/model-name.constant.js";
 
 export default {
     get: async (req, res) => {
@@ -76,7 +78,7 @@ export default {
         }));
     },
     post: async (req, res) => {
-        const {code, name, note} = req.body;
+        const {name, note} = req.body;
         const imageId = await (async () => {
             const image = (() => {
                 const imageFile = req.files?.find(file => file.fieldname === 'image');
@@ -106,6 +108,9 @@ export default {
             return imageId;
         })();
 
+        const code = await ModelUtil.Code.generate({
+            modelName: ModelNameConstant.COURSE,
+        })
         const course = await CourseModel.create({
             code: code,
             image: imageId,

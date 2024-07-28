@@ -3,6 +3,8 @@ import ResolutionModel from "#root/models/resolution.model.js";
 import AnswerModel from "#root/models/answer.model.js";
 import CommonUtil from "#root/utils/common.util.js";
 import BlocklyUtil from "#root/utils/blockly.util.js";
+import ModelUtil from "#root/utils/model.util.js";
+import ModelNameConstant from "#root/models/model-name.constant.js";
 
 export default {
     get: async (req, res) => {
@@ -98,7 +100,6 @@ export default {
             ...req.params,
         };
         const {
-            code,
             name,
             note,
             score,
@@ -110,6 +111,9 @@ export default {
             score: score,
         });
 
+        const code = await ModelUtil.Code.generate({
+            modelName: ModelNameConstant.ANSWER,
+        })
         await AnswerModel.create({
             code: code,
             name: name,

@@ -7,6 +7,8 @@ import CommonUtil from "#root/utils/common.util.js";
 import ClassModel from "#root/models/class.model.js";
 import QuestionModel from "#root/models/question.model.js";
 import FilterUtil from "#root/utils/filter.util.js";
+import ModelUtil from "#root/utils/model.util.js";
+import ModelNameConstant from "#root/models/model-name.constant.js";
 
 export default {
     get: async (req, res) => {
@@ -80,8 +82,11 @@ export default {
         }));
     },
     post: async (req, res) => {
-        const {code, name, note, courseId} = req.body;
+        const {name, note, courseId} = req.body;
 
+        const code = await ModelUtil.Code.generate({
+            modelName: ModelNameConstant.LESSON,
+        })
         const lesson = await LessonModel.create({
             code: code,
             name: name,

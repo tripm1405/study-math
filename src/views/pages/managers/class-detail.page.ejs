@@ -4,18 +4,20 @@
     </div>
     <div>
         <form onsubmit="onSubmit(event)">
-            <div class="mb-3">
-                <label for="code" class="form-label">Mã lớp</label>
-                <input
-                        id="code"
-                        name="code"
-                        type="text"
-                        value="<%= data.class && data.class.code %>"
-                        placeholder="Nhập mã lớp..."
-                        <%= data.class && data.class.code ? 'disabled' : '' %>
-                        class="form-control"
-                />
-            </div>
+            <% if (data?.class?._id) { %>
+                <div class="mb-3">
+                    <label for="code" class="form-label">Mã lớp</label>
+                    <input
+                            id="code"
+                            name="code"
+                            type="text"
+                            value="<%= data.class && data.class.code %>"
+                            placeholder="Nhập mã lớp..."
+                            <%= data.class && data.class.code ? 'disabled' : '' %>
+                            class="form-control"
+                    />
+                </div>
+            <% } %>
             <div class="mb-3">
                 <label for="name" class="form-label">Tên lớp</label>
                 <input

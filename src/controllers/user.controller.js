@@ -9,6 +9,8 @@ import ClassModel from "#root/models/class.model.js";
 import FilterUtil from "#root/utils/filter.util.js";
 import CommonUtil from "#root/utils/common.util.js";
 import MailerService, {Type as MailType} from "#root/services/mailer.service.js";
+import ModelUtil from "#root/utils/model.util.js";
+import ModelNameConstant from "#root/models/model-name.constant.js";
 
 dotenv.config();
 
@@ -68,7 +70,6 @@ export default {
     },
     post: async (req, res) => {
         const {
-            code,
             username,
             password,
             fullName,
@@ -78,6 +79,9 @@ export default {
 
         const passwordHash = await bcrypt.hash(password, AuthUtil.BCRYPT_SALT);
 
+        const code = await ModelUtil.Code.generate({
+            modelName: ModelNameConstant.USER,
+        })
         const user = await UserModel.create({
             code: code,
             username: username,

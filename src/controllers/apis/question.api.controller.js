@@ -7,6 +7,8 @@ import LessonModel from "#root/models/lesson.model.js";
 import AnswerModel from "#root/models/answer.model.js";
 import CommonUtil from "#root/utils/common.util.js";
 import ResolutionModel from "#root/models/resolution.model.js";
+import ModelUtil from "#root/utils/model.util.js";
+import ModelNameConstant from "#root/models/model-name.constant.js";
 
 export default {
     get: async (req, res) => {
@@ -69,13 +71,16 @@ export default {
             id,
         } = req.params;
         const {
-            code,
             name,
             content,
             score,
             note,
         } = req.body;
 
+
+        const code = await ModelUtil.Code.generate({
+            modelName: ModelNameConstant.ANSWER,
+        })
         const answer = await AnswerModel.create({
             code: code,
             name: name,
