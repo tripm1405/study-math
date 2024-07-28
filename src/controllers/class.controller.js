@@ -86,7 +86,7 @@ export default {
         const {name, note, userIds} = req.body;
 
         const code = await ModelUtil.Code.generate({
-            modelName: ModelNameConstant.USER,
+            modelName: ModelNameConstant.CLASS,
         })
         const classId = new mongoose.Types.ObjectId();
         const _class = await ClassModel.create({
