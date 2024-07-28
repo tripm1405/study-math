@@ -59,20 +59,27 @@
         <div class="modal-content">
             <form onsubmit="onTransferAnswer(event)">
                 <div class="modal-body">
-                        <div>
-                            <input name="code" type="text" />
+                    <form>
+                        <div class="form-group">
+                            <label for="code">Mã:</label>
+                            <input id="code" name="code" type="text" class="form-control" placeholder="Nhập mã" style="width:100%"/>
                         </div>
-                        <div>
-                            <input name="name" type="text" />
+                        <div class="form-group">
+                            <label for="name">Tên:</label>
+                            <input id="name" name="name" type="text" class="form-control" placeholder="Nhập tên" style="width:100%"/>
                         </div>
-                        <div>
-                            <input name="score" type="text" min="0" max="10" />
+                        <div class="form-group">
+                            <label for="score">Điểm:</label>
+                            <input id="score" name="score" type="number" class="form-control" min="0" max="10" placeholder="Nhập điểm" style="width:100%"/>
                         </div>
-                        <div>
-                            <input name="note" type="text" />
+                        <div class="form-group">
+                            <label for="note">Ghi chú:</label>
+                            <input id="note" name="note" type="text" class="form-control" placeholder="Nhập ghi chú" style="width:100%"/>
                         </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
+                                
+                <div class="modal-footer" style="border-top: none;">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     <button type="submit" class="btn btn-primary">Xác nhận</button>
                 </div>
