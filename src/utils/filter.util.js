@@ -8,21 +8,25 @@ export default class FilterUtil {
             filters: {
                 code,
                 email,
+                ...filters
             },
             user,
             useDefault,
         } = {
             useDefault: false,
             ...props,
+            filters: {
+                ...props.filters,
+            }
         };
 
-        const filter = {};
+        const filter = filters;
         if (user?.type !== UserType.ADMIN) {
-            filter.createdBy = new mongoose.Types.ObjectId(user?._id);
-        }
-        if (user?.type === UserType.TEACHER) {
-            if (filter.type) {
-                filter.type = AuthUtil.UserType.Student;
+            if (user?.type === UserType.TEACHER) {
+                if (!filter.type) {
+                    filter.type = AuthUtil.UserType.Student;
+                }
+                filter.createdBy = new mongoose.Types.ObjectId(user?._id);
             }
         }
         if (code) {
@@ -55,6 +59,7 @@ export default class FilterUtil {
             filters: {
                 code,
             },
+            user,
         } = {
             ...props,
             filters: {
@@ -62,14 +67,17 @@ export default class FilterUtil {
             }
         };
 
-        const result = {};
+        const filter = {};
+        if (user && ![UserType.ADMIN, UserType.STUDENT].includes(user?.type)) {
+            filter.createdBy = new mongoose.Types.ObjectId(user?._id);
+        }
         if (code) {
-            result.code = {
+            filter.code = {
                 $regex : new RegExp(code, 'i'),
             };
         }
 
-        return result;
+        return filter;
     }
 
     static Class = (props) => {
@@ -78,6 +86,7 @@ export default class FilterUtil {
                 code,
                 name,
             },
+            user,
         } = {
             ...props,
             filters: {
@@ -85,19 +94,24 @@ export default class FilterUtil {
             }
         };
 
-        const result = {};
+        const filter = {};
+        if (user?.type !== UserType.ADMIN) {
+            if (user?.type === UserType.TEACHER) {
+                filter.createdBy = new mongoose.Types.ObjectId(user?._id);
+            }
+        }
         if (code) {
-            result.code = {
+            filter.code = {
                 $regex : new RegExp(code, 'i'),
             };
         }
         if (name) {
-            result.name = {
+            filter.name = {
                 $regex : new RegExp(name, 'i'),
             };
         }
 
-        return result;
+        return filter;
     }
 
     static Course = (props) => {
@@ -106,6 +120,7 @@ export default class FilterUtil {
                 code,
                 name,
             },
+            user,
         } = {
             ...props,
             filters: {
@@ -113,19 +128,22 @@ export default class FilterUtil {
             }
         };
 
-        const result = {};
+        const filter = {};
+        if (user && ![UserType.ADMIN, UserType.STUDENT].includes(user?.type)) {
+            filter.createdBy = new mongoose.Types.ObjectId(user?._id);
+        }
         if (code) {
-            result.code = {
+            filter.code = {
                 $regex : new RegExp(code, 'i'),
             };
         }
         if (name) {
-            result.name = {
+            filter.name = {
                 $regex : new RegExp(name, 'i'),
             };
         }
 
-        return result;
+        return filter;
     }
 
     static Lesson = (props) => {
@@ -134,6 +152,7 @@ export default class FilterUtil {
                 code,
                 name,
             },
+            user,
         } = {
             ...props,
             filters: {
@@ -141,19 +160,22 @@ export default class FilterUtil {
             }
         };
 
-        const result = {};
+        const filter = {};
+        if (user && ![UserType.ADMIN, UserType.STUDENT].includes(user?.type)) {
+            filter.createdBy = new mongoose.Types.ObjectId(user?._id);
+        }
         if (code) {
-            result.code = {
+            filter.code = {
                 $regex : new RegExp(code, 'i'),
             };
         }
         if (name) {
-            result.name = {
+            filter.name = {
                 $regex : new RegExp(name, 'i'),
             };
         }
 
-        return result;
+        return filter;
     }
 
     static Block = (props) => {
@@ -176,5 +198,46 @@ export default class FilterUtil {
         }
 
         return result;
+    }
+
+    static Resolution = (props) => {
+        const {
+            filters: {
+                ...filters
+            },
+            user,
+        } = {
+            ...props,
+            filters: {
+                ...props.filters,
+            }
+        };
+
+        const filter = {};
+        if (user) {
+            switch (user?.type) {
+                case UserType.TEACHER: {
+                    filter.createdBy = new mongoose.Types.ObjectId(user?._id);
+                    break;
+                }
+                case UserType.ADMIN:
+                case UserType.STUDENT:
+                default: {
+                    break;
+                }
+            }
+        }
+        if (code) {
+            filter.code = {
+                $regex : new RegExp(code, 'i'),
+            };
+        }
+        if (name) {
+            filter.name = {
+                $regex : new RegExp(name, 'i'),
+            };
+        }
+
+        return filter;
     }
 }

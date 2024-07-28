@@ -12,6 +12,7 @@ export default {
         const newId = new mongoose.Types.ObjectId();
         const filter = FilterUtil.Class({
             filters: req.query,
+            user: res.locals.currentUser,
         });
         const classes = await CommonUtil.Pagination.get({
             query: req.query?.classes,
@@ -65,7 +66,10 @@ export default {
             },
         });
 
-        const userOptions = await UserModel.find({});
+        const userOptions = await UserModel.find(FilterUtil.User({
+            useDefault: true,
+            user: res.locals.currentUser,
+        }));
 
         const view = 'pages/managers/class-detail.page.ejs';
         res.render(view, ViewUtil.getOptions({

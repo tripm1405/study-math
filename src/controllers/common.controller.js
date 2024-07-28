@@ -23,87 +23,77 @@ const commonController = {
             }
         }, {});
 
-        switch (res.locals.currentUser?.type) {
-            case AuthUtil.UserType.Admin: {
-                const resolutions = await ResolutionModel.find({
-                    content: {
-                        $ne: undefined,
-                    },
-                }).lean();
+        const result = await (async () => {
+            switch (res.locals.currentUser?.type) {
+                case AuthUtil.UserType.Admin: {
+                    const resolutions = await ResolutionModel.find({
+                        content: {
+                            $ne: undefined,
+                        },
+                    }).lean();
 
-                const resolutionsCount = resolutions
-                    .reduce((result, resolution) => {
-                        return {
-                            ...result,
-                            [resolution.question]: (result?.[resolution.question] || 0) + 1,
-                        }
-                    }, {});
-                const resolutionsOrderByAmount = Object.keys(resolutionsCount)
-                    .reduce((result, question) => {
-                        return [
-                            ...result,
-                            {
-                                id: question,
-                                amount: resolutionsCount[question]
+                    const resolutionsCount = resolutions
+                        .reduce((result, resolution) => {
+                            return {
+                                ...result,
+                                [resolution.question]: (result?.[resolution.question] || 0) + 1,
                             }
-                        ]
-                    }, [])
-                    .sort((a, b) => {
-                        return a?.amount > b.amount ? 1 : 0;
+                        }, {});
+                    const resolutionsOrderByAmount = Object.keys(resolutionsCount)
+                        .reduce((result, question) => {
+                            return [
+                                ...result,
+                                {
+                                    id: question,
+                                    amount: resolutionsCount[question]
+                                }
+                            ]
+                        }, [])
+                        .sort((a, b) => {
+                            return a?.amount > b.amount ? 1 : 0;
+                        });
+
+                    return resolutionsOrderByAmount
+                        .map(e => {
+                            return questionMappingById[e?.id?.toString()];
+                        })
+                        .filter(question => Boolean(question));
+                }
+                case AuthUtil.UserType.Teacher: {
+                    const resolutions = await ResolutionModel.find({
+                        score: undefined,
+                        content: {
+                            $ne: undefined,
+                        },
+                    }).lean();
+
+                    return resolutions
+                        .map(resolution => {
+                            return questionMappingById[resolution?.question?.toString()];
+                        })
+                        .filter(question => Boolean(question));
+                }
+                case AuthUtil.UserType.Student: {
+                    const resolutions = await ResolutionModel.find({
+                        score: undefined,
+                        content: undefined,
+                        student: res.locals.currentUser?._id,
                     });
 
-                res.render('pages/home.page.ejs', ViewUtil.getOptions({
-                    data: {
-                        questions: resolutionsOrderByAmount
-                            .map(e => {
-                                return questionMappingById[e?.id?.toString()];
-                            })
-                            .filter(question => Boolean(question)),
-                    },
-                }));
-
-                return;
+                    return resolutions
+                        .map(resolution => {
+                            return questionMappingById[resolution?.question?.toString()];
+                        })
+                        .filter(question => Boolean(question));
+                }
             }
-            case AuthUtil.UserType.Teacher: {
-                const resolutions = await ResolutionModel.find({
-                    score: undefined,
-                    content: {
-                        $ne: undefined,
-                    },
-                }).lean();
+        })();
 
-                res.render('pages/home.page.ejs', ViewUtil.getOptions({
-                    data: {
-                        questions: resolutions
-                            .map(resolution => {
-                                return questionMappingById[resolution?.question?.toString()];
-                            })
-                            .filter(question => Boolean(question)),
-                    },
-                }));
-
-                return;
-            }
-            case AuthUtil.UserType.Student: {
-                const resolutions = await ResolutionModel.find({
-                    score: undefined,
-                    content: undefined,
-                    student: res.locals.currentUser?._id,
-                });
-
-                res.render('pages/home.page.ejs', ViewUtil.getOptions({
-                    data: {
-                        questions: resolutions
-                            .map(resolution => {
-                                return questionMappingById[resolution?.question?.toString()];
-                            })
-                            .filter(question => Boolean(question)),
-                    },
-                }));
-
-                return;
-            }
-        }
+        res.render('pages/home.page.ejs', ViewUtil.getOptions({
+            data: {
+                questions: result,
+            },
+        }));
     },
     getProfile: async (req, res) => {
         const user = await UserModel.findOne({

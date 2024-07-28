@@ -1,11 +1,12 @@
-import ViewUtil from "#root/utils/view.util.js";
 import mongoose from "mongoose";
+import fs from "fs";
+
 import CourseModel from "#root/models/course.model.js";
 import LessonModel from "#root/models/lesson.model.js";
-import CommonUtil from "#root/utils/common.util.js";
-import fs from "fs";
-import FileUtil from "#root/utils/file.util.js";
 import FileModel from "#root/models/file.model.js";
+import ViewUtil from "#root/utils/view.util.js";
+import CommonUtil from "#root/utils/common.util.js";
+import FileUtil from "#root/utils/file.util.js";
 import FilterUtil from "#root/utils/filter.util.js";
 
 export default {
@@ -13,6 +14,7 @@ export default {
         const newId = new mongoose.Types.ObjectId();
         const filter = FilterUtil.Course({
             filters: req.query,
+            user: res.locals.currentUser,
         });
         const courses = await CommonUtil.Pagination.get({
             query: req.query,

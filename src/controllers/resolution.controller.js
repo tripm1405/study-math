@@ -36,7 +36,12 @@ export default {
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/resolution.page.ejs`;
         res.render(view, ViewUtil.getOptions({
             data: {
-                resolutions: resolutions,
+                resolutions: {
+                    ...resolutions,
+                    models: resolutions?.models?.filter(resolution => {
+                        return String(resolution?.question?.createdBy) === String(res.locals.currentUser?._id);
+                    }),
+                },
             },
         }));
     },

@@ -3,8 +3,10 @@
         <h1 style="margin-bottom: 20px; color: #333;">Chi tiết khóa học</h1>
         <div style="text-align: right;">
             <% if (data?.course?._id) { %>
-                <button class="btn btn-primary" onclick="onCreateLesson('<%= data?.course?._id %>', '<%= data?.newId %>')">Tạo bài toán
-                </button>
+                <button
+                        class="btn btn-primary"
+                        onclick="onCreateLesson('<%= data?.course?._id %>', '<%= data?.newId %>')"
+                >Tạo bài học</button>
             <% } %>
         </div>
     </div>

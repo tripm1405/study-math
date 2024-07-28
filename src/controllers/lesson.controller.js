@@ -13,6 +13,7 @@ export default {
         const newId = new mongoose.Types.ObjectId();
         const filter = FilterUtil.Lesson({
             filters: req.query,
+            user: res.locals.currentUser,
         });
         const lessons = await CommonUtil.Pagination.get({
             query: req.query?.lessons,

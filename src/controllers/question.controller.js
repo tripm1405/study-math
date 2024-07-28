@@ -19,6 +19,7 @@ const controllers = {
         const newId = new mongoose.Types.ObjectId();
         const filter = FilterUtil.Question({
             filters: req.query,
+            user: res.locals.currentUser,
         });
         const questions = await CommonUtil.Pagination.get({
             query: req.query,
