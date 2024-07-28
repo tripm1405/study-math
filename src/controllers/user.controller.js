@@ -67,7 +67,14 @@ export default {
         }));
     },
     post: async (req, res) => {
-        const {code, username, password, fullName, email, type, classIds} = req.body;
+        const {
+            code,
+            username,
+            password,
+            fullName,
+            email,
+            type,
+        } = req.body;
 
         const passwordHash = await bcrypt.hash(password, AuthUtil.BCRYPT_SALT);
 
@@ -78,7 +85,6 @@ export default {
             fullName: fullName,
             email: email,
             type: type,
-            classIds: classIds,
             createdBy: res?.locals?.currentUser?._id,
         });
 
