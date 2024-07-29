@@ -93,7 +93,9 @@
                     <td><%= question?.code %></td>
                     <td><%= question?.name %></td>
                     <td>
-                        <button class="btn btn-danger btn-sm" onClick="deleteQuestion('<%= question._id %>')"></button>
+                        <button class="btn btn-danger btn-sm" onClick="deleteQuestion('<%= question._id %>')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </td>
                 </tr>
             <% } %>

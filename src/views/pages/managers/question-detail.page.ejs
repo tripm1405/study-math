@@ -10,8 +10,15 @@
         <% if (data?.question?._id) { %>
             <div class="mb-3">
                 <label for="code-input" class="form-label">Mã bài học</label>
-                <input name="code" id="code-input" class="form-control" type="text" value="<%= data?.question?.code %>"
-                       placeholder="Mã..."/>
+                <input
+                        name="code"
+                        id="code-input"
+                        class="form-control"
+                        type="text"
+                        value="<%= data?.question?.code %>"
+                        placeholder="Mã..."
+                        disabled
+                />
             </div>
         <% } %>
         <div class="mb-3">
@@ -57,8 +64,8 @@
     </div>
 
     <div class="w-full">
-        <div class="w-full d-flex gap-3" style="height: max-content;">
-            <div style="width: 400px; height: max-content;">
+        <div class="w-full d-flex row" style="height: max-content;">
+            <div class="col-8" style="height: max-content;">
                 <h3>Khối mặc định</h3>
                 <div class="w-full" style="height: 400px;">
                     <div id="blockly-workspace-default" style="height: 100%; width: 100%;"></div>
@@ -69,7 +76,7 @@
                 </div>
             </div>
 
-            <div>
+            <div class="col-4">
                 <div class="mb-1">
                     <button class="btn btn-sm btn-primary" onclick="onSubmit()">LƯU</button>
                 </div>
