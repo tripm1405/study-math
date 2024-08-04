@@ -44,7 +44,7 @@ export default {
                 continue;
             }
             const answer = answers.find(answer => {
-                return BlocklyUtil.compareContent({
+                return BlocklyUtil.compareSubstance({
                     content1: CommonUtil.jsonParse(answer?.content, {}),
                     content2: CommonUtil.jsonParse(resolution?.content, {}),
                 });

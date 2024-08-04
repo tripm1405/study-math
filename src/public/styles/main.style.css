@@ -206,3 +206,11 @@
 .k-table-pointer tbody tr {
   cursor: pointer;
 }
+
+.k-wrap {
+    padding: 8px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid #00000033;
+    border-radius: 8px;
+}

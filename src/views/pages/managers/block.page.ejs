@@ -4,8 +4,9 @@
 <div style="display: flex; justify-content: space-between;">
     <h1>Quản lí khối</h1>
     <div>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-modal">IMPORT</button>
-        <button class="btn btn-primary" onClick="onExport()">EXPORT</button>
+        <button class="btn btn-primary" onClick="upsert('<%= data?.newId %>')">Tạo mới</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-modal">Import</button>
+        <button class="btn btn-primary" onClick="onExport()">Export</button>
     </div>
 </div>
 <div class="my-2">
@@ -85,24 +86,27 @@
 
     async function del(id) {
         try {
-            await axios.delete(`/blocks/${id}`);
-            Toastify({
+            const res = await axios.delete(`/api/blocks/${id}`);
+
+            if (!res?.data?.success) {
+                showToastify({
+                    text: 'Xóa khối không thành công!',
+                    backgroundColor: '#ff6347',
+                });
+                return;
+            }
+
+            showToastify({
                 text: 'Xóa khối thành công!',
-                duration: 3000,
-                gravity: 'top',
-                position: 'right',
                 backgroundColor: '#4CAF50',
-            }).showToast();
-            location.reload();
+            });
+            window.location.reload();
         } catch (error) {
-            console.error('Delete Error:', error);
-            Toastify({
-                text: 'Đã xảy ra lỗi khi xóa khối. Vui lòng thử lại sau.',
-                duration: 3000,
-                gravity: 'top',
-                position: 'right',
+            console.error('Import Error:', error);
+            showToastify({
+                text: 'Đã xảy ra lỗi khi xóa khối. Vui lòng thử lại sau!',
                 backgroundColor: '#ff6347',
-            }).showToast();
+            });
         }
     }
 
@@ -114,34 +118,24 @@
             const res = await axios.post('/api/blocks/import', formData);
 
             if (!res?.data?.success) {
-                Toastify({
+                showToastify({
                     text: 'Import khối không thành công. Vui lòng thử lại.',
-                    duration: 3000,
-                    gravity: 'top',
-                    position: 'right',
                     backgroundColor: '#ff6347',
-                }).showToast();
+                });
                 return;
             }
 
-            Toastify({
+            showToastify({
                 text: 'Import khối thành công!',
-                duration: 3000,
-                gravity: 'top',
-                position: 'right',
                 backgroundColor: '#4CAF50',
-            }).showToast();
-
+            });
             window.location.reload();
         } catch (error) {
             console.error('Import Error:', error);
-            Toastify({
+            showToastify({
                 text: 'Đã xảy ra lỗi khi import khối. Vui lòng thử lại sau.',
-                duration: 3000,
-                gravity: 'top',
-                position: 'right',
                 backgroundColor: '#ff6347',
-            }).showToast();
+            });
         }
     }
 
@@ -154,5 +148,14 @@
         await K.exportJson({
             res: fileRes,
         });
+    }
+
+    function showToastify(props) {
+        Toastify({
+            duration: 3000,
+            gravity: 'top',
+            position: 'right',
+            ...props,
+        }).showToast()
     }
 </script>

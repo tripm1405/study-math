@@ -23,7 +23,12 @@ function preLog(req, res, next) {
             result.query = query;
         }
         if (Object.keys(files || {}).length > 0) {
-            result.files = files;
+            result.files = files.map(file => {
+                return {
+                    fieldname: file.fieldname,
+                    originalname: file.originalname,
+                }
+            });
         }
 
         console.log(`${method} ${url}`, result);

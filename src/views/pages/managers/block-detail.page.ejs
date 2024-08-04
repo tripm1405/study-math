@@ -1,31 +1,100 @@
-<style>
-    input[type="text"], input[type="number"], select {
-        width: 100%;
-        padding: 10px;
-        margin: 5px 0;
-        box-sizing: border-box;
-    }
-
-    .add-option-container {
-        align-items: center;
-    }
-
-    .add-option-container button {
-        margin-top: 10px;
-    }
-</style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-<div class="w-100 row">
-    <div class="h-100 col-8 border">
-        <div id="block" style="height: 100%; width: 100%;"></div>
-    </div>
-    <div class="col-4 d-flex flex-column gap-3">
+<div class="w-full h-full d-flex flex-column overflow-hidden">
+    <div class="d-flex justify-content-between">
+        <h1>Quản lí khối</h1>
         <div>
-            <div>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-modal">IMPORT</button>
-                <button class="btn btn-primary" onClick="onExport()">EXPORT</button>
+            <button class="btn btn-primary" onClick="onReview()">Xem</button>
+            <button class="btn btn-primary" onClick="onSubmit()">Lưu</button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-modal">Import</button>
+            <button class="btn btn-primary" onClick="onExport()">Export</button>
+        </div>
+    </div>
+    <div class="w-full h-full row flex-fill overflow-auto">
+        <div class="h-full border" style="flex: 1 1 50%; min-width: 400px;">
+            <div class="w-full h-full" id="block"></div>
+        </div>
+        <div class="h-full" style="flex: 1 1 50%; overflow-x: hidden; overflow-y: auto; min-width: 400px;">
+            <div class="k-block-background">
+                <div class="my-2">
+                    <label for="name" class="form-label">Tên</label>
+                    <input
+                            id="name"
+                            name="name"
+                            type="text"
+                            value="<%= data?.block?.name %>"
+                            placeholder="Tên..."
+                            class="form-control"
+                    />
+                </div>
+                <div class="my-2">
+                    <label for="color" class="form-label">Màu</label>
+                    <input
+                            id="color"
+                            name="color"
+                            type="text"
+                            value="<%= data?.block?.name %>"
+                            placeholder="Màu..."
+                            class="form-control"
+                    />
+                </div>
+                <div class="my-2">
+                    <label for="output" class="form-label">Đầu ra</label>
+                    <select name="output" id="output" class="form-control">
+                        <option value="Empty">Không có</option>
+                        <option value="Anything">Mọi thứ</option>
+                        <option value="Number">Số</option>
+                        <option value="String">Chuỗi</option>
+                    </select>
+                </div>
+                <div class="my-2">
+                    <label for="input" class="form-label">Đầu vào</label>
+                    <select name="input" id="input" class="form-control">
+                        <option value="Empty">Không có</option>
+                        <option value="Anything">Mọi thứ</option>
+                        <option value="Number">Số</option>
+                        <option value="String">Chuỗi</option>
+                    </select>
+                </div>
+                <div class="my-2">
+                    <label for="previous-statement" class="form-label">Đầu trước</label>
+                    <select name="previousStatement" id="previous-statement" class="form-control">
+                        <option value="Empty">Không có</option>
+                        <option value="Anything">Mọi thứ</option>
+                        <option value="Number">Số</option>
+                        <option value="String">Chuỗi</option>
+                    </select>
+                </div>
+                <div class="my-2">
+                    <label for="next-statement" class="form-label">Đầu sau</label>
+                    <select name="nextStatement" id="next-statement" class="form-control">
+                        <option value="Empty">Không có</option>
+                        <option value="Anything">Mọi thứ</option>
+                        <option value="Number">Số</option>
+                        <option value="String">Chuỗi</option>
+                    </select>
+                </div>
+                <div class="my-2">
+                    <label for="note" class="form-label">Ghi chú</label>
+                    <input
+                            id="note"
+                            name="note"
+                            type="text"
+                            value="<%= data?.block?.name %>"
+                            placeholder="Ghi chú..."
+                            class="form-control"
+                    />
+                </div>
+            </div>
+            <div class="k-block-content-wrap k-wrap" style="max-height: min(600px, 100%);">
+                <div class="k-block-content">
+                    <div class="k-block-content-messages">
+                    </div>
+                    <div>
+                        <button class="k-block-field-add btn btn-primary" onclick="onAddMessage(event)">Thêm dòng</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -61,43 +130,157 @@
 
 <input name="id" type="hidden" value="<%= data?.block?._id %>"/>
 
+<div class="k-clone k-clone-block-detail">
+    <div class="k-block-content-message k-wrap my-2" style="max-height: min(600px, 100%);">
+        <div class="d-flex justify-content-between">
+            <div></div>
+            <div>
+                <i
+                        class="fas fa-trash-alt"
+                        style="color: #ff0000; cursor: pointer;"
+                        onclick="event.target.closest('.k-block-content-message').remove()"
+                ></i>
+            </div>
+        </div>
+        <div class="k-block-content-args" style="max-height: min(600px, 100%);">
+        </div>
+        <div>
+            <button class="k-block-field-add btn btn-primary" onclick="onAddArg(event)">Thêm biến</button>
+        </div>
+    </div>
+    <div class="k-block-content-arg k-wrap my-2">
+        <div class="d-flex justify-content-between">
+            <div></div>
+            <div>
+                <i
+                        class="fas fa-trash-alt"
+                        style="color: #ff0000; cursor: pointer;"
+                        onclick="event.target.closest('.k-block-content-arg').remove()"
+                ></i>
+            </div>
+        </div>
+        <div class="my-2">
+            <select name="type" class="form-control">
+                <option value="field_label">Đoạn văn</option>
+                <option value="field_image">Hình ảnh</option>
+                <option value="field_checkbox">Checkbox</option>
+                <option value="field_number">Nhập số</option>
+                <option value="field_input">Nhập chữ</option>
+                <option value="field_dropdown">Bộ chọn</option>
+            </select>
+        </div>
+        <div class="k-block-content-arg-properties"></div>
+    </div>
+    <div class="k-block-content-arg-properties-type-label">
+        <div class="my-2">
+            <input
+                    name="name"
+                    type="text"
+                    placeholder="Tên..."
+                    class="form-control"
+            />
+        </div>
+        <div class="my-2">
+            <input
+                    name="text"
+                    type="text"
+                    placeholder="Chuỗi..."
+                    class="form-control"
+            />
+        </div>
+    </div>
+    <div class="k-block-content-arg-properties-type-image">
+        <div class="my-2">
+            <input
+                    name="name"
+                    type="text"
+                    placeholder="Tên..."
+                    class="form-control"
+            />
+        </div>
+        <div class="my-2">
+            <input
+                    name="image"
+                    type="file"
+                    placeholder="Hình ảnh..."
+                    class="form-control"
+            />
+        </div>
+    </div>
+    <div class="k-block-content-arg-properties-type-checkbox">
+        <div class="my-2">
+            <input
+                    name="name"
+                    type="text"
+                    placeholder="Tên..."
+                    class="form-control"
+            />
+        </div>
+    </div>
+    <div class="k-block-content-arg-properties-type-number">
+        <div class="my-2">
+            <input
+                    name="name"
+                    type="text"
+                    placeholder="Tên..."
+                    class="form-control"
+            />
+        </div>
+    </div>
+    <div class="k-block-content-arg-properties-type-input">
+        <div class="my-2">
+            <input
+                    name="name"
+                    type="text"
+                    placeholder="Tên..."
+                    class="form-control"
+            />
+        </div>
+    </div>
+    <div class="k-block-content-arg-properties-type-dropdown">
+        <div class="my-2">
+            <input
+                    name="name"
+                    type="text"
+                    placeholder="Tên..."
+                    class="form-control"
+            />
+        </div>
+        <div class="k-block-dropdown-options-wrap k-wrap" style="max-height: 200px;">
+            <div class="k-block-dropdown-options"></div>
+            <div>
+                <button class="btn btn-primary" onclick="onAddOption(event)">Thêm lựa chọn</button>
+            </div>
+        </div>
+    </div>
+    <div class="k-block-dropdown-option k-wrap my-2">
+        <div class="d-flex justify-content-between">
+            <div></div>
+            <div>
+                <i
+                        class="fas fa-trash-alt"
+                        style="color: #ff0000; cursor: pointer;"
+                        onclick="event.target.closest('.k-block-dropdown-option').remove()"
+                ></i>
+            </div>
+        </div>
+        <div class="my-2">
+            <div class="my-2">
+                <input
+                        name="label"
+                        type="text"
+                        placeholder="Tên..."
+                        class="form-control"
+                />
+            </div>
+            <input
+                    name="value"
+                    type="text"
+                    placeholder="Mã..."
+                    class="form-control"
+            />
+        </div>
+    </div>
+</div>
+
 <script src="/scripts/managers/block-detail.script.js"></script>
-<script>
-    async function onImport(event) {
-        event.preventDefault();
-
-        const id = document.querySelector('input[name="id"]')?.value;
-
-        const formData = new FormData(event.target);
-
-        try {
-            const res = await axios.post(`/api/blocks/${id}/import`, formData);
-            if (res.data.success) {
-                Toastify({
-                    text: 'Import khối thành công!',
-                    duration: 3000,
-                    gravity: 'top',
-                    position: 'right',
-                    backgroundColor: '#4CAF50',
-                }).showToast();
-                // Cập nhật giao diện hoặc thực hiện hành động cần thiết khi import thành công
-            } else {
-                throw new Error('Import không thành công. Vui lòng thử lại.');
-            }
-        } catch (error) {
-            console.error('Import Error:', error);
-            Toastify({
-                text: 'Đã xảy ra lỗi khi import khối. Vui lòng thử lại sau.',
-                duration: 3000,
-                gravity: 'top',
-                position: 'right',
-                backgroundColor: '#ff6347',
-            }).showToast();
-        }
-
-        // Đóng modal import sau khi xử lý xong
-        const importModal = document.getElementById('import-modal');
-        const modal = bootstrap.Modal.getInstance(importModal);
-        modal.hide();
-    }
-</script>

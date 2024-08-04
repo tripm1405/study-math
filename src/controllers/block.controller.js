@@ -2,9 +2,12 @@ import ViewUtil from "#root/utils/view.util.js";
 import BlockModel from "#root/models/block.model.js";
 import CommonUtil from "#root/utils/common.util.js";
 import FilterUtil from "#root/utils/filter.util.js";
+import mongoose from "mongoose";
+import BlocklyUtil from "#root/utils/blockly.util.js";
 
 export default {
     get: async (req, res) => {
+        const newId = new mongoose.Types.ObjectId();
         const filter = FilterUtil.Block({
             filters: req.query,
         });
@@ -19,10 +22,12 @@ export default {
             },
         });
 
-        res.render('pages/managers/block.page.ejs', ViewUtil.getOptions({
+        const view = 'pages/managers/block.page.ejs'
+        res.render(view, ViewUtil.getOptions({
             data: {
                 blocks: blocks,
                 filters: req.query,
+                newId: newId,
             },
         }));
     },
@@ -34,28 +39,14 @@ export default {
             id: id,
         });
 
-        const block = await BlockModel.findById(id);
-
-        const blockContent = (() => {
-            try {
-                return JSON.parse(block?.content);
-            } catch {
-                return {
-                    args0: [
-                        {
-                            type: 'field_label',
-                            text: 'Text',
-                        },
-                    ],
-                };
-            }
-        })();
-
-        const argss = Object.keys(blockContent).filter(e => e.includes('args')).map((e, i) => {
-            return blockContent[`args${i}`];
+        const block = await BlockModel.findById(id).lean();
+        const blockSubstance = CommonUtil.jsonParse(block?.substance, BlocklyUtil.Default.Substance);
+        const argss = Object.keys(blockSubstance).filter(e => e.includes('args')).map((e, i) => {
+            return blockSubstance[`args${i}`];
         });
 
-        res.render('pages/managers/block-detail.page.ejs', ViewUtil.getOptions({
+        const view = 'pages/managers/block-detail.page.ejs';
+        res.render(view, ViewUtil.getOptions({
             data: {
                 block: block,
                 argss: argss,
@@ -94,17 +85,6 @@ export default {
             result: {
                 success: true,
                 block: block,
-            },
-        });
-    },
-    delete: async (req, res) => {
-        const {id} = req?.params;
-
-        await BlockModel.findByIdAndDelete(id);
-
-        res.json({
-            result: {
-                success: true,
             },
         });
     },

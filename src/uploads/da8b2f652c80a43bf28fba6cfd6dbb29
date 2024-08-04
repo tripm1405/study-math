@@ -1,0 +1,22 @@
+{
+	"message0": "%1",
+	"args0": [
+		{
+			"options": [
+				[
+					"a",
+					"1"
+				],
+				[
+					"b",
+					"2"
+				]
+			],
+			"type": "field_dropdown",
+			"name": ""
+		}
+	],
+	"_id": "66adc3adb29013688b2b861d",
+	"name": "Test",
+	"color": "Test"
+}

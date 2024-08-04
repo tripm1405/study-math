@@ -143,7 +143,7 @@ function onUpsertBlock(id) {
 }
 
 async function onDelBlock(id) {
-    await axios.delete(`/blocks/${id}`);
+    await axios.delete(`/api/blocks/${id}`);
     await loadToolbox({hasLoadBlocks: true});
 }
 
