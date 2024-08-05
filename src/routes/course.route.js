@@ -7,7 +7,7 @@ const Router = express.Router();
 Router.get('/:id', CommonUtil.wrapperController(courseController.getDetail));
 Router.put('/:id', CommonUtil.wrapperController(courseController.put));
 Router.delete('/:id', CommonUtil.wrapperController(courseController.delete));
-Router.get('/', CommonUtil.wrapperController(courseController.get));
+Router.get('/', CommonUtil.wrapperController(courseController.getList));
 Router.post('/', CommonUtil.wrapperController(courseController.post));
 
 export default Router;

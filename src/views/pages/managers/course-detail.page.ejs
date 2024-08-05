@@ -68,25 +68,22 @@
                 <th>Mã bài học</th>
                 <th>Tên bài học</th>
                 <th>Giáo viên</th>
-                <th>Thời gian tạo</th>
-                <th>Thời gian kết thúc</th>
-                <th>Số người đã tham gia</th>
+                <th style="width: 160px;">Thời gian tạo</th>
                 <th style="width: 50px;"></th>
             </tr>
             </thead>
             <tbody>
-            <% let stt = 1; %>
             <% for (const lesson of (data?.lessons?.models || [])) { %>
                 <tr onClick="upsertLesson('<%= lesson._id %>')">
-                    <td><%= stt++ %></td>
-                    <td><%= lesson?.code %></td>
-                    <td><%= lesson?.name %></td>
-                    <td><%= lesson?.createdBy?.fullName %></td>
-                    <td><%= lesson.createdAt.getFullYear() + '-' + String(lesson.createdAt.getMonth() + 1).padStart(2, '0') + '-' + String(lesson.createdAt.getDate()).padStart(2, '0') + ' ' + String(lesson.createdAt.getHours()).padStart(2, '0') + ':' + String(lesson.createdAt.getMinutes()).padStart(2, '0') %></td>
-                    <td><%= lesson?.endAt %></td>
-                    <td><%= lesson?.participants %></td>
+                    <td style="text-align: right;"><%= lesson.index %></td>
+                    <td><%= lesson.code %></td>
+                    <td><%= lesson.name %></td>
+                    <td><%= lesson.createdBy?.fullName %></td>
+                    <td style="text-align: center;">
+                        <%- include(partialPath + '/datetime.partial.ejs', { datetime: lesson?.createdAt, }) %>
+                    </td>
                     <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
-                        <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= lesson._id %>')"><i
+                        <button class="btn btn-danger btn-sm" onclick="deleteLesson('<%= lesson._id %>')"><i
                                     class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>

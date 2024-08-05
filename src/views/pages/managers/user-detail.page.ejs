@@ -1,7 +1,7 @@
 <div class="w-full">
     <h1 style="margin-bottom: 20px; color: #333;">Chi tiết tài khoản</h1>
     <form onsubmit="onSubmit(event)">
-        <% if (!data?.user?._id) { %>
+        <% if (data?.user?._id) { %>
             <div class="mb-3">
                 <label for="code" class="form-label">Mã tài khoản</label>
                 <input
@@ -9,7 +9,7 @@
                         name="code"
                         type="text"
                         value="<%= data?.user?.code %>"
-                        placeholder="Code..."
+                        placeholder="Mã..."
                         <%= data?.user?.code && 'disabled' %>
                         class="form-control"
                 />
@@ -22,23 +22,23 @@
                     name="username"
                     type="text"
                     value="<%= data?.user?.username %>"
-                    placeholder="Username..."
+                    placeholder="Tài khoản..."
                     <%= data?.user?.username && 'disabled' %>
                     class="form-control"
             />
         </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Mật khẩu</label>
-            <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    value="<%= data?.user?.password %>"
-                    placeholder="Password..."
-                    <%= data?.user?.password && 'disabled' %>
-                    class="form-control"
-            />
-        </div>
+        <% if (!data?.user?._id) { %>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Mật khẩu..."
+                        class="form-control"
+                />
+            </div>
+        <% } %>
         <div class="mb-3">
             <label for="fullName" class="form-label">Họ và tên</label>
             <input
@@ -121,29 +121,29 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
-  async function onSubmit(event) {
-    event.preventDefault();
+    async function onSubmit(event) {
+        event.preventDefault();
 
-    const id = document.querySelector('input[name="id"]')?.value;
-    const formData = new FormData(event.target);
+        const id = document.querySelector('input[name="id"]')?.value;
+        const formData = new FormData(event.target);
 
-    try {
-      if (id) {
-        await axios.put(`/users/${id}`, formData, {
-          headers: {'Content-Type': 'multipart/form-data'}
-        });
-      } else {
-        await axios.post('/users', formData, {
-          headers: {'Content-Type': 'multipart/form-data'}
-        });
-      }
-      window.location.href = '/users';
-    } catch (error) {
-      console.error('There was an error!', error);
+        try {
+            if (id) {
+                await axios.put(`/users/${id}`, formData, {
+                    headers: {'Content-Type': 'multipart/form-data'}
+                });
+            } else {
+                await axios.post('/users', formData, {
+                    headers: {'Content-Type': 'multipart/form-data'}
+                });
+            }
+            window.location.href = '/users';
+        } catch (error) {
+            console.error('There was an error!', error);
+        }
     }
-  }
 
-  function upsert(classId) {
-    window.location.href = `/classes/${classId}`;
-  }
+    function upsert(classId) {
+        window.location.href = `/classes/${classId}`;
+    }
 </script>

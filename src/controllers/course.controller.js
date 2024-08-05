@@ -12,14 +12,14 @@ import ModelUtil from "#root/utils/model.util.js";
 import ModelNameConstant from "#root/models/model-name.constant.js";
 
 export default {
-    get: async (req, res) => {
+    getList: async (req, res) => {
         const newId = new mongoose.Types.ObjectId();
         const filter = FilterUtil.Course({
             filters: req.query,
             user: res.locals.currentUser,
         });
         const courses = await CommonUtil.Pagination.get({
-            query: req.query,
+            query: req.query.courses,
             Model: CourseModel,
             filter: {
                 $and: [
@@ -138,7 +138,8 @@ export default {
                 success: true, course: newUser,
             },
         });
-    }, delete: async (req, res) => {
+    },
+    delete: async (req, res) => {
         const {id} = req?.params;
 
         await CourseModel.findByIdAndDelete(id);

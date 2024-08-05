@@ -2,9 +2,7 @@ import mongoose from "mongoose";
 import ViewUtil from "#root/utils/view.util.js";
 import LessonModel from "#root/models/lesson.model.js";
 import CourseModel from "#root/models/course.model.js";
-import AuthUtil from "#root/utils/auth.util.js";
 import CommonUtil from "#root/utils/common.util.js";
-import ClassModel from "#root/models/class.model.js";
 import QuestionModel from "#root/models/question.model.js";
 import FilterUtil from "#root/utils/filter.util.js";
 import ModelUtil from "#root/utils/model.util.js";
@@ -54,7 +52,9 @@ export default {
             .populate('createdBy')
             .lean();
 
-        const courses = await CourseModel.find({}) || [];
+        const courses = await CourseModel.find(FilterUtil.Course({
+            user: res.locals.currentUser,
+        })).lean();
         const questions = await CommonUtil.Pagination.get({
             query: req.query.questions,
             Model: QuestionModel,

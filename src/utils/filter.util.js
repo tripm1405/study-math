@@ -1,4 +1,4 @@
-import {Type as UserType} from "#root/models/user.model.js";
+import UserModel, {Type as UserType} from "#root/models/user.model.js";
 import mongoose from "mongoose";
 import AuthUtil from "#root/utils/auth.util.js";
 
@@ -20,7 +20,18 @@ export default class FilterUtil {
             }
         };
 
-        const filter = filters;
+        const schemaKeys = Object.keys(UserModel.schema.paths);
+        const filter = Object.keys(filters).reduce((result, key) => {
+            if (schemaKeys.find(userKey => userKey === key)) {
+                return {
+                    ...result,
+                    [key]: filters[key],
+                }
+            }
+
+            return result
+        },{});
+
         if (user?.type !== UserType.ADMIN) {
             if (user?.type === UserType.TEACHER) {
                 if (!filter.type) {

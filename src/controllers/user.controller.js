@@ -30,7 +30,8 @@ export default {
 
         const newId = new mongoose.Types.ObjectId();
 
-        res.render('pages/managers/user.page.ejs', ViewUtil.getOptions({
+        const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/user.page.ejs`;
+        res.render(view, ViewUtil.getOptions({
             data: {
                 filters: req.query,
                 users: users,

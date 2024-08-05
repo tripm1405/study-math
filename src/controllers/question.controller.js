@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 import ViewUtil from "#root/utils/view.util.js";
 import QuestionModel from "#root/models/question.model.js";
 import AuthUtil from "#root/utils/auth.util.js";
@@ -8,7 +9,6 @@ import ResolutionModel from "#root/models/resolution.model.js";
 import AnswerModel from "#root/models/answer.model.js";
 import UserModel from "#root/models/user.model.js";
 import CommonUtil from "#root/utils/common.util.js";
-import CourseModel from "#root/models/course.model.js";
 import NotificationModel, {Status, Type} from "#root/models/notification.model.js";
 import NotificationService from "#root/services/notification.service.js";
 import FilterUtil from "#root/utils/filter.util.js";
@@ -64,8 +64,10 @@ const controllers = {
         const question = await QuestionModel
             .findById(id)
             .populate('createdBy')
-            .lean() || {};
-        const lessons = await LessonModel.find({});
+            .lean();
+        const lessons = await LessonModel.find(FilterUtil.Lesson({
+            user: res.locals.currentUser,
+        }));
         const blocks = await BlockModel.find({
             question: new mongoose.Types.ObjectId(id),
         });

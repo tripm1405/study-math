@@ -63,7 +63,6 @@
                     <th>Mã tài khoản</th>
                     <th>Họ tên</th>
                     <th>Email</th>
-                    <th style="width: 50px;"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,10 +72,6 @@
                             <td><%= user.code %></td>
                             <td><%= user.fullName %></td>
                             <td><%= user.email %></td>
-                            <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
-                                <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
-                                            class="fas fa-trash-alt"></i></button>
-                            </td>
                         </tr>
                     <% } %>
                 </tbody>
