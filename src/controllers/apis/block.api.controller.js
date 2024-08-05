@@ -1,13 +1,10 @@
-import fs from 'fs';
 import mongoose from "mongoose";
 
 import BlockModel from "#root/models/block.model.js";
 import ApiUtil from "#root/utils/api.util.js";
 import BlocklyUtil from "#root/utils/blockly.util.js";
 import CommonUtil from "#root/utils/common.util.js";
-import {rootPath} from "#root/public/index.js";
-import FileModel from "#root/models/file.model.js";
-import FileService from "#root/services/file.service.js";
+import FileService, {Destination} from "#root/services/file.service.js";
 
 const controller = {
     getList: async (req, res) => {
@@ -71,6 +68,11 @@ const controller = {
         const {
             block,
         } = req.body;
+        
+        const images = await FileService.create({
+            files: req.files?.filter(file => file.fieldname === 'images'),
+            destination: Destination.BLOCKLY,
+        });
 
         await BlockModel.findByIdAndUpdate(id, {
             ...BlocklyUtil.Format.encode({
@@ -78,6 +80,7 @@ const controller = {
                     obj: block,
                     properties: ['_id', 'type', 'question', 'createdBy', 'createdAt'],
                 }),
+                images: images,
             }),
         });
 

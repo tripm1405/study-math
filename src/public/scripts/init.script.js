@@ -12,6 +12,22 @@ class K {
         formData.set(keyCurrent, valueCurrent);
     }
 
+    static objToFormData = (obj, formData = new FormData(), namespace) => {
+        for(const property in obj) {
+            if(obj.hasOwnProperty(property)) {
+                const formKey = namespace ? `${namespace}[${property}]` : property;
+
+                if(typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
+                    K.objToFormData(obj[property], formData, formKey);
+                } else {
+                    formData.append(formKey, obj[property]);
+                }
+            }
+        }
+
+        return formData;
+    }
+
     static async exportJson(props) {
         const {
             res,

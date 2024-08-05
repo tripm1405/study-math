@@ -7,10 +7,6 @@ export default class FileUtil {
     static Image = `/images`;
   }
 
-  static RootPaths = class {
-    static Blockly = `${process.env.host || 'http://localhost:5500/'}blockly`;
-  }
-
   static Keys = class {
     static FieldName = 'fieldname';
     static OriginalName = 'originalname';

@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 import ModelNameConstant from "#root/models/model-name.constant.js";
 
+const ConnectSpecifyType = {
+    Action: 'Action',
+    Number: 'Number',
+    String: 'String',
+    AnyThing: 'Anything',
+    Empty: 'Empty',
+}
+
 const schema = new mongoose.Schema({
     name: {
         type: String,
@@ -9,17 +17,24 @@ const schema = new mongoose.Schema({
         type: String,
         unique: true,
     },
-    output: {
-        type: String, // ['Number']
-    },
     color: {
         type: String,
     },
+    input: {
+        type: String,
+        default: ConnectSpecifyType.Empty,
+    },
+    output: {
+        type: String,
+        default: ConnectSpecifyType.Empty,
+    },
     previousStatement: {
-        type: String, // ['Action']
+        type: String,
+        default: ConnectSpecifyType.Empty,
     },
     nextStatement: {
         type: String, // ['Account']
+        default: ConnectSpecifyType.Empty,
     },
     // {
     //   [`message${Number}`]: String,

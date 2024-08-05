@@ -6,9 +6,14 @@ const workspace = Blockly.inject(document.getElementById('block'));
     const blockRes = await axios.get(`/api/blocks/${id || 'default'}`);
     const block = blockRes?.data?.result?.block;
 
+    [...document.querySelector('.k-block-background').querySelectorAll('[name]')]
+        .forEach(node => {
+            if (block[node.name]) {
+                node.value = block[node.name];
+            }
+        });
     const messagesNode = document.querySelector('.k-block-content')
         .querySelector('.k-block-content-messages');
-
     const argss = Object.keys(block).filter(key => key.includes('args')).map(key => block[key]);
     for (const args of argss) {
         const messageNode = genMessageNode({
@@ -18,28 +23,37 @@ const workspace = Blockly.inject(document.getElementById('block'));
     }
 
     loadBlockWorkspace({
-        block: block,
+        block: Object.keys(block).reduce((result, key) => {
+            return {
+                ...result,
+                [key]: getBlockPropertyValue({
+                    key: key,
+                    value: block[key],
+                }),
+            }
+        }, {}),
     });
 })();
 
 function onReview() {
+    const {block} = getBlock({type: 'REVIEW',});
     loadBlockWorkspace({
-        block: getBlock(),
+        block: block,
     })
 }
 
 async function onSubmit() {
     const id = document.querySelector('input[name="id"]').value;
-    const block = getBlock();
+    const {block, images} = getBlock({type: 'SUBMIT'});
+    const formData = K.objToFormData({block: block});
+    for (const image of images) {
+        formData.append('images', image);
+    }
 
     try {
         const res = await (id
-            ? axios.put(`/api/blocks/${id}`, {
-                block: block,
-            })
-            : axios.post('/api/blocks', {
-                block: block,
-            }));
+            ? axios.put(`/api/blocks/${id}`, formData)
+            : axios.post('/api/blocks', formData));
         if (!res?.data?.success) {
             showToastify({
                 text: 'Không thành công!',
@@ -169,7 +183,9 @@ function genMessageNode(props) {
     const {
         args
     } = {
-        args: [],
+        args: [{
+            type: 'field_label'
+        }],
         ...props,
     };
 
@@ -233,6 +249,7 @@ function genPropertiesNode(props) {
         type,
         values,
     } = {
+        type: 'field_label',
         values: {},
         ...props,
     };
@@ -242,6 +259,24 @@ function genPropertiesNode(props) {
     switch (type) {
         case "field_image": {
             const node = cloneNode.querySelector('.k-block-content-arg-properties-type-image').cloneNode(true);
+
+            for (const key of Object.keys(values)) {
+                if (values[key]) {
+                    node.querySelector(`[name="${key}"]`).value = values[key];
+                }
+            }
+
+            node.querySelector('[name="imageName"]')?.addEventListener('click', () => {
+                node.querySelector('[name="image"]')?.click();
+            })
+            node.querySelector('[name="image"]')?.addEventListener('change', (event) => {
+               const file = event.target?.files[0];
+               if (file) {
+                   node.querySelector('[name="imageName"]').value = file.name;
+                   node.querySelector('[name="src"]').value = URL.createObjectURL(file);
+               }
+            });
+
             return node;
         }
         case "field_checkbox": {
@@ -280,7 +315,10 @@ function genPropertiesNode(props) {
         case "field_dropdown": {
             const node = cloneNode.querySelector('.k-block-content-arg-properties-type-dropdown').cloneNode(true);
 
-            values.options?.forEach(option => {
+            (values.options || [{
+                label: '',
+                value: '',
+            }])?.forEach(option => {
                 const optionNode = genBlockDropdownOptionNode({
                     values: {
                         label: option[1],
@@ -324,7 +362,8 @@ function genBlockDropdownOptionNode(props) {
     return node;
 }
 
-function getBlockPropertyValue(key, value) {
+function getBlockPropertyValue(props) {
+    const {key, value,} = props;
     switch (key) {
         case 'output':
         case 'input':
@@ -347,13 +386,24 @@ function convertBlockConnection(connection) {
     }
 }
 
-function getBlock() {
+function getBlock(props) {
+    const {type: getType} = {
+        type: 'REVIEW',
+        ...props,
+    };
+
+    const images = [];
     const blockBackgroundNode = document.querySelector('.k-block-background');
     const layout = [...blockBackgroundNode.querySelectorAll('[name]')]
         .reduce((result, current) => {
             return {
                 ...result,
-                [current.name]: getBlockPropertyValue(current.name, current.value),
+                [current.name]: getType === 'REVIEW'
+                    ? getBlockPropertyValue({
+                        key: current.name,
+                        value: current.value,
+                    })
+                    : current.value,
             }
         }, {});
 
@@ -388,6 +438,40 @@ function getBlock() {
                                 options: options,
                             });
                         }
+                        case 'field_image': {
+                            const hasNameNodes = [...argNode.querySelectorAll('[name]:not(.k-block-dropdown-options [name])')];
+                            const arg = hasNameNodes.reduce((result, current) => {
+                                if (current.name === 'image') {
+                                    return result;
+                                }
+
+                                return {
+                                    ...result,
+                                    [current.name]: current.value,
+                                }
+                            }, {});
+
+                            const imageName = (() => {
+                                const imageInput = argNode.querySelector('[name="image"]');
+                                const image = imageInput.files[0];
+                                if (!image) {
+                                    return undefined;
+                                }
+
+                                if (getType === 'REVIEW') {
+                                    return URL.createObjectURL(image);
+                                }
+
+                                images.push(image);
+                                return image.name;
+                            })();
+                            if (imageName) {
+                                arg.src = imageName;
+                                arg.imageName = imageName;
+                            }
+
+                            return arg;
+                        }
                         default: {
                             const hasNameNodes = [...argNode.querySelectorAll('[name]')];
                             return hasNameNodes.reduce((result, current) => {
@@ -413,8 +497,13 @@ function getBlock() {
             }
         }, {});
 
-    return {
+    const block = {
         ...layout,
         ...substance,
+    };
+
+    return {
+        block: block,
+        images: images,
     };
 }

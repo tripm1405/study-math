@@ -54,11 +54,9 @@ export default class BlocklyUtil {
                                 return arg;
                             }
 
-                            console.log('images', images);
-
                             return {
                                 ...arg,
-                                src: images?.find(image => image.displayName === arg.src)?.physicalName,
+                                imageName: images?.find(image => image.displayName === arg.src)?.physicalName || arg.imageName,
                             };
                         })
                         : block[key];
@@ -77,10 +75,29 @@ export default class BlocklyUtil {
                 ...layout
             } = structuredClone(block);
 
+            const argsRegex = new RegExp(/args/);
+            const substanceFormat = Object.keys(substance).reduce((result, key) => {
+                const value = !argsRegex.test(key)
+                    ? substance[key]
+                    : substance[key]?.map(arg => {
+                        const argFormat = structuredClone(arg);
+
+                        if (arg.type === BlocklyUtil.ArgType.FieldImage) {
+                            argFormat.src = `${process.env.host || 'http://localhost:5500/'}blockly/${argFormat.imageName}`;
+                        }
+
+                        return argFormat;
+                    });
+
+                return {
+                    ...result,
+                    [key]: value,
+                }
+            }, {})
             return {
-                ...substance,
+                ...substanceFormat,
                 ...layout
-            }
+            };
         }
     }
 

@@ -1,9 +1,14 @@
 import path from 'path';
 import mongoose from "mongoose";
 
-import FileModel from "#root/models/file.model.js";
 import {rootPath as publicPath} from "#root/public/index.js";
+import FileModel from "#root/models/file.model.js";
 import fs from "fs";
+
+export const Destination = class {
+    static PUBLIC = publicPath;
+    static BLOCKLY = `${publicPath}/blockly`
+};
 
 export default class FileService {
     static read = (props) => {
@@ -25,30 +30,33 @@ export default class FileService {
     }
 
     static create = async (props) => {
-        const {files} = props;
+        const {files, destination} = {
+            destination: Destination.PUBLIC,
+            ...props
+        };
 
         const fileFormats = files.map(file => {
             const id = new mongoose.Types.ObjectId();
 
             const extend = path.extname(file.originalname);
-            const physicalName = `${id}.${extend}`;
+            const physicalName = `${id}${extend}`;
 
             return {
                 oldPath: file.path,
                 displayName: file.originalname,
                 physicalName: physicalName,
-                destination: publicPath,
-                path: `${publicPath}/${physicalName}`,
+                destination: destination,
+                path: `${destination}/${physicalName}`,
             }
         });
 
-        for (const file of files) {
+        for (const file of fileFormats) {
             fs.rename(file?.oldPath, file.path, () => {
             });
         }
 
-        await FileModel.create(fileFormats)
+        const result = await FileModel.create(fileFormats);
 
-        return true;
+        return result;
     }
 }

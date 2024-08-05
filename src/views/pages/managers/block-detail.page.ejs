@@ -23,7 +23,6 @@
                             id="name"
                             name="name"
                             type="text"
-                            value="<%= data?.block?.name %>"
                             placeholder="Tên..."
                             class="form-control"
                     />
@@ -34,7 +33,6 @@
                             id="color"
                             name="color"
                             type="text"
-                            value="<%= data?.block?.name %>"
                             placeholder="Màu..."
                             class="form-control"
                     />
@@ -81,7 +79,6 @@
                             id="note"
                             name="note"
                             type="text"
-                            value="<%= data?.block?.name %>"
                             placeholder="Ghi chú..."
                             class="form-control"
                     />
@@ -200,11 +197,32 @@
         </div>
         <div class="my-2">
             <input
-                    name="image"
-                    type="file"
-                    placeholder="Hình ảnh..."
+                    name="width"
+                    type="number"
+                    value="100"
+                    placeholder="Tên..."
                     class="form-control"
             />
+        </div>
+        <div class="my-2">
+            <input
+                    name="height"
+                    type="number"
+                    value="100"
+                    placeholder="Tên..."
+                    class="form-control"
+            />
+        </div>
+        <div class="my-2">
+            <input
+                    name="imageName"
+                    type="button"
+                    value="Hình ảnh..."
+                    class="form-control"
+                    style="text-align: left;"
+            />
+            <input name="src" type="text" style="display: none;" />
+            <input name="image" type="file" style="display: none;" />
         </div>
     </div>
     <div class="k-block-content-arg-properties-type-checkbox">
