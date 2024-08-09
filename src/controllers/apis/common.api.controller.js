@@ -4,6 +4,7 @@ import DatetimeUtil from "#root/utils/datetime.util.js";
 import ResolutionModel from "#root/models/resolution.model.js";
 import UserModel, {Type as UserType} from "#root/models/user.model.js";
 import QuestionModel from "#root/models/question.model.js";
+import mongoose from "mongoose";
 
 export default {
     getConstants: async (req, res) => {
@@ -79,8 +80,8 @@ export default {
                 })
                 .reduce((result, current) => {
                     return result?.value > current?.value ? result : current;
-                }, undefined).key;
-            return QuestionModel.findById(questionId);
+                }, undefined)?.key;
+            return questionId && await QuestionModel.findById(new mongoose.Types.ObjectId(questionId));
         })();
 
         res.json(ApiUtil.JsonRes({

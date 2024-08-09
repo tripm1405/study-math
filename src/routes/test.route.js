@@ -13,8 +13,6 @@ Router.get('/', async (req, res) => {
         modelName: ModelNameConstant.USER,
     });
 
-    console.log('test', test);
-
     res.json({
         test: test,
     })

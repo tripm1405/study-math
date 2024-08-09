@@ -10,6 +10,7 @@ import AuthUtil from "#root/utils/auth.util.js";
 import ResolutionModel from "#root/models/resolution.model.js";
 import CommonUtil from "#root/utils/common.util.js";
 import DatetimeUtil from "#root/utils/datetime.util.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -241,8 +242,8 @@ const commonController = {
                 })
                 .reduce((result, current) => {
                     return result?.value > current?.value ? result : current;
-                }, undefined).key;
-            return await QuestionModel.findById(questionId);
+                }, undefined)?.key;
+            return questionId && await QuestionModel.findById(new mongoose.Types.ObjectId(questionId));
         })();
 
         res.render('pages/statistics.page.ejs', ViewUtil.getOptions({
