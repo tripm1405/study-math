@@ -1,123 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <style>
-        .user-profile {
-            margin: 0 auto;
-            padding: 20px;
-            max-width: 600px;
-        }
-        .user-profile h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center; 
-        }
-        .user-profile .field {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 5px 0;
-        }
-        .user-profile .field label {
-            flex: 0 0 150px;
-            font-weight: bold;
-        }
-        .user-profile .field input, 
-        .user-profile .field select {
-            flex: 1;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            transition: border-color 0.3s;
-        }
-        .user-profile .field input:focus, 
-        .user-profile .field select:focus {
-            border-color: #007bff;
-        }
-        .avatar-container {
-            position: relative;
-            text-align: center;
-        }
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px; 
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .user-profile .button-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
-        .user-profile button {
-            padding: 5px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .user-profile button:hover {
-            background-color: #0056b3;
-        }
-        .user-profile .file-input-container {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            border-radius: 20%;
-            padding: 0px 5px;
-            cursor: pointer;
-        }
-        .user-profile .file-input {
-            display: none;
-        }
-        .user-profile .file-input-label {
-            color: aquamarine;
-            font-size: 16px;
-        }
-        .ui-datepicker {
-            font-size: 0.9em; 
-        }
-    </style>
-</head>
-<body>
-    <div class="user-profile">
-        <h1>Thông tin cá nhân</h1>
-        <div class="avatar-container">
-            <img class="avatar" src="./images/avt.jpeg" alt="Avatar">
-            <div class="file-input-container">
-                <input type="file" id="fileInput" class="file-input" accept="image/*" />
-                <label for="fileInput" class="file-input-label"><i class="fas fa-edit"></i></label>
-            </div>
+<style>
+    .user-profile {
+        margin: 0 auto;
+        padding: 20px;
+        max-width: 600px;
+    }
+    .user-profile h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .user-profile .field {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 5px 0;
+    }
+    .user-profile .field label {
+        flex: 0 0 150px;
+        font-weight: bold;
+    }
+    .user-profile .field input,
+    .user-profile .field select {
+        flex: 1;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        transition: border-color 0.3s;
+    }
+    .user-profile .field input:focus,
+    .user-profile .field select:focus {
+        border-color: #007bff;
+    }
+    .avatar-container {
+        position: relative;
+        text-align: center;
+    }
+    .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .user-profile .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+    .user-profile button {
+        padding: 5px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .user-profile button:hover {
+        background-color: #0056b3;
+    }
+    .user-profile .file-input-container {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        border-radius: 20%;
+        padding: 0px 5px;
+        cursor: pointer;
+    }
+    .user-profile .file-input {
+        display: none;
+    }
+    .user-profile .file-input-label {
+        color: aquamarine;
+        font-size: 16px;
+    }
+    .ui-datepicker {
+        font-size: 0.9em;
+    }
+</style>
+
+<div class="user-profile">
+    <h1>Thông tin cá nhân</h1>
+    <div class="avatar-container">
+        <img class="avatar" src="./images/avt.jpeg" alt="Avatar">
+        <div class="file-input-container">
+            <input type="file" id="fileInput" class="file-input" accept="image/*" />
+            <label for="fileInput" class="file-input-label"><i class="fas fa-edit"></i></label>
         </div>
+    </div>
+    <form onsubmit="onSubmit(event)">
         <div class="field">
             <label for="usernameInput">Tên người dùng:</label>
-            <input 
-                type="text" 
-                id="usernameInput" 
-                value="<%= data.user?.username %>" 
-                <%= data.user?.username ? 'disabled' : '' %>
+            <input
+                    type="text"
+                    id="usernameInput"
+                    value="<%= data.user?.username %>"
+                    <%= data.user?.username ? 'disabled' : '' %>
             />
-        </div>        
+        </div>
         <div class="field">
             <label for="fullNameInput">Họ và tên:</label>
-            <input type="text" id="fullNameInput" value="<%= data.user.fullName %>" />
+            <input name="fullName" type="text" id="fullNameInput" value="<%= data.user.fullName %>" />
         </div>
         <div class="field">
             <label for="emailInput">Email:</label>
-            <input type="text" id="emailInput" value="<%= data.user.email || '(not provided)' %>" />
-        </div>
-        <div class="field">
-            <label for="dobInput">Ngày sinh:</label>
-            <input type="text" id="dobInput" value="<%= data.user.dob %>"/>
+            <input name="email" type="text" id="emailInput" value="<%= data.user.email || '(not provided)' %>" />
         </div>
         <div class="field">
             <label for="classesInput">Lớp:</label>
@@ -125,27 +113,37 @@
                 <% if (Array.isArray(data.classOptions)) { %>
                     <% for (const _class of data.classOptions) { %>
                         <option
-                            value="<%= _class._id %>"
-                            <%= data.user?.classes?.includes(_class._id) ? 'selected' : '' %>
+                                value="<%= _class._id %>"
+                                <%= data.user?.classes?.includes(_class._id) ? 'selected' : '' %>
                         ><%= _class.code %></option>
                     <% } %>
                 <% } else { %>
                     <option disabled>Không có lớp học nào</option>
                 <% } %>
             </select>
-        </div>               
+        </div>
         <div class="button-container">
             <button type="submit">Lưu</button>
         </div>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-        $(function() {
-            $("#dobInput").datepicker({
-                dateFormat: "dd/mm/yy" 
-            });
-        });
-    </script>
-</body>
-</html>
+    </form>
+</div>
+
+<script>
+    async function onSubmit(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        try {
+            const res = await axios.post('/api/profile', formData);
+            if (!res?.data?.success) {
+                // show fail res?.data?.message
+                return;
+            }
+
+            window.location.reload();
+        }
+        catch {
+
+        }
+    }
+</script>

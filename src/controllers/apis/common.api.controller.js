@@ -118,4 +118,17 @@ export default {
         });
         res.json(ApiUtil.JsonRes());
     },
+    updateProfile: async (req, res) => {
+        const {
+            fullName,
+            email,
+        } = req.body;
+
+        await UserModel.findByIdAndUpdate(new mongoose.Types.ObjectId(res.locals.currentUser?._id), {
+            fullName: fullName,
+            email: email,
+        });
+
+        res.json(ApiUtil.JsonRes());
+    },
 }
