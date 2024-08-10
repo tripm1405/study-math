@@ -80,7 +80,7 @@ export default class ViewUtil {
             layout: 'layouts/main.layout.ejs',
             ...options,
             data: {
-                ...options.data,
+                ...options?.data,
             },
         };
     }

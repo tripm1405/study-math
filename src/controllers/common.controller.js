@@ -255,6 +255,9 @@ const commonController = {
             },
         }));
     },
+    getChangePassword: async (req, res) => {
+        res.render('pages/change-password.page.ejs', ViewUtil.getOptions());
+    },
 };
 
 export default {
@@ -266,4 +269,5 @@ export default {
     getSignOut: commonController.getSignOut,
     getNotFound: commonController.getNotFound,
     getStatistics: commonController.getStatistics,
+    getChangePassword: commonController.getChangePassword,
 };

@@ -5,6 +5,8 @@ import ResolutionModel from "#root/models/resolution.model.js";
 import UserModel, {Type as UserType} from "#root/models/user.model.js";
 import QuestionModel from "#root/models/question.model.js";
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import AuthUtil from "#root/utils/auth.util.js";
 
 export default {
     getConstants: async (req, res) => {
@@ -92,5 +94,28 @@ export default {
                 question: question,
             },
         }));
+    },
+    postChangePassword: async (req, res) => {
+        const {
+            currentPassword,
+            newPassword,
+        } = req.body;
+
+        const user = await UserModel.findOne(new mongoose.Types.ObjectId(res.locals.currentUser?._id)).lean();
+        const isCorrectPassword = await bcrypt.compareSync(currentPassword, user?.password);
+
+        if (!isCorrectPassword) {
+            res.json(ApiUtil.JsonRes({
+                success: false,
+                message: 'Mật khẩu không chính xác',
+            }));
+            return;
+        }
+
+        const passwordHash = await bcrypt.hash(newPassword, AuthUtil.BCRYPT_SALT);
+        await UserModel.findByIdAndUpdate(user._id, {
+            password: passwordHash,
+        });
+        res.json(ApiUtil.JsonRes());
     },
 }

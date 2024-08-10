@@ -11,6 +11,7 @@ Router.get('/sign-in', CommonUtil.wrapperController(commonController.getSignIn))
 Router.post('/sign-in', CommonUtil.wrapperController(commonController.postSignIn));
 Router.get('/sign-out', AuthMiddleware.checkSingedIn, CommonUtil.wrapperController(commonController.getSignOut));
 Router.get('/profile', AuthMiddleware.checkSingedIn, CommonUtil.wrapperController(commonController.getProfile));
+Router.get('/change-password', AuthMiddleware.checkSingedIn, CommonUtil.wrapperController(commonController.getChangePassword));
 Router.get('/', AuthMiddleware.checkSingedIn, CommonUtil.wrapperController(commonController.getHome));
 Router.use(CommonUtil.wrapperController(commonController.getNotFound));
 
