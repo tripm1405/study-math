@@ -34,7 +34,7 @@
                 <th>Chức danh</th>
                 <th>Họ tên</th>
                 <th>Email</th>
-                <th style="width: 50px;"></th>
+                <th style="width: 100px;"></th>
             </tr>
             </thead>
             <tbody>
@@ -46,8 +46,12 @@
                     <td><%= user.fullName %></td>
                     <td><%= user.email %></td>
                     <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
-                        <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')"><i
-                                    class="fas fa-trash-alt"></i></button>
+                        <button class="btn btn-primary btn-sm" onClick="onResetPassword('<%= user._id %>')">
+                            <i class="fas fa-sync"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" onClick="del('<%= user._id %>')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </td>
                 </tr>
             <% } %>
@@ -85,6 +89,22 @@
       const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
       errorToast.show();
     }
+  }
+
+  async function onResetPassword(id) {
+      try {
+          const res = await axios.post('/api/users/reset-password', {
+              id: id,
+          });
+          if (!res?.data?.success) {
+              return;
+          }
+
+          location.reload();
+      } catch (error) {
+          const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+          errorToast.show();
+      }
   }
 </script>
 
