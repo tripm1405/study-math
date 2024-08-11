@@ -53,10 +53,15 @@ const controller = {
             block,
         } = req.body;
 
+        const images = await FileService.create({
+            files: req.files?.filter(file => file.fieldname === 'images'),
+            destination: Destination.BLOCKLY,
+        });
+
         const id = new mongoose.Types.ObjectId();
         await BlockModel.create({
             _id: id,
-            ...BlocklyUtil.Format.encode({block: block,}),
+            ...BlocklyUtil.Format.encode({block: block, images: images,}),
             type: id,
             createdBy: new mongoose.Types.ObjectId(res?.locals?.currentUser?._id),
         });
