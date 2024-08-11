@@ -37,8 +37,15 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                         <label for="email" class="form-label visually-hidden">Tài khoản</label>
-                        <input name="username" type="text" class="form-control" id="email" placeholder="Tài khoản..."
-                               required>
+                        <input
+                                name="username"
+                                type="text"
+                                class="form-control"
+                                id="email"
+                                placeholder="Tài khoản..."
+                                required
+                                oninvalid="this.setCustomValidity('Chưa nhập tài khoản')"
+                        >
                     </div>
                 </div>
                 <div class="mb-3">
