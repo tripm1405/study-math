@@ -77,7 +77,7 @@ class K {
             params: params,
         });
 
-        const blocks = blocksRes?.data?.result?.blocks || [];
+        const blocks = blocksRes?.data?.result?.blocks?.map(block => K.Blockly.decode({block: block,})) || [];
 
         for (const block of blocks) {
             Blockly.Blocks[block.type] = {

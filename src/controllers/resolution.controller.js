@@ -53,7 +53,7 @@ export default {
             id: id,
         });
 
-        const resolution = await ResolutionModel.findById(id);
+        const resolution = await ResolutionModel.findById(id).lean();
 
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/resolution-detail.page.ejs`;
         res.render(view, ViewUtil.getOptions({
