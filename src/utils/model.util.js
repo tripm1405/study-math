@@ -76,7 +76,7 @@ export default class ModelUtil {
                 })
                 .lean();
 
-            let code = doc.code;
+            let code = doc?.code || 0;
             while (isNaN(Number(code))) {
                 code = code.substring(1);
             }

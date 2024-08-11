@@ -39,8 +39,8 @@
         },
       });
       return [
-        ...(blocksGlobalRes?.data?.result?.blocks || []),
-        ...(blocksOfQuestionRes?.data?.result?.blocks || []),
+        ...(blocksGlobalRes?.data?.result?.blocks?.map(block => K.Blockly.decode({block: block,})) || []),
+        ...(blocksOfQuestionRes?.data?.result?.blocks?.map(block => K.Blockly.decode({block: block,})) || []),
       ];
     })();
 

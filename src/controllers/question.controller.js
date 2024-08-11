@@ -203,7 +203,7 @@ const controllers = {
 
         const resolution = await ResolutionModel.findOneAndUpdate({
             question: id,
-            createdBy: res.locals.currentUser?._id,
+            student: new mongoose.Types.ObjectId(res.locals.currentUser?._id),
         }, {
             content: content,
             solvedAt: new Date(),
@@ -280,9 +280,9 @@ const controllers = {
         const resolutionStudentIdSet = new Set(resolutions.map(resolution => resolution.student?.toString()));
 
         const students = await UserModel
-            .find({
-                type: AuthUtil.UserType.Student,
-            })
+            .find(FilterUtil.User({
+                user: res.locals.currentUser,
+            }))
             .populate('classes')
             .lean();
 
@@ -314,7 +314,9 @@ const controllers = {
         });
 
         const classes = await ClassModel
-            .find({})
+            .find(FilterUtil.Class({
+                user: res.locals.currentUser,
+            }))
             .populate('users')
             .lean();
 

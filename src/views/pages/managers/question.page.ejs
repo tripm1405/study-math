@@ -34,7 +34,7 @@
                         <%- include(partialPath + '/datetime.partial.ejs', { datetime: question?.createdAt, }) %>
                     </td>
                     <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
-                        <button class="btn btn-danger btn-sm" onClick="deleteLesson('<%= question?._id %>')">
+                        <button class="btn btn-danger btn-sm" onClick="onDelete('<%= question?._id %>')">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
@@ -54,8 +54,8 @@
         window.location.href = `/questions/${id}`;
     }
 
-    async function del(id) {
-        await axios.delete(`/questions/${id}`);
+    async function onDelete(id) {
+        await axios.delete(`/api/questions/${id}`);
         location.reload()
     }
 </script>

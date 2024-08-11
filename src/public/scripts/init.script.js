@@ -186,4 +186,49 @@ class K {
             return `${year}-${month}-${dayOfMonth} ${hour}:${minute}`;
         }
     }
+
+    static Blockly = class {
+        static decode = (props) => {
+            const {block: outerBlock} = props;
+
+            const block = structuredClone(outerBlock);
+
+            return Object.keys(block).reduce((result, key) => {
+                return {
+                    ...result,
+                    [key]: K.Blockly.getBlockPropertyValue({
+                        key: key,
+                        value: block[key],
+                    }),
+                }
+            }, {})
+        }
+
+        static getBlockPropertyValue = (props) => {
+            const {key, value,} = props;
+            switch (key) {
+                case 'output':
+                case 'input':
+                case 'previousStatement':
+                case 'nextStatement':
+                    return K.Blockly.convertBlockConnection({
+                        connection: value,
+                    });
+                default:
+                    return value;
+            }
+        }
+
+        static convertBlockConnection = (props) => {
+            const {connection} = props;
+            switch (connection) {
+                case 'Empty':
+                    return undefined;
+                case 'Anything':
+                    return null;
+                default:
+                    return connection;
+            }
+        }
+    }
 }

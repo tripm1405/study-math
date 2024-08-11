@@ -25,7 +25,9 @@ const controller = {
 
         res.json(ApiUtil.JsonRes({
             data: {
-                blocks: blocks,
+                blocks: blocks.map(block => BlocklyUtil.Format.decode({
+                    block: block,
+                })),
             },
         }));
     },

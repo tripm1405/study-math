@@ -36,6 +36,66 @@ export default {
             }
         }));
     },
+    post: async (req, res) => {
+        const {
+            name,
+            result,
+            blocksDefault,
+            toolbox,
+            lessonId: lesson,
+            startDate,
+            endDate,
+        } = req.body;
+
+
+        const code = await ModelUtil.Code.generate({
+            modelName: ModelNameConstant.QUESTION,
+        })
+        await QuestionModel.create({
+            code: code,
+            name: name,
+            blocksDefault: blocksDefault,
+            toolbox: toolbox,
+            result: result,
+            lesson: lesson,
+            startDate,
+            endDate,
+            createdBy: res?.locals?.currentUser?._id,
+        });
+
+        res.json(ApiUtil.JsonRes());
+    },
+    put: async (req, res) => {
+        const {id} = req?.params;
+        const {
+            name,
+            result,
+            blocksDefault,
+            toolbox,
+            lessonId: lesson,
+            startDate,
+            endDate,
+        } = req.body;
+
+        await QuestionModel.findByIdAndUpdate(id, {
+            name: name,
+            result: result,
+            blocksDefault: blocksDefault,
+            toolbox: toolbox,
+            lesson: lesson,
+            startDate,
+            endDate,
+        });
+
+        res.json(ApiUtil.JsonRes());
+    },
+    delete: async (req, res) => {
+        const {id} = req?.params;
+
+        await QuestionModel.findByIdAndDelete(id);
+
+        res.json(ApiUtil.JsonRes());
+    },
     getAnswers: async (req, res) => {
         const {
             id

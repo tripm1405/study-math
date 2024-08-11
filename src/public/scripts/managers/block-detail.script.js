@@ -26,7 +26,7 @@ const workspace = Blockly.inject(document.getElementById('block'));
         block: Object.keys(block).reduce((result, key) => {
             return {
                 ...result,
-                [key]: getBlockPropertyValue({
+                [key]: K.Blockly.getBlockPropertyValue({
                     key: key,
                     value: block[key],
                 }),
@@ -362,30 +362,6 @@ function genBlockDropdownOptionNode(props) {
     return node;
 }
 
-function getBlockPropertyValue(props) {
-    const {key, value,} = props;
-    switch (key) {
-        case 'output':
-        case 'input':
-        case 'previousStatement':
-        case 'nextStatement':
-            return convertBlockConnection(value);
-        default:
-            return value;
-    }
-}
-
-function convertBlockConnection(connection) {
-    switch (connection) {
-        case 'Empty':
-            return undefined;
-        case 'Anything':
-            return null;
-        default:
-            return connection;
-    }
-}
-
 function getBlock(props) {
     const {type: getType} = {
         type: 'REVIEW',
@@ -399,7 +375,7 @@ function getBlock(props) {
             return {
                 ...result,
                 [current.name]: getType === 'REVIEW'
-                    ? getBlockPropertyValue({
+                    ? K.Blockly.getBlockPropertyValue({
                         key: current.name,
                         value: current.value,
                     })

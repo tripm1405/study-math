@@ -34,9 +34,9 @@ let workspaceToolbox;
 })();
 
 async function onSubmit() {
+    // todo: notify
     try {
         const id = document.querySelector('input[name="id"]')?.value;
-        const code = document.querySelector('input[name="code"]')?.value;
         const name = document.querySelector('input[name="name"]')?.value;
         const lessonId = document.querySelector('select[name="lessonId"]')?.value;
         const startDate = document.querySelector('input[name="startDate"]')?.value;
@@ -46,7 +46,6 @@ async function onSubmit() {
         const toolbox = Blockly.serialization.workspaces.save?.(workspaceToolbox);
 
         const formData = new FormData();
-        formData.set('code', code);
         formData.set('name', name);
         formData.set('startDate', startDate);
         formData.set('endDate', endDate);
@@ -55,10 +54,14 @@ async function onSubmit() {
         formData.set('blocksDefault', JSON.stringify(blocksDefault || {}));
         formData.set('toolbox', JSON.stringify(toolbox || {}));
 
-        if (id) {
-            await axios.put(`/questions/${id}`, formData);
-        } else {
-            await axios.post('/questions', formData);
+        const res = await (id
+            ? axios.put(`/api/questions/${id}`, formData)
+            : axios.post('/api/questions', formData));
+
+        console.log('res', res);
+
+        if (!res?.data?.success) {
+            return;
         }
 
         window.location.href = '/questions';
@@ -99,7 +102,7 @@ async function loadToolbox(props) {
         workspace?.updateToolbox(toolbox);
     }
 
-    Blockly.serialization.workspaces.load(question?.blocksDefault, solveWorkspace);
+    // Blockly.serialization.workspaces.load(question?.blocksDefault, solveWorkspace);
 }
 
 async function loadBlocks() {
@@ -125,8 +128,8 @@ async function loadBlocks() {
         return blocksRes?.data?.result?.blocks || [];
     })();
 
-    blocksLocal = innerBlocksLocal;
-    blocksGlobal = innerBlocksGlobal;
+    blocksLocal = innerBlocksLocal?.map(block => K.Blockly.decode({block: block}));
+    blocksGlobal = innerBlocksGlobal?.map(block => K.Blockly.decode({block: block}));
     blocks = [...blocksLocal, ...blocksGlobal];
 
     for (const block of blocks) {

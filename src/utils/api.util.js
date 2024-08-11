@@ -2,7 +2,7 @@ export default class ApiUtil {
   static JsonRes = function (props) {
     const {
       success,
-      data: result,
+          data: result,
       errors,
       message,
     } = {

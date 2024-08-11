@@ -11,6 +11,9 @@ Router.put('/:id/answers/:answerId', questionApiController.putAnswer);
 Router.delete('/:id/answers/:answerId', questionApiController.delAnswer);
 Router.get('/:id/answers', questionApiController.getAnswers);
 Router.post('/:id/answers', CommonUtil.wrapperController(questionApiController.postAnswer));
+Router.put('/:id', CommonUtil.wrapperController(questionApiController.put));
+Router.delete('/:id', CommonUtil.wrapperController(questionApiController.delete));
 Router.get('/:id', questionApiController.get);
+Router.post('/', CommonUtil.wrapperController(questionApiController.post));
 
 export default Router;
