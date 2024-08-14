@@ -1,6 +1,9 @@
 import ViewUtil from "#root/utils/view.util.js";
 import ResolutionModel from "#root/models/resolution.model.js";
 import CommonUtil from "#root/utils/common.util.js";
+import FilterUtil from "#root/utils/filter.util.js";
+import QuestionModel from "#root/models/question.model.js";
+import {Type as UserType} from "#root/models/user.model.js";
 
 export default {
     getList: async (req, res) => {
@@ -8,15 +11,35 @@ export default {
             questionId,
         } = req.query;
 
-        const filter = {
-            score: undefined,
-            content: {
-                $ne: undefined,
-            },
-        };
-        if (questionId) {
-            filter.question = questionId;
-        }
+
+        const filter = await (async () => {
+            const filter = {
+                content: {
+                    $ne: undefined,
+                },
+            };
+
+            if (questionId) {
+                filter.question = questionId;
+            } else if (res.locals.currentUser.type === UserType.TEACHER) {
+                filter.question = {
+                    $in: await (async () => {
+                        const questions = await QuestionModel
+                            .find(FilterUtil.Question({
+                                user: res.locals.currentUser,
+                            }))
+                            .lean();
+
+                        return questions.map(question => question._id);
+                    })(),
+                }
+            }
+
+            return FilterUtil.Resolution({
+                filters: filter,
+                user: res.locals.currentUser,
+            });
+        })();
 
         const resolutions = await CommonUtil.Pagination.get({
             query: req.query.resolutions,
@@ -25,6 +48,7 @@ export default {
             extendGet: get => {
                 return get
                     .sort({
+                        markedBy: 'asc',
                         solvedAt: 'desc',
                     })
                     .populate('student')
@@ -38,9 +62,7 @@ export default {
             data: {
                 resolutions: {
                     ...resolutions,
-                    models: resolutions?.models?.filter(resolution => {
-                        return String(resolution?.question?.createdBy) === String(res.locals.currentUser?._id);
-                    }),
+                    models: resolutions?.models,
                 },
             },
         }));

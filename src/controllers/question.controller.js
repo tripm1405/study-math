@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 import ViewUtil from "#root/utils/view.util.js";
 import QuestionModel from "#root/models/question.model.js";
-import AuthUtil from "#root/utils/auth.util.js";
 import LessonModel from "#root/models/lesson.model.js";
 import BlockModel from "#root/models/block.model.js";
 import ResolutionModel from "#root/models/resolution.model.js";

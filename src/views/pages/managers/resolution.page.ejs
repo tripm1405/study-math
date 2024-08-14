@@ -36,6 +36,7 @@
                     <th style="width: 80px;">STT</th>
                     <th>Bài toán</th>
                     <th>Học sinh</th>
+                    <th>Điểm</th>
                     <th style="width: 160px;">Thời gian nộp</th>
                 </tr>
                 </thead>
@@ -48,6 +49,9 @@
                         </td>
                         <td>
                             <%= resolution?.student?.fullName %>
+                        </td>
+                        <td>
+                            <%= resolution?.score ?? 'Chưa chấm' %>
                         </td>
                         <td style="text-align: center;">
                             <%- include(partialPath + '/datetime.partial.ejs', { datetime: resolution?.solvedAt, }) %>

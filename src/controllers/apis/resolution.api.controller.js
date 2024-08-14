@@ -24,9 +24,11 @@ export default {
         }));
     },
     putMarkByAnswer: async (req, res) => {
-        const resolutions = await ResolutionModel.find({
-            score: undefined,
-        }).lean();
+        const resolutions = await ResolutionModel
+            .find({
+                score: undefined,
+            })
+            .lean();
 
         const answers = await AnswerModel.find({}).lean();
         const answersGroupByQuestion = answers.reduce((result, curr) => {
@@ -55,6 +57,7 @@ export default {
 
             await ResolutionModel.findByIdAndUpdate(resolution._id, {
                 score: answer?.score,
+                markedBy: res.locals.currentUser?._id,
             });
         }
 
@@ -68,7 +71,10 @@ export default {
             score,
         } = req.body;
 
-        await ResolutionModel.findByIdAndUpdate(id, {score: score});
+        await ResolutionModel.findByIdAndUpdate(id, {
+            score: score,
+            markedBy: res.locals.currentUser?._id,
+        });
 
         res.json(ApiUtil.JsonRes());
     },

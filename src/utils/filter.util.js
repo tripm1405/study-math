@@ -1,6 +1,7 @@
 import UserModel, {Type as UserType} from "#root/models/user.model.js";
 import mongoose from "mongoose";
 import AuthUtil from "#root/utils/auth.util.js";
+import ResolutionModel from "#root/models/resolution.model.js";
 
 export default class FilterUtil {
     static User = (props) => {
@@ -224,11 +225,21 @@ export default class FilterUtil {
             }
         };
 
-        const filter = {};
+        const schemaKeys = Object.keys(ResolutionModel.schema.paths);
+        const filter = Object.keys(filters).reduce((result, key) => {
+            if (schemaKeys.find(userKey => userKey === key)) {
+                return {
+                    ...result,
+                    [key]: filters[key],
+                }
+            }
+
+            return result
+        },{});
+
         if (user) {
             switch (user?.type) {
                 case UserType.TEACHER: {
-                    filter.createdBy = new mongoose.Types.ObjectId(user?._id);
                     break;
                 }
                 case UserType.ADMIN:
@@ -237,16 +248,6 @@ export default class FilterUtil {
                     break;
                 }
             }
-        }
-        if (code) {
-            filter.code = {
-                $regex : new RegExp(code, 'i'),
-            };
-        }
-        if (name) {
-            filter.name = {
-                $regex : new RegExp(name, 'i'),
-            };
         }
 
         return filter;
