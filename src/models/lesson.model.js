@@ -8,6 +8,7 @@ const schema = new mongoose.Schema({
   },
   name: {
     type: String,
+      require: true,
   },
   note: {
     type: String,
@@ -15,10 +16,12 @@ const schema = new mongoose.Schema({
   course: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.COURSE,
+      require: true,
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
+      require: true,
   },
 }, {
   timestamps: true,

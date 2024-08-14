@@ -5,9 +5,11 @@ const schema = new mongoose.Schema({
   code: {
     type: String,
     unique: true,
+      require: true,
   },
   name: {
     type: String,
+      require: true,
   },
   content: {
     type: String,
@@ -28,6 +30,7 @@ const schema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: ModelNameConstant.USER,
+      require: true,
   },
 }, {
   timestamps: true,

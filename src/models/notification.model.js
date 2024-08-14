@@ -28,6 +28,7 @@ const schema = new mongoose.Schema({
     receivers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.USER,
+        require: true,
     }],
 }, {
     timestamps: true,

@@ -5,9 +5,11 @@ const schema = new mongoose.Schema({
     code: {
         type: String,
         unique: true,
+        require: true,
     },
     name: {
         type: String,
+        require: true,
     },
     result: {
         type: String,
@@ -30,10 +32,12 @@ const schema = new mongoose.Schema({
     lesson: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.LESSON,
+        require: true,
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.USER,
+        require: true,
     },
 }, {
     timestamps: true,

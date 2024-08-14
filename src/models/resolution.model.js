@@ -23,15 +23,18 @@ const schema = new mongoose.Schema({
     question: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.QUESTION,
+        require: true,
     },
     // user.type === Student
     student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.USER,
+        require: true,
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.USER,
+        require: true,
     },
 }, {
     timestamps: true,

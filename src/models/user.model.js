@@ -11,19 +11,24 @@ const schema = new mongoose.Schema({
     code: {
         type: String,
         unique: true,
+        require: true,
     },
     fullName: {
         type: String,
+        require: true,
     },
     email: {
         type: String,
+        require: true,
     },
     username: {
         type: String,
         unique: true,
+        require: true,
     },
     password: {
         type: String,
+        require: true,
     },
     type: {
         type: String,
