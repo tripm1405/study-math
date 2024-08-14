@@ -11,30 +11,30 @@ const schema = new mongoose.Schema({
     code: {
         type: String,
         unique: true,
-        require: true,
+        required: true,
     },
     fullName: {
         type: String,
-        require: true,
+        required: true,
     },
     email: {
         type: String,
-        require: true,
+        required: true,
     },
     username: {
         type: String,
         unique: true,
-        require: true,
+        required: true,
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     type: {
         type: String,
         enum: Object.values(Type),
         default: Type.STUDENT,
-        require: true,
+        required: true,
     },
     classes: [{
         type: mongoose.Schema.Types.ObjectId,

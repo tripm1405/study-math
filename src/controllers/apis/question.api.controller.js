@@ -137,10 +137,10 @@ export default {
             note,
         } = req.body;
 
-
         const code = await ModelUtil.Code.generate({
             modelName: ModelNameConstant.ANSWER,
         })
+
         const answer = await AnswerModel.create({
             code: code,
             name: name,

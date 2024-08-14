@@ -44,11 +44,13 @@ function preLog(req, res, next) {
 }
 
 function handleError(err, req, res, next) {
-    console.log(err);
+    console.log('err', err);
+    console.log('err.name', err.name);
+    console.log('err?.errors', err?.errors);
     if (err.name === 'ValidationError') {
         res.json(ApiUtil.JsonRes({
             success: false,
-            errors: err?.errors?.content,
+            errors: err?.errors,
         }));
 
         return;

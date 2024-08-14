@@ -12,12 +12,12 @@ const ConnectSpecifyType = {
 const schema = new mongoose.Schema({
     name: {
         type: String,
-        require: true,
+        required: true,
     },
     type: {
         type: String,
         unique: true,
-        require: true,
+        required: true,
     },
     color: {
         type: String,
@@ -25,22 +25,22 @@ const schema = new mongoose.Schema({
     input: {
         type: String,
         default: ConnectSpecifyType.Empty,
-        require: true,
+        required: true,
     },
     output: {
         type: String,
         default: ConnectSpecifyType.Empty,
-        require: true,
+        required: true,
     },
     previousStatement: {
         type: String,
         default: ConnectSpecifyType.Empty,
-        require: true,
+        required: true,
     },
     nextStatement: {
         type: String, // ['Account']
         default: ConnectSpecifyType.Empty,
-        require: true,
+        required: true,
     },
     // {
     //   [`message${Number}`]: String,
@@ -62,7 +62,7 @@ const schema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.USER,
-        require: true,
+        required: true,
     },
 }, {
     timestamps: true,

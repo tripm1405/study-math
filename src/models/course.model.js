@@ -5,7 +5,7 @@ const schema = new mongoose.Schema({
     code: {
         type: String,
         unique: true,
-        require: true,
+        required: true,
     },
     image: {
         type: mongoose.Schema.Types.ObjectId,
@@ -13,7 +13,7 @@ const schema = new mongoose.Schema({
     },
     name: {
         type: String,
-        require: true,
+        required: true,
     },
     note: {
         type: String,
@@ -21,7 +21,7 @@ const schema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.USER,
-        require: true,
+        required: true,
     },
 }, {
     timestamps: true,

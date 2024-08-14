@@ -14,7 +14,7 @@ const schema = new mongoose.Schema({
     type: {
         type: String,
         enum: Object.values(Type),
-        require: true,
+        required: true,
     },
     content: {
         type: Object,
@@ -23,12 +23,12 @@ const schema = new mongoose.Schema({
         type: String,
         enum: Object.values(Status),
         default: Status.NEW,
-        require: true,
+        required: true,
     },
     receivers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.USER,
-        require: true,
+        required: true,
     }],
 }, {
     timestamps: true,
