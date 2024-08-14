@@ -152,34 +152,6 @@ const commonController = {
             layout: false,
         }));
     },
-    postSignIn: async (req, res) => {
-        const {username, password} = req.body;
-
-        const user = await UserModel.findOne({
-            username: username
-        });
-
-        if (!user) {
-            res.redirect('/sign-in');
-            return;
-        }
-
-        const isCorrectPassword = await bcrypt.compareSync(password, user?.password);
-        if (!isCorrectPassword) {
-            res.redirect('/sign-in');
-            return;
-        }
-
-        res.cookie('user', {
-            username: user?.username,
-            type: user?.type,
-        }, {
-            httpOnly: true
-        }, {
-            signed: true
-        });
-        res.redirect('/');
-    },
     getSignOut: (req, res) => {
         res.cookie('user', '', {httpOnly: true}, {signed: true});
         res.redirect('/sign-in');
@@ -265,7 +237,6 @@ export default {
     getProfile: commonController.getProfile,
     getSearch: commonController.getSearch,
     getSignIn: commonController.getSignIn,
-    postSignIn: commonController.postSignIn,
     getSignOut: commonController.getSignOut,
     getNotFound: commonController.getNotFound,
     getStatistics: commonController.getStatistics,

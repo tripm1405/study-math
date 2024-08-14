@@ -15,6 +15,6 @@ Router.use('/questions', AuthMiddleware.checkSingedIn, QuestionApiRouter);
 Router.use('/resolutions', AuthMiddleware.checkSingedIn, ResolutionApiRouter);
 Router.use('/notifications', AuthMiddleware.checkSingedIn, NotificationApiRouter)
 Router.use('/users', AuthMiddleware.checkSingedIn, UserApiRouter);
-Router.use('/', AuthMiddleware.checkSingedIn, CommonApiRouter);
+Router.use('/', CommonApiRouter);
 
 export default Router;

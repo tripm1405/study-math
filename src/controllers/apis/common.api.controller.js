@@ -7,8 +7,47 @@ import QuestionModel from "#root/models/question.model.js";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import AuthUtil from "#root/utils/auth.util.js";
+import CommonUtil from "#root/utils/common.util.js";
+import CourseModel from "#root/models/course.model.js";
+import LessonModel from "#root/models/lesson.model.js";
 
-export default {
+const controller = {
+    postSignIn: async (req, res) => {
+        const {username, password} = req.body;
+
+        const user = await UserModel
+            .findOne({
+                username: username
+            })
+            .lean();
+
+        if (!user) {
+            res.json(ApiUtil.JsonRes({
+                success: false,
+                message: 'Thông tin đăng nhập không chính xác!',
+            }));
+            return;
+        }
+
+        const isCorrectPassword = await bcrypt.compareSync(password, user?.password);
+        if (!isCorrectPassword) {
+            res.json(ApiUtil.JsonRes({
+                success: false,
+                message: 'Thông tin đăng nhập không chính xác!',
+            }));
+            return;
+        }
+
+        res.cookie('user', {
+            username: user?.username,
+            type: user?.type,
+        }, {
+            httpOnly: true
+        }, {
+            signed: true
+        });
+        res.json(ApiUtil.JsonRes());
+    },
     getConstants: async (req, res) => {
         res.json(ApiUtil.JsonRes({
             data: {
@@ -131,4 +170,12 @@ export default {
 
         res.json(ApiUtil.JsonRes());
     },
-}
+};
+
+export default {
+    postSignIn: controller.postSignIn,
+    getConstants: controller.getConstants,
+    getStatistics: controller.getStatistics,
+    postChangePassword: controller.postChangePassword,
+    updateProfile: controller.updateProfile,
+};

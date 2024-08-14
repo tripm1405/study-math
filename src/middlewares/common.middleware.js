@@ -17,7 +17,12 @@ function preLog(req, res, next) {
 
         const result = {};
         if (Object.keys(body || {}).length > 0) {
-            result.body = body;
+            result.body = Object.keys(body).reduce((result, key) => {
+                return {
+                    ...result,
+                    [key]: body[key],
+                }
+            }, {});
         }
         if (Object.keys(query || {}).length > 0) {
             result.query = query;

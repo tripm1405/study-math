@@ -16,8 +16,6 @@ h1 {
     width: 35%;
     top: 25%;
     left: 33%;
-    border: 2px solid #fdfdfd; 
-    border-radius: 10px; 
     padding: 20px; 
 }
 .card-title {
@@ -26,11 +24,6 @@ h1 {
     font-weight: bold;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-bottom: 20px;
-}
-.btn {
-    margin-top: 20px;
-    background-color: #E65C4F;
-    border-radius: 10px;
 }
 .mt-3 a {
     color: #000000;
