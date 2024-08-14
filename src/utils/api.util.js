@@ -5,10 +5,12 @@ export default class ApiUtil {
             data: result,
             errors,
             message,
+            code,
         } = {
             success: true,
             data: {},
             errors: {},
+            code: 200,
             ...props,
         };
 
@@ -17,6 +19,7 @@ export default class ApiUtil {
             result: result,
             errors: errors,
             message: message,
+            code: code,
         };
     }
 }

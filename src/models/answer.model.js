@@ -5,19 +5,19 @@ const schema = new mongoose.Schema({
     code: {
         type: String,
         unique: true,
-        required: true,
+        required: [true, 'Mã không được trống!'],
     },
     name: {
         type: String,
-        required: true,
+        required: [true, 'Tên không được trống!'],
     },
     content: {
         type: String,
-        required: true,
+        required: [true, 'Khối không được trống!'],
     },
     score: {
         type: Number,
-        required: true,
+        required: [true, 'Điểm không được trống!'],
     },
     note: {
         type: String,
@@ -25,12 +25,12 @@ const schema = new mongoose.Schema({
     question: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.QUESTION,
-        required: true,
+        required: [true, 'Bài toán không được trống!'],
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: ModelNameConstant.USER,
-        required: true,
+        required: [true, 'Người tạo không được trống!'],
     },
 }, {
     timestamps: true,

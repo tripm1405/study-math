@@ -14,16 +14,42 @@
                 <% if (data?.answer?._id) { %>
                     <div class="form-group">
                         <label for="code">Mã:</label>
-                        <input id="code" name="code" type="text" class="form-control" value="<%= data?.answer?.code %>" placeholder="Nhập mã"/>
+                        <input
+                                id="code"
+                                name="code"
+                                type="text"
+                                class="form-control"
+                                value="<%= data?.answer?.code %>"
+                                placeholder="Nhập mã..."
+                                readonly
+                        />
                     </div>
                 <% } %>
                 <div class="form-group">
-                    <label for="name">Tên:</label>
-                    <input id="name" name="name" type="text" class="form-control" value="<%= data?.answer?.name %>" placeholder="Nhập tên"/>
+                    <label for="name">Tên: <span style="color: #ff0000;">*</span></label>
+                    <input
+                            id="name"
+                            name="name"
+                            type="text"
+                            class="form-control"
+                            value="<%= data?.answer?.name %>"
+                            placeholder="Nhập tên"
+                            required
+                    />
                 </div>
                 <div class="form-group">
-                    <label for="score">Điểm:</label>
-                    <input id="score" name="score" type="number" class="form-control" min="0" max="10" value="<%= data?.answer?.score || '10' %>" placeholder="Nhập điểm (0-10)"/>
+                    <label for="score">Điểm: <span style="color: #ff0000;">*</span></label>
+                    <input
+                            id="score"
+                            name="score"
+                            type="number"
+                            class="form-control"
+                            min="0"
+                            max="10"
+                            value="<%= data?.answer?.score || '10' %>"
+                            placeholder="Nhập điểm (0-10)"
+                            required
+                    />
                 </div>
                 <div class="form-group">
                     <label for="note">Ghi chú:</label>
@@ -169,37 +195,14 @@
                 }
             })();
 
-            if (!res?.data?.result?.success) {
-                throw new Error('Failed to submit');
+            if (!res?.data?.success) {
+                K.Toast.showError({ res: res });
+                return;
             }
 
             window.location.href = `/questions/${questionId}/answers`;
-        } catch (error) {
-            handleApiError(error);
-        }
-    }
-
-    function handleApiError(error) {
-        console.error('API Error:', error);
-        Toastify({
-            text: 'An error occurred. Please try again later.',
-            duration: 3000,
-            gravity: 'top',
-            position: 'right',
-            backgroundColor: '#ff6347',
-        }).showToast();
-    }
-
-    function obj2FormData(formData, obj, prefix) {
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                let propName = prefix ? `${prefix}[${key}]` : key;
-                if (typeof obj[key] === 'object' && !(obj[key] instanceof File)) {
-                    obj2FormData(formData, obj[key], propName);
-                } else {
-                    formData.append(propName, obj[key]);
-                }
-            }
+        } catch (err) {
+            K.Toast.showServerError();
         }
     }
 </script>

@@ -148,6 +148,7 @@ export default {
             score: score,
             note: note,
             question: id,
+            createdBy: res?.locals?.currentUser?._id,
         });
 
         res.json(ApiUtil.JsonRes({

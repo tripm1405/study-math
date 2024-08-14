@@ -51,6 +51,7 @@ function handleError(err, req, res, next) {
         res.json(ApiUtil.JsonRes({
             success: false,
             errors: err?.errors,
+            code: 400,
         }));
 
         return;
@@ -59,6 +60,7 @@ function handleError(err, req, res, next) {
     res.json(ApiUtil.JsonRes({
         success: false,
         errors: 'Server error!',
+        code: 500,
     }));
 }
 

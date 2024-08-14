@@ -13,11 +13,11 @@ class K {
     }
 
     static objToFormData = (obj, formData = new FormData(), namespace) => {
-        for(const property in obj) {
-            if(obj.hasOwnProperty(property)) {
+        for (const property in obj) {
+            if (obj.hasOwnProperty(property)) {
                 const formKey = namespace ? `${namespace}[${property}]` : property;
 
-                if(typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
+                if (typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
                     K.objToFormData(obj[property], formData, formKey);
                 } else {
                     formData.append(formKey, obj[property]);
@@ -125,7 +125,7 @@ class K {
                 });
         }
 
-        static onSendSearch = function(model, page) {
+        static onSendSearch = function (model, page) {
             if (!model) {
                 K.Search.send({
                     search: {
@@ -147,13 +147,13 @@ class K {
     }
 
     static Common = class {
-        static parseKey = function(key) {
+        static parseKey = function (key) {
             return key
                 .replace(new RegExp(/\]/g), '')
                 .split(new RegExp(/\[/g));
         }
 
-        static setValue = function(obj, keys, value) {
+        static setValue = function (obj, keys, value) {
             if (keys.length === 1) {
                 obj[keys[0]] = value;
                 return;
@@ -167,7 +167,7 @@ class K {
             K.Common.setValue(obj[keys[0]], newKeys, value);
         }
 
-        static parseObj = function(flat) {
+        static parseObj = function (flat) {
             const result = {};
             for (const key of Object.keys(flat)) {
                 K.Common.setValue(result, K.Common.parseKey(key), flat[key]);
@@ -229,6 +229,71 @@ class K {
                 default:
                     return connection;
             }
+        }
+    }
+
+    static Toast = class {
+        static Color = {
+            SUCCESS: '#4CAF50',
+            ERROR: '#ff6347',
+            WARNING: '',
+        }
+
+        static showBadRequest(props) {
+            const {errors} = props;
+
+            const text = Object.values(errors)
+                .map(error => {
+                    return error?.message;
+                })
+                .join('\n');
+
+            K.Toast.show({
+                text: text,
+                backgroundColor: K.Toast.Color.ERROR,
+            });
+        }
+
+        static showServerError() {
+            K.Toast.show({
+                text: 'Lỗi hệ thống!',
+                backgroundColor: K.Toast.Color.ERROR,
+            })
+        }
+
+        static showError = (props) => {
+            const {res} = props;
+
+            if (res?.data?.success ?? true) {
+                return;
+            }
+
+            switch (res?.data?.code) {
+                case 400: {
+                    K.Toast.showBadRequest({ errors: res?.data?.errors});
+                    break;
+                }
+                default:
+                case 500: {
+                    K.Toast.showServerError();
+                    break;
+                }
+            }
+        }
+
+        static show = (props) => {
+            const {text, backgroundColor} = {
+                backgroundColor: K.Toast.Color.SUCCESS,
+                ...props,
+            };
+
+            Toastify({
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                text: text,
+                backgroundColor: backgroundColor,
+            }).showToast()
         }
     }
 }
