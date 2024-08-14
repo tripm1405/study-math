@@ -20,6 +20,11 @@
         overflow-y: auto;
     }
 
+    .k-notification-empty {
+        text-align: center;
+        font-weight: bold;
+    }
+
     .k-notification.k-notification-status-new .fas.fa-circle {
         display: unset !important;
     }
@@ -68,6 +73,9 @@
                 </button>
                 <div class="k-notification-menu dropdown-menu p-2">
                     <div class="k-notification-list ">
+                        <div class="k-notification-empty">
+                            Chưa có thông báo
+                        </div>
                     </div>
                     <div class="k-notification-more" onclick="onLoadNotification()">Xem thêm...</div>
                 </div>
@@ -188,6 +196,13 @@
             window.location.href = content?.href;
         });
 
+        removeNotificationEmpty();
+
         return node;
+    }
+
+    function removeNotificationEmpty() {
+        const notificationEmptyNode = document.querySelector('.k-notification-empty');
+        notificationEmptyNode?.remove();
     }
 </script>
