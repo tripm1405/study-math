@@ -23,7 +23,7 @@ const menuItems = {
         icon: 'fas fa-calculator',
     },
     resolution: {
-        label: 'Chấm điểm',
+        label: 'Bài làm',
         link: '/resolutions',
         icon: 'fas fa-calculator',
     },
