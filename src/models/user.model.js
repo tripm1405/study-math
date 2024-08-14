@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import ModelNameConstant from "#root/models/model-name.constant.js";
-import {Status} from "#root/models/notification.model.js";
 
 export const Type = {
     ADMIN: 'Admin',

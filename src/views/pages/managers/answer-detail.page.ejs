@@ -116,7 +116,7 @@
                         questionId: questionId,
                     },
                 });
-                return blocksRes?.data?.result?.blocks || [];
+                return blocksRes?.data?.result?.blocks?.map(block => K.Blockly.decode({block: block,})) || [];
             } catch (error) {
                 handleApiError(error);
                 return [];
@@ -130,7 +130,7 @@
                         questionId: null,
                     },
                 });
-                return blocksRes?.data?.result?.blocks || [];
+                return blocksRes?.data?.result?.blocks?.map(block => K.Blockly.decode({block: block,})) || [];
             } catch (error) {
                 handleApiError(error);
                 return [];
