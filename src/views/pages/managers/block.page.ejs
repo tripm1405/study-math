@@ -51,6 +51,8 @@
     <%- include(partialPath + '/pagination.partial.ejs', { ...data?.blocks, model: 'blocks', }) %>
 </div>
 
+<input name="questionId" type="hidden" value="<%= data?.questionId %>"/>
+
 <div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -81,7 +83,13 @@
 
 <script>
     function upsert(id) {
-        window.location.href = `/blocks/${id}`;
+        const questionId = document.querySelector('input[name="questionId"]')?.value;
+        window.location.href = axios.getUri({
+            url: `/blocks/${id}`,
+            params: {
+                questionId: questionId,
+            },
+        })
     }
 
     async function del(id) {
@@ -112,8 +120,12 @@
 
     async function onImport(event) {
         event.preventDefault();
+        const questionId = document.querySelector('input[name="questionId"]')?.value;
 
         const formData = new FormData(event.target);
+        if (questionId) {
+            formData.set('questionId', questionId);
+        }
         try {
             const res = await axios.post('/api/blocks/import', formData);
 
@@ -140,9 +152,10 @@
     }
 
     async function onExport() {
+        const questionId = document.querySelector('input[name="questionId"]')?.value;
         const fileRes = await axios.get(`/api/blocks/export`, {
             params: {
-                questionId: null,
+                questionId: questionId ?? null,
             }
         });
         await K.exportJson({

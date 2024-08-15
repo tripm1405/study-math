@@ -51,6 +51,7 @@ const controller = {
     create: async (req, res) => {
         const {
             block,
+            questionId,
         } = req.body;
 
         const images = await FileService.create({
@@ -63,6 +64,7 @@ const controller = {
             _id: id,
             ...BlocklyUtil.Format.encode({block: block, images: images,}),
             type: id,
+            question: questionId,
             createdBy: new mongoose.Types.ObjectId(res?.locals?.currentUser?._id),
         });
 

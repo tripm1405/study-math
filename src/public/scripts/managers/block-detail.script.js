@@ -44,8 +44,12 @@ function onReview() {
 
 async function onSubmit() {
     const id = document.querySelector('input[name="id"]').value;
+    const questionId = document.querySelector('input[name="questionId"]').value;
     const {block, images} = getBlock({type: 'SUBMIT'});
     const formData = K.objToFormData({block: block});
+    if (!id && questionId) {
+        formData.set('questionId', questionId);
+    }
     for (const image of images) {
         formData.append('images', image);
     }
@@ -62,11 +66,12 @@ async function onSubmit() {
             return;
         }
 
-        showToastify({
-            text: 'Thành công!',
-            backgroundColor: '#4CAF50',
+        window.location.href = axios.getUri({
+            url: `/blocks`,
+            params: {
+                questionId: questionId,
+            },
         })
-        window.location.href = `/blocks`;
     } catch (error) {
         showToastify({
             text: 'Lỗi hệ thống!',

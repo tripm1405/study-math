@@ -141,46 +141,13 @@ async function loadBlocks() {
     }
 }
 
-function onUpsertBlock(id) {
-    window.location.href = `/blocks/${id}`;
-}
-
-async function onDelBlock(id) {
-    await axios.delete(`/api/blocks/${id}`);
-    await loadToolbox({hasLoadBlocks: true});
-}
-
-async function onImportBlock(event) {
-    event.preventDefault();
+function onConfigBlocks() {
     const id = document.querySelector('input[name="id"]')?.value;
-
-    const formData = new FormData(event.target);
-    formData.set('questionId', id);
-    try {
-        const res = await axios.post('/api/blocks/import', formData);
-
-        if (!res?.data?.success) {
-            alert('fail');
-            return;
-        }
-
-        await loadToolbox({hasLoadBlocks: true});
-        bootstrap?.Modal?.getInstance(document.querySelector('div#import-block-modal'))?.hide();
-        bootstrap?.Modal?.getInstance(document.querySelector('div#config-block-modal'))?.show();
-    } catch {
-        alert('error');
-    }
-}
-
-async function onExportBlock() {
-    const id = document.querySelector('input[name="id"]')?.value;
-    const fileRes = await axios.get(`/api/blocks/export`, {
+    window.location.href = axios.getUri({
+        url: '/blocks',
         params: {
             questionId: id,
-        }
-    });
-    K.exportJson({
-        res: fileRes,
+        },
     })
 }
 

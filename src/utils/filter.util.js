@@ -2,6 +2,7 @@ import UserModel, {Type as UserType} from "#root/models/user.model.js";
 import mongoose from "mongoose";
 import AuthUtil from "#root/utils/auth.util.js";
 import ResolutionModel from "#root/models/resolution.model.js";
+import BlockModel from "#root/models/block.model.js";
 
 export default class FilterUtil {
     static User = (props) => {
@@ -31,7 +32,7 @@ export default class FilterUtil {
             }
 
             return result
-        },{});
+        }, {});
 
         if (user?.type !== UserType.ADMIN) {
             if (user?.type === UserType.TEACHER) {
@@ -43,12 +44,12 @@ export default class FilterUtil {
         }
         if (code) {
             filter.code = {
-                $regex : new RegExp(code, 'i'),
+                $regex: new RegExp(code, 'i'),
             };
         }
         if (email) {
             filter.email = {
-                $regex : new RegExp(email, 'i'),
+                $regex: new RegExp(email, 'i'),
             };
         }
 
@@ -85,7 +86,7 @@ export default class FilterUtil {
         }
         if (code) {
             filter.code = {
-                $regex : new RegExp(code, 'i'),
+                $regex: new RegExp(code, 'i'),
             };
         }
 
@@ -114,12 +115,12 @@ export default class FilterUtil {
         }
         if (code) {
             filter.code = {
-                $regex : new RegExp(code, 'i'),
+                $regex: new RegExp(code, 'i'),
             };
         }
         if (name) {
             filter.name = {
-                $regex : new RegExp(name, 'i'),
+                $regex: new RegExp(name, 'i'),
             };
         }
 
@@ -146,12 +147,12 @@ export default class FilterUtil {
         }
         if (code) {
             filter.code = {
-                $regex : new RegExp(code, 'i'),
+                $regex: new RegExp(code, 'i'),
             };
         }
         if (name) {
             filter.name = {
-                $regex : new RegExp(name, 'i'),
+                $regex: new RegExp(name, 'i'),
             };
         }
 
@@ -178,12 +179,12 @@ export default class FilterUtil {
         }
         if (code) {
             filter.code = {
-                $regex : new RegExp(code, 'i'),
+                $regex: new RegExp(code, 'i'),
             };
         }
         if (name) {
             filter.name = {
-                $regex : new RegExp(name, 'i'),
+                $regex: new RegExp(name, 'i'),
             };
         }
 
@@ -194,6 +195,7 @@ export default class FilterUtil {
         const {
             filters: {
                 name,
+                ...filters
             },
         } = {
             ...props,
@@ -202,10 +204,10 @@ export default class FilterUtil {
             }
         };
 
-        const result = {};
+        const result = FilterUtil.handleDefault({Model: BlockModel, filters: filters});
         if (name) {
             result.name = {
-                $regex : new RegExp(name, 'i'),
+                $regex: new RegExp(name, 'i'),
             };
         }
 
@@ -235,7 +237,7 @@ export default class FilterUtil {
             }
 
             return result
-        },{});
+        }, {});
 
         if (user) {
             switch (user?.type) {
@@ -254,5 +256,21 @@ export default class FilterUtil {
         }
 
         return filter;
+    }
+
+    static handleDefault = (props) => {
+        const {Model, filters} = props;
+
+        const schemaKeys = Object.keys(Model.schema.paths);
+        return Object.keys(filters).reduce((result, key) => {
+            if (schemaKeys.find(userKey => userKey === key)) {
+                return {
+                    ...result,
+                    [key]: filters[key],
+                }
+            }
+
+            return result
+        }, {});
     }
 }

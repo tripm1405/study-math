@@ -32,7 +32,7 @@ export default class BlocklyUtil {
                         _id: block?._id?.toString(),
                     },
                 }),
-                properties: ['createdAt', 'updatedAt', 'createdBy', 'type', '__v',],
+                properties: ['question', 'createdAt', 'updatedAt', 'createdBy', 'type', '__v',],
             });
         }
 

@@ -7,10 +7,17 @@ import BlocklyUtil from "#root/utils/blockly.util.js";
 
 export default {
     get: async (req, res) => {
+        const { questionId } = req.query;
+
         const newId = new mongoose.Types.ObjectId();
         const filter = FilterUtil.Block({
-            filters: req.query,
+            filters: {
+                ...req.query,
+                question: questionId,
+            },
         });
+
+        console.log('filter', filter);
         const blocks = await CommonUtil.Pagination.get({
             query: req.query?.blocks,
             Model: BlockModel,
@@ -27,11 +34,13 @@ export default {
             data: {
                 blocks: blocks,
                 filters: req.query,
+                questionId: questionId,
                 newId: newId,
             },
         }));
     },
     getDetail: async (req, res) => {
+        const {questionId} = req.query;
         const {id} = req?.params;
 
         if (!id) return res.json({
@@ -50,6 +59,7 @@ export default {
             data: {
                 block: block,
                 argss: argss,
+                questionId: questionId,
             },
         }));
     },
