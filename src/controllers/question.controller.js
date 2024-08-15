@@ -239,8 +239,12 @@ const controllers = {
         } = req.params;
 
         const newId = new mongoose.Types.ObjectId();
-        const answers = await AnswerModel.find({
-            question: id,
+        const answers = await CommonUtil.Pagination.get({
+            query: req.query,
+            Model: AnswerModel,
+            filter: {
+                question: id,
+            },
         });
 
         const view = `${ViewUtil.getPrefixView(res.locals.currentUser?.type)}/answer.page.ejs`;
