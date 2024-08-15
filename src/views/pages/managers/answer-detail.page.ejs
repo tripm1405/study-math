@@ -2,14 +2,16 @@
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <div class="w-full">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+        <h1 style="margin: 0;color: #333;">Chi tiết đáp án</h1>
+        <div style="text-align: right;">
+        </div>
+    </div>
     <div class="row">
         <div class="h-100 col-8">
             <div id="workspace" style="height: 400px; width: 100%;"></div>
         </div>
         <div class="col-4 d-flex flex-column gap-3">
-            <div class="text-right">
-                <button class="btn btn-sm btn-primary" onclick="toggleBlocksGlobal()">LẤY/BỎ KHỐI MẶC ĐỊNH</button>
-            </div>
             <form onsubmit="onSubmit(event)">
                 <% if (data?.answer?._id) { %>
                     <div class="form-group">
@@ -53,11 +55,12 @@
                 </div>
                 <div class="form-group">
                     <label for="note">Ghi chú:</label>
-                    <input id="note" name="note" type="text" class="form-control" value="<%= data?.answer?.note %>" placeholder="Nhập ghi chú"/>
+                    <input id="note" name="note" type="text" class="form-control" value="<%= data?.answer?.note %>"
+                           placeholder="Nhập ghi chú"/>
                 </div>
                 <div class="form-group text-right">
                     <button type="submit" class="btn btn-primary">Lưu</button>
-                </div>                
+                </div>
             </form>
         </div>
     </div>
@@ -75,9 +78,6 @@
     let blocks;
 
     (async () => {
-        const questionId = document.querySelector('input[name="questionId"]')?.value;
-        const id = document.querySelector('input[name="id"]')?.value;
-
         await loadBlocks();
 
         workspace = K.initWorkspace({
@@ -85,27 +85,41 @@
         });
 
         loadToolbox();
+        initWorkspace();
 
-        await (async () => {
-            if (questionId && id) {
-                try {
-                    const answerRes = await axios.get(`/api/questions/${questionId}/answers/${id}`);
-                    if (!answerRes?.data?.result?.answer?.content) {
-                        return;
-                    }
+        async function initWorkspace() {
+            const questionId = document.querySelector('input[name="questionId"]')?.value;
+            const id = document.querySelector('input[name="id"]')?.value;
 
-                    Blockly.serialization.workspaces.load(answerRes?.data?.result?.answer?.content, workspace);
-                } catch (error) {
-                    handleApiError(error);
-                }
+            if (!questionId) {
+                return;
             }
-        })();
-    })();
 
-    async function toggleBlocksGlobal() {
-        isContainBlocksGlobal = !isContainBlocksGlobal;
-        loadToolbox();
-    }
+            const questionRes = await axios.get(`/api/questions/${questionId}`);
+            const question = questionRes?.data?.result?.question;
+            const toolboxContents = question?.toolbox?.blocks?.blocks?.map(block => {
+                return {
+                    kind: 'block',
+                    type: block.type,
+                }
+            }) || [];
+            workspace?.updateToolbox({
+                kind: 'flyoutToolbox',
+                contents: toolboxContents,
+            });
+
+            if (id) {
+                const answerRes = await axios.get(`/api/questions/${questionId}/answers/${id}`);
+                if (!answerRes?.data?.result?.answer?.content) {
+                    return;
+                }
+
+                Blockly.serialization.workspaces.load(answerRes?.data?.result?.answer?.content, workspace);
+            } else {
+                Blockly.serialization.workspaces.load(question?.blocksDefault, workspace);
+            }
+        }
+    })();
 
     async function loadToolbox(props) {
         const {hasLoadBlocks} = {
@@ -196,7 +210,7 @@
             })();
 
             if (!res?.data?.success) {
-                K.Toast.showError({ res: res });
+                K.Toast.showError({res: res});
                 return;
             }
 
