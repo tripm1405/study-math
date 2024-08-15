@@ -31,64 +31,10 @@
     .user-profile .field select:focus {
         border-color: #007bff;
     }
-    .avatar-container {
-        position: relative;
-        text-align: center;
-    }
-    .avatar {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-bottom: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .user-profile .button-container {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 10px;
-    }
-    .user-profile button {
-        padding: 5px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .user-profile button:hover {
-        background-color: #0056b3;
-    }
-    .user-profile .file-input-container {
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        border-radius: 20%;
-        padding: 0px 5px;
-        cursor: pointer;
-    }
-    .user-profile .file-input {
-        display: none;
-    }
-    .user-profile .file-input-label {
-        color: aquamarine;
-        font-size: 16px;
-    }
-    .ui-datepicker {
-        font-size: 0.9em;
-    }
 </style>
 
 <div class="user-profile">
     <h1>Thông tin cá nhân</h1>
-    <div class="avatar-container">
-        <img class="avatar" src="./images/avt.jpeg" alt="Avatar">
-        <div class="file-input-container">
-            <input type="file" id="fileInput" class="file-input" accept="image/*" />
-            <label for="fileInput" class="file-input-label"><i class="fas fa-edit"></i></label>
-        </div>
-    </div>
     <form onsubmit="onSubmit(event)">
         <div class="field">
             <label for="usernameInput">Tên người dùng:</label>
@@ -122,8 +68,8 @@
                 <% } %>
             </select>
         </div>
-        <div class="button-container">
-            <button type="submit">Lưu</button>
+        <div class="my-3 d-flex justify-content-end">
+            <button class="btn btn-primary" type="submit">Lưu</button>
         </div>
     </form>
 </div>
