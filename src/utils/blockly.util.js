@@ -108,6 +108,18 @@ export default class BlocklyUtil {
     static compareSubstance = (props) => {
         const {substance1, substance2,} = props;
 
-        return true;
+        function formatContent(substance1) {
+            return substance1?.blocks?.blocks?.map(block => {
+                return {
+                    fields: block.fields,
+                    type: block.type,
+                };
+            });
+        }
+
+        return CommonUtil.compareObj({
+            obj1: formatContent(substance1),
+            obj2: formatContent(substance2),
+        });
     }
 }
