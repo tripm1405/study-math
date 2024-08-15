@@ -262,7 +262,7 @@ function genPropertiesNode(props) {
     const cloneNode = document.querySelector('.k-clone.k-clone-block-detail');
 
     switch (type) {
-        case "field_image": {
+        case K.Blockly.ArgType.FIELD_IMAGE: {
             const node = cloneNode.querySelector('.k-block-content-arg-properties-type-image').cloneNode(true);
 
             for (const key of Object.keys(values)) {
@@ -284,7 +284,7 @@ function genPropertiesNode(props) {
 
             return node;
         }
-        case "field_checkbox": {
+        case K.Blockly.ArgType.FIELD_CHECKBOX: {
             const node = cloneNode.querySelector('.k-block-content-arg-properties-type-checkbox').cloneNode(true);
 
             for (const key of Object.keys(values)) {
@@ -295,7 +295,7 @@ function genPropertiesNode(props) {
 
             return node;
         }
-        case "field_number": {
+        case K.Blockly.ArgType.FIELD_NUMBER: {
             const node = cloneNode.querySelector('.k-block-content-arg-properties-type-number').cloneNode(true);
 
             for (const key of Object.keys(values)) {
@@ -306,7 +306,7 @@ function genPropertiesNode(props) {
 
             return node;
         }
-        case "field_input": {
+        case K.Blockly.ArgType.FIELD_INPUT: {
             const node = cloneNode.querySelector('.k-block-content-arg-properties-type-input').cloneNode(true);
 
             for (const key of Object.keys(values)) {
@@ -317,7 +317,7 @@ function genPropertiesNode(props) {
 
             return node;
         }
-        case "field_dropdown": {
+        case K.Blockly.ArgType.FIELD_DROPDOWN: {
             const node = cloneNode.querySelector('.k-block-content-arg-properties-type-dropdown').cloneNode(true);
 
             (values.options || [{
@@ -337,8 +337,30 @@ function genPropertiesNode(props) {
 
             return node;
         }
+        case K.Blockly.ArgType.INPUT_VALUE: {
+            const node = cloneNode.querySelector('.k-block-content-arg-properties-type-input-value')?.cloneNode(true);
+
+            for (const key of Object.keys(values)) {
+                if (values[key]) {
+                    node.querySelector(`[name="${key}"]`).value = values[key];
+                }
+            }
+
+            return node;
+        }
+        case K.Blockly.ArgType.INPUT_STATEMENT: {
+            const node = cloneNode.querySelector('.k-block-content-arg-properties-type-input-statement')?.cloneNode(true);
+
+            for (const key of Object.keys(values)) {
+                if (values[key]) {
+                    node.querySelector(`[name="${key}"]`).value = values[key];
+                }
+            }
+
+            return node;
+        }
         default:
-        case "field_label": {
+        case K.Blockly.ArgType.FIELD_LABEL: {
             const node = cloneNode.querySelector('.k-block-content-arg-properties-type-label')?.cloneNode(true);
 
             for (const key of Object.keys(values)) {
@@ -401,7 +423,7 @@ function getBlock(props) {
                     const type = argNode.querySelector('[name="type"]')?.value;
 
                     switch (type) {
-                        case 'field_dropdown': {
+                        case K.Blockly.ArgType.FIELD_DROPDOWN: {
                             const options = [...argNode.querySelectorAll('.k-block-dropdown-option')]
                                 .map(optionNode => {
                                     const label = optionNode.querySelector('[name="label"]')?.value;
@@ -419,7 +441,7 @@ function getBlock(props) {
                                 options: options,
                             });
                         }
-                        case 'field_image': {
+                        case K.Blockly.ArgType.FIELD_IMAGE: {
                             const hasNameNodes = [...argNode.querySelectorAll('[name]:not(.k-block-dropdown-options [name])')];
                             const arg = hasNameNodes.reduce((result, current) => {
                                 if (current.name === 'image') {

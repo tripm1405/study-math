@@ -188,6 +188,17 @@ class K {
     }
 
     static Blockly = class {
+        static ArgType = {
+            FIELD_IMAGE: 'field_image',
+            FIELD_CHECKBOX: 'field_checkbox',
+            FIELD_NUMBER: 'field_number',
+            FIELD_INPUT: 'field_input',
+            FIELD_DROPDOWN: 'field_dropdown',
+            FIELD_LABEL: 'field_label',
+            INPUT_VALUE: 'input_value',
+            INPUT_STATEMENT: 'input_statement',
+        };
+
         static decode = (props) => {
             const {block: outerBlock} = props;
 
