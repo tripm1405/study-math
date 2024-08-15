@@ -1,56 +1,34 @@
-<style>
-    input[type="text"], input[type="number"], select {
-        width: 35%;
-        padding: 10px;
-        box-sizing: border-box;
-    }
-
-    .review-workspace {
-        height: 100%;
-        width: 100%;
-    }
-
-    .button-section {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 10px;
-    }
-
-    .button-section button {
-        padding: 10px 20px;
-        background-color: #ffffff;
-        color: #4CAF50;
-        border: 2px solid #ceffd0;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        align-items: flex-end;
-    }
-
-    .button-section button:hover {
-        background-color: #45a049;
-        color: #ffffff;
-    }
-</style>
-
 <div class="w-full h-full row">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+        <h1 style="margin: 0;color: #333;">Chi tiết bài làm</h1>
+        <div style="text-align: right;">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#transfer-answer">Làm đáp án</button>
+        </div>
+    </div>
     <div class="h-100 col-8 border">
         <div class="w-full h-full">
-            <div id="review-workspace" class="review-workspace"></div>
+            <div id="review-workspace" class="w-full h-full"></div>
         </div>
     </div>
     <div class="col-4">
         <div class="my-2">
-            <button class="btn btn-primary" onclick="onMark()">Chấm điểm</button>
-        </div>
-        <div class="my-2">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#transfer-answer">Làm đáp án</button>
-        </div>
-        <div class="my-2">
             <label for="score" class="form-label">Điểm: </label>
-            <input name="score" class="form-control" id="score" type="number" min="0" max="10" value="10"/>
+            <input
+                    name="score"
+                    class="form-control"
+                    id="score"
+                    type="number"
+                    min="0"
+                    max="10"
+                    value="<%= data?.resolution?.score || '10' %>"
+                    <%= data?.resolution?.score && 'readonly' %>
+            />
         </div>
+        <% if (!data?.resolution?.score) { %>
+            <div class="my-2">
+                <button class="btn btn-primary" onclick="onMark()">Chấm điểm</button>
+            </div>
+        <% } %>
     </div>
 </div>
 
@@ -66,7 +44,17 @@
                         </div>
                         <div class="form-group">
                             <label for="score">Điểm:</label>
-                            <input id="score" name="score" type="number" class="form-control" min="0" max="10" placeholder="Nhập điểm" style="width:100%"/>
+                            <input
+                                    id="score"
+                                    name="score"
+                                    type="number"
+                                    class="form-control"
+                                    min="0"
+                                    max="10"
+                                    placeholder="Nhập điểm"
+                                    value="<%= data?.resolution?.score || '10' %>"
+                                    style="width:100%"
+                            />
                         </div>
                         <div class="form-group">
                             <label for="note">Ghi chú:</label>
