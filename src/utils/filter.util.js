@@ -242,9 +242,12 @@ export default class FilterUtil {
                 case UserType.TEACHER: {
                     break;
                 }
-                case UserType.ADMIN:
-                case UserType.STUDENT:
-                default: {
+                case UserType.STUDENT: {
+                    filter.student = user?._id;
+                    break;
+                }
+                default:
+                case UserType.ADMIN: {
                     break;
                 }
             }

@@ -41,16 +41,27 @@ export default {
             });
         })();
 
+        const sort = ((user) => {
+            switch (user?.type) {
+                case UserType.STUDENT: return {
+                    solvedAt: 'desc',
+                }
+                default:
+                case UserType.TEACHER:
+                case UserType.ADMIN: return {
+                    markedBy: 'asc',
+                    solvedAt: 'desc',
+                }
+            }
+        })(res.locals.currentUser);
+
         const resolutions = await CommonUtil.Pagination.get({
             query: req.query.resolutions,
             Model: ResolutionModel,
             filter: filter,
             extendGet: get => {
                 return get
-                    .sort({
-                        markedBy: 'asc',
-                        solvedAt: 'desc',
-                    })
+                    .sort(sort)
                     .populate('student')
                     .populate('question')
                     .lean();

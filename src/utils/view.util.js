@@ -70,6 +70,7 @@ export default class ViewUtil {
             menuItems.course,
             menuItems.lesson,
             menuItems.question,
+            menuItems.resolution,
         ],
     };
 

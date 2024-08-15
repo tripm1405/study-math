@@ -1,0 +1,69 @@
+<div class="w-full">
+    <h1>Danh sách bài làm</h1>
+    <div>
+        <div class="my-4">
+            <form method="GET" class="row">
+                <div class="col-md-4">
+                    <input
+                            name="question"
+                            type="text"
+                            class="form-control"
+                            placeholder="Bài toán..."
+                            value="<%= data?.filters?.question?.name %>"/>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                </div>
+            </form>
+        </div>
+        <div class="my-4">
+            <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
+                <thead>
+                <tr>
+                    <th style="width: 80px;">STT</th>
+                    <th>Bài toán</th>
+                    <th>Điểm</th>
+                    <th style="width: 160px;">Thời gian nộp</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for (const resolution of data?.resolutions?.models) { %>
+                    <tr onclick="onDetail('<%= resolution?.question?._id %>')">
+                        <td style="text-align: right;"><%= resolution?.index %></td>
+                        <td>
+                            <%= resolution?.question?.name %>
+                        </td>
+                        <td>
+                            <%= resolution?.score ?? 'Chưa chấm' %>
+                        </td>
+                        <td style="text-align: center;">
+                            <%- include(partialPath + '/datetime.partial.ejs', { datetime: resolution?.solvedAt, }) %>
+                        </td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <%- include(partialPath + '/pagination.partial.ejs', { ...data?.resolutions, model: 'resolutions', }) %>
+        </div>
+    </div>
+</div>
+
+<script>
+    function onDetail(questionId) {
+        window.location.href = `/questions/${questionId}/solve`;
+    }
+
+    async function markByAnswer() {
+        try {
+            const res = await axios.put('/api/resolutions/mark-by-answer', {});
+            if (!res?.data?.result?.success) {
+                return;
+            }
+            window.location.reload();
+        } catch {
+            alert('Server error!');
+        }
+    }
+</script>
