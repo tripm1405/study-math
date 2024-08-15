@@ -9,7 +9,8 @@
         <h1 style="margin: 0;color: #333;">Chi tiết bài học</h1>
         <div style="text-align: right;">
             <% if (data?.lesson?._id) { %>
-                <button class="btn btn-primary" onclick="onCreateQuestion('<%= data?.lesson?._id %>', '<%= data?.newId %>')">Tạo bài toán
+                <button class="btn btn-primary"
+                        onclick="onCreateQuestion('<%= data?.lesson?._id %>', '<%= data?.newId %>')">Tạo bài toán
                 </button>
             <% } %>
             <button class="btn btn-primary" onclick="onCourseDetail('<%= data?.lesson?.course %>')">Khóa học</button>
@@ -44,17 +45,6 @@
             />
         </div>
         <div class="mb-3">
-            <label for="note" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Ghi
-                chú</label>
-            <textarea id="note"
-                      name="note"
-                      type="text"
-                      value="<%= data?.lesson?.note %>"
-                      placeholder="Ghi chú..."
-                      class="form-control"
-            ></textarea>
-        </div>
-        <div class="mb-3">
             <label for="courseId" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Mã khóa
                 học</label>
             <select
@@ -69,6 +59,16 @@
                     ><%= course?.code %></option>
                 <% } %>
             </select>
+        </div>
+        <div class="mb-3">
+            <label for="note" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">
+                Ghi chú
+            </label>
+            <textarea id="note"
+                      name="note"
+                      placeholder="Ghi chú..."
+                      class="form-control"
+            ><%= data?.lesson?.note %></textarea>
         </div>
         <div style="display: flex; justify-content: flex-end;">
             <button type="submit" class="btn btn-primary">Lưu</button>
