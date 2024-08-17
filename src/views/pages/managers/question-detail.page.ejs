@@ -5,14 +5,13 @@
             <button class="k-btn-create btn" onclick="onLessonDetail('<%= data?.question?.lesson %>')">Bài học</button>
         </div>
     </div>
-
     <div class="w-full">
         <% if (data?.question?._id) { %>
             <div class="mb-3">
-                <label for="code-input" class="form-label">Mã bài học</label>
+                <label for="code" class="form-label">Mã bài toán</label>
                 <input
                         name="code"
-                        id="code-input"
+                        id="code"
                         class="form-control"
                         type="text"
                         value="<%= data?.question?.code %>"
@@ -22,15 +21,24 @@
             </div>
         <% } %>
         <div class="mb-3">
-            <label for="name-input" class="form-label">Tên bài học</label>
-            <input name="name" id="name-input" class="form-control" type="text" value="<%= data?.question?.name %>"
-                   placeholder="Tên..."/>
+            <label for="name" class="form-label">Tên bài toán</label>
+            <input
+                    name="name"
+                    id="name"
+                    class="form-control"
+                    type="text"
+                    value="<%= data?.question?.name %>"
+                    placeholder="Tên..."
+            />
         </div>
         <div class="mb-3">
             <label for="lesson-select" class="form-label">Bài học</label>
             <select name="lessonId" id="lesson-select" class="form-control">
                 <% for (const lesson of data?.lessons) { %>
-                    <option value="<%= lesson?._id %>" <%= data?.question?.lesson?.toString?.() === lesson?._id?.toString?.() ? 'selected' : '' %>><%= lesson?.code %></option>
+                    <option
+                            value="<%= lesson?._id %>"
+                            <%= data?.question?.lesson?.toString?.() === lesson?._id?.toString?.() ? 'selected' : '' %>
+                    ><%= lesson?.code %></option>
                 <% } %>
             </select>
         </div>
@@ -57,12 +65,17 @@
             />
         </div>
         <div class="mb-3">
-            <label for="note-input" class="form-label">Ghi chú</label>
-            <input name="note" id="note-input" class="form-control" type="text" value="<%= data?.question?.note %>"
-                   placeholder="Ghi chú..."/>
+            <label for="note" class="form-label">Ghi chú</label>
+            <input
+                    name="note"
+                    id="note"
+                    class="form-control"
+                    type="text"
+                    value="<%= data?.question?.note %>"
+                    placeholder="Ghi chú..."
+            />
         </div>
     </div>
-
     <div class="w-full">
         <div class="w-full d-flex row" style="height: max-content;">
             <div class="col-8" style="height: max-content;">
@@ -78,43 +91,30 @@
 
             <div class="col-4">
                 <div class="mb-1">
-                    <button class="btn btn-sm btn-primary" onclick="onSubmit()">LƯU</button>
-                </div>
-                <div class="mb-1">
-                    <button class="btn btn-sm btn-primary" onclick="toggleBlocksGlobal()">LẤY/BỎ KHỐI MẶC ĐỊNH</button>
+                    <button class="btn btn-sm btn-primary" onclick="toggleBlocksGlobal()">Lấy/bỏ khối chung</button>
                 </div>
                 <% if (data?.question?._id) { %>
                     <div class="mb-1">
-                        <button class="btn btn-sm btn-primary" onclick="onConfigBlocks()">
-                            CẤU HÌNH KHỐI
-                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="onConfigBlocks()">Cấu hình khối</button>
                     </div>
                     <div class="mb-1">
-                        <button class="btn btn-sm btn-primary" onclick="onConfigAnswers()">
-                            CẤU HÌNH ĐÁP ÁN
-                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="onConfigAnswers()">Cấu hình đáp án</button>
                     </div>
                     <div class="mb-1">
-                        <button class="btn btn-sm btn-primary" onclick="onAssign()">
-                            GIAO BÀI TOÁN
-                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="onAssign()">Giao bài</button>
                     </div>
                     <div class="mb-1">
-                        <button class="btn btn-sm btn-primary" onclick="onMark()">
-                            CHẤM ĐIỂM
-                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="onMark()">Bài làm</button>
                     </div>
                 <% } %>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" onclick="onSubmit()">Lưu</button>
     </div>
 </div>
 
 <input name="id" type="hidden" value="<%= data?.question?._id %>"/>
 
 <script src="/scripts/managers/question-detail.script.js"></script>
-<script>
-    function onLessonDetail(id) {
-        window.location.href = `/lessons/${id}`;
-    }
-</script>

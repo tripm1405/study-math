@@ -105,6 +105,10 @@ async function loadToolbox(props) {
     // Blockly.serialization.workspaces.load(question?.blocksDefault, solveWorkspace);
 }
 
+function onLessonDetail(id) {
+    window.location.href = `/lessons/${id}`;
+}
+
 async function loadBlocks() {
     const innerBlocksLocal = await (async () => {
         if (!idInput.value) {

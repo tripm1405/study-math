@@ -23,7 +23,7 @@ const controllers = {
             user: res.locals.currentUser,
         });
         const questions = await CommonUtil.Pagination.get({
-            query: req.query,
+            query: req.query?.questions,
             Model: QuestionModel,
             filter: filter,
             extendGet: get => {

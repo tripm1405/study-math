@@ -156,8 +156,10 @@ function loadBlockWorkspace(props) {
     const {
         block: outerBlock,
     } = {
-        block: {},
         ...props,
+        block: {
+            ...props?.block,
+        },
     };
 
     const block = {
@@ -217,6 +219,7 @@ function genArgNode(props) {
     } = {
         ...props,
         properties: {
+            type: 'field_label',
             ...props?.properties,
         }
     };
@@ -224,7 +227,8 @@ function genArgNode(props) {
     const cloneNode = document.querySelector('.k-clone.k-clone-block-detail');
     const node = cloneNode.querySelector('.k-block-content-arg')?.cloneNode(true);
 
-    node.querySelector('[name="type"]').value = type;
+    const typeNode = node.querySelector('[name="type"]')
+    typeNode.value = type;
 
     const initPropertiesNode = genPropertiesNode({
         type: type,
@@ -234,7 +238,7 @@ function genArgNode(props) {
     propertiesNode.innerHTML = '';
     propertiesNode.insertAdjacentElement('beforeend', initPropertiesNode);
 
-    node.querySelector('[name="type"]').addEventListener('change', (event) => {
+    typeNode.addEventListener('change', (event) => {
         const propertiesNode = event.target.closest('.k-block-content-arg')
             .querySelector('.k-block-content-arg-properties');
         propertiesNode.innerHTML = '';

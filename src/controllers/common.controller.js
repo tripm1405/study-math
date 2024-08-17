@@ -66,6 +66,7 @@ const commonController = {
                         content: {
                             $ne: undefined,
                         },
+                        createdBy: res.locals.currentUser?._id,
                     }).lean();
 
                     return resolutions

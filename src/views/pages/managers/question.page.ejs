@@ -6,7 +6,8 @@
     <div class="my-2">
         <form method="GET" class="row ">
             <div class="col-md-4">
-                <input name="code" type="text" class="form-control" placeholder="Mã bài toán..." value="<%= data?.filters?.code %>" />
+                <input name="code" type="text" class="form-control" placeholder="Mã bài toán..."
+                       value="<%= data?.filters?.code %>"/>
             </div>
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary">Lọc</button>
@@ -14,34 +15,38 @@
         </form>
     </div>
     <div>
-        <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
-            <thead>
-            <tr>
-                <th style="width: 80px; text-align: center;">STT</th>
-                <th>Mã bài toán</th>
-                <th>Người tạo</th>
-                <th style="width: 160px;">Ngày tạo</th>
-                <th style="width: 50px;"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <% for (const question of data?.questions?.models) { %>
-                <tr onClick="upsert('<%= question?._id %>')">
-                    <td style="text-align: right;"><%= question.index %></td>
-                    <td><%= question?.code %></td>
-                    <td><%= question?.createdBy?.fullName %></td>
-                    <td style="text-align: center;">
-                        <%- include(partialPath + '/datetime.partial.ejs', { datetime: question?.createdAt, }) %>
-                    </td>
-                    <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
-                        <button class="btn btn-danger btn-sm" onClick="onDelete('<%= question?._id %>')">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
+        <div style="overflow-x: auto;">
+            <table class="k-table k-table-pointer table table-hover table-striped table-bordered my-2">
+                <thead>
+                <tr>
+                    <th style="width: 80px; text-align: center;">STT</th>
+                    <th>Mã</th>
+                    <th>Tên</th>
+                    <th>Người tạo</th>
+                    <th style="width: 160px;">Ngày tạo</th>
+                    <th style="width: 50px;"></th>
                 </tr>
-            <% } %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <% for (const question of data?.questions?.models) { %>
+                    <tr onClick="upsert('<%= question?._id %>')">
+                        <td style="text-align: right;"><%= question.index %></td>
+                        <td><%= question?.code %></td>
+                        <td><%= question?.name %></td>
+                        <td><%= question?.createdBy?.fullName %></td>
+                        <td style="text-align: center;">
+                            <%- include(partialPath + '/datetime.partial.ejs', { datetime: question?.createdAt, }) %>
+                        </td>
+                        <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
+                            <button class="btn btn-danger btn-sm" onClick="onDelete('<%= question?._id %>')">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
 
         <div>
             <%- include(partialPath + '/pagination.partial.ejs', { ...data?.questions, model: 'questions', }) %>

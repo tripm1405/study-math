@@ -39,8 +39,6 @@ export default class BlocklyUtil {
         static encode = (props) => {
             const {block: outerBlock, images} = props;
 
-            console.log('images', images);
-
             const block = structuredClone(outerBlock);
 
             const substanceKeyRegex = new RegExp(/(message|args)\d/);
@@ -55,8 +53,6 @@ export default class BlocklyUtil {
                             if (arg.type !== BlocklyUtil.ArgType.FieldImage) {
                                 return arg;
                             }
-
-                            console.log('result', images?.find(image => image.displayName === arg.src)?.physicalName || arg.imageName);
 
                             return {
                                 ...arg,
@@ -100,7 +96,7 @@ export default class BlocklyUtil {
             }, {})
             return {
                 ...substanceFormat,
-                ...layout
+                ...layout,
             };
         }
     }
