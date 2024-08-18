@@ -36,7 +36,7 @@
                         <option
                                 value="<%= user._id %>"
                                 <%= data.class && data.class.users && data.class.users.includes(user._id) ? 'selected' : '' %>
-                        ><%= user.code %></option>
+                        ><%= `[${user?.code}] ${user?.fullName}` %></option>
                     <% } %>
                 </select>
             </div>

@@ -9,6 +9,7 @@ import CommonUtil from "#root/utils/common.util.js";
 import ResolutionModel from "#root/models/resolution.model.js";
 import ModelUtil from "#root/utils/model.util.js";
 import ModelNameConstant from "#root/models/model-name.constant.js";
+import ClassModel from "#root/models/class.model.js";
 
 export default {
     get: async (req, res) => {
@@ -196,26 +197,37 @@ export default {
         } = req.params;
         const {
             studentIds,
+            classIds,
         } = {
             studentIds: [],
+            classIds: [],
             ...req.body,
         };
 
-        for (const studentId of studentIds) {
-            await ResolutionModel.findOneAndUpdate({
-                question: id,
-                student: studentId,
-            }, {
-                $setOnInsert: {
+        const studentUpdate = async (studentIds) => {
+            for (const studentId of studentIds) {
+                await ResolutionModel.findOneAndUpdate({
                     question: id,
                     student: studentId,
-                    createdBy: res.locals.currentUser?._id,
-                },
-            }, {
-                upsert: true,
-                new: true
-            });
+                }, {
+                    $setOnInsert: {
+                        question: id,
+                        student: studentId,
+                        createdBy: res.locals.currentUser?._id,
+                    },
+                }, {
+                    upsert: true,
+                    new: true
+                });
+            }
         }
+
+        for (const classId of classIds) {
+            const _class = await ClassModel.findById(classId).lean();
+            await studentUpdate(_class?.users || []);
+        }
+
+        await studentUpdate(studentIds);
 
         res.json(ApiUtil.JsonRes());
     },

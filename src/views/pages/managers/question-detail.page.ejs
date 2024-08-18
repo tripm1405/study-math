@@ -38,7 +38,7 @@
                     <option
                             value="<%= lesson?._id %>"
                             <%= data?.question?.lesson?.toString?.() === lesson?._id?.toString?.() ? 'selected' : '' %>
-                    ><%= lesson?.code %></option>
+                    ><%= `[${lesson?.code}] ${lesson?.name}` %></option>
                 <% } %>
             </select>
         </div>

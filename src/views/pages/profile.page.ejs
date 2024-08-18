@@ -61,7 +61,7 @@
                         <option
                                 value="<%= _class._id %>"
                                 <%= data.user?.classes?.includes(_class._id) ? 'selected' : '' %>
-                        ><%= _class.code %></option>
+                        ><%= `[${_class.code}] ${_class.name}` %></option>
                     <% } %>
                 <% } else { %>
                     <option disabled>Không có lớp học nào</option>

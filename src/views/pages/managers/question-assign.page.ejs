@@ -25,13 +25,14 @@
                     </thead>
                     <tbody>
                     <% for (const _class of data?.classesNotAssign) { %>
-                        <tr class="k-cursor-pointer" onClick="onDetail('<%= _class.id %>')">
+                        <tr class="k-cursor-pointer" onClick="onDetail('<%= _class._id %>')">
                             <td><%= _class.code %></td>
                             <td><%= _class.name %></td>
                             <td><%= _class.users?.map(user => user?.fullName)?.join(', ') %></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm me-1" onClick="onAssign(['<%= _class.id %>'])"><i
-                                            class="fas fa-plus"></i></button>
+                            <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
+                                <button class="btn btn-primary btn-sm me-1" onClick="onAssignClasses(['<%= _class._id %>'])">
+                                    <i class="fas fa-plus"></i>
+                                </button>
                             </td>
                         </tr>
                     <% } %>
@@ -86,8 +87,8 @@
                             <td>
                                 <%= student.classes?.map(_class => _class?.name)?.join(', ') %>
                             </td>
-                            <td>
-                                <button class="btn btn-primary btn-sm me-1" onClick="onAssign(['<%= student.id %>'])"><i
+                            <td class="align-middle" onClick="(e => e.stopPropagation())(event)">
+                                <button class="btn btn-primary btn-sm me-1" onClick="onAssignStudents(['<%= student.id %>'])"><i
                                             class="fas fa-plus"></i></button>
                             </td>
                         </tr>
@@ -128,12 +129,27 @@
 <input name="id" type="hidden" value="<%= data?.id %>"/>
 
 <script>
-    async function onAssign(studentIds) {
+    async function onAssignStudents(studentIds) {
+        onAssign({studentIds: studentIds});
+    }
+
+    async function onAssignClasses(classIds) {
+        onAssign({classIds: classIds});
+    }
+
+    async function onAssign(props) {
+        const {studentIds, classIds} = {
+            studentIds: [],
+            classIds:  [],
+            ...props,
+        };
+
         try {
             const id = document.querySelector('input[name="id"]')?.value;
 
             const body = {
                 studentIds: studentIds,
+                classIds: classIds,
             };
             const formData = new FormData();
             K.obj2FormData(formData, body);

@@ -55,7 +55,7 @@
                     <option
                             value="<%= course?._id %>"
                             <%= String(data?.lesson?.course) === String(course?._id) ? 'selected' : '' %>
-                    ><%= course?.code %></option>
+                    ><%= `[${course?.code}] ${course?.name}` %></option>
                 <% } %>
             </select>
         </div>
