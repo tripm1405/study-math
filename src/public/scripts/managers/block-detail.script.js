@@ -66,11 +66,14 @@ async function onSubmit() {
             return;
         }
 
+        const params = {};
+        if (questionId) {
+            params.questionId = questionId;
+        }
+
         window.location.href = axios.getUri({
             url: `/blocks`,
-            params: {
-                questionId: questionId,
-            },
+            params: params,
         })
     } catch (error) {
         showToastify({
@@ -508,6 +511,8 @@ function getBlock(props) {
         ...layout,
         ...substance,
     };
+
+    console.log('block', block);
 
     return {
         block: block,
