@@ -28,6 +28,12 @@ const controllers = {
             filter: filter,
             extendGet: get => {
                 return get
+                    .populate({
+                        path: 'lesson',
+                        populate: {
+                            path: 'course',
+                        },
+                    })
                     .populate('createdBy')
                     .lean();
             },
@@ -82,6 +88,7 @@ const controllers = {
                 },
                 blocks: blocks,
                 lessons: lessons,
+                lessonId: lessonId,
                 resolutions: resolutions,
                 resolution: resolutions?.find(resolution => {
                     return resolution?.student.toString() === res.locals?.currentUser?._id.toString();

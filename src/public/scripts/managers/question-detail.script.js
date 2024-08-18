@@ -34,6 +34,8 @@ let workspaceToolbox;
 })();
 
 async function onSubmit() {
+    const lessonId = document.querySelector('input[name="lessonId"]')?.value;
+
     // todo: notify
     try {
         const id = document.querySelector('input[name="id"]')?.value;
@@ -64,7 +66,7 @@ async function onSubmit() {
             return;
         }
 
-        window.location.href = '/questions';
+        window.location.href = lessonId ? `/lessons/${lessonId}` : '/questions';
     } catch {
         alert('error');
     }

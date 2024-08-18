@@ -45,8 +45,7 @@
             />
         </div>
         <div class="mb-3">
-            <label for="courseId" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Mã khóa
-                học</label>
+            <label for="courseId" class="form-label" style="display: block; margin-bottom: 5px; color: #333;">Khóa học</label>
             <select
                     id="courseId"
                     name="courseId"
@@ -105,12 +104,14 @@
 </div>
 
 <input name="id" type="hidden" value="<%= data?.lesson?._id %>"/>
+<input name="courseId" type="hidden" value="<%= data?.courseId %>"/>
 
 <script>
     async function onSubmit(event) {
         event.preventDefault();
 
         const id = document.querySelector('input[name="id"]')?.value;
+        const courseId = document.querySelector('input[name="courseId"]')?.value;
 
         const formData = new FormData(event.target);
 
@@ -127,7 +128,7 @@
                 }
             })();
 
-            window.location.href = `/lessons`;
+            window.location.href = courseId ? `/courses/${courseId}` : `/lessons`;
         } catch (error) {
             console.error('There was an error adding the question:', error);
         }

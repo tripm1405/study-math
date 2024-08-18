@@ -21,6 +21,7 @@ export default {
             filter: filter,
             extendGet: get => {
                 return get
+                    .populate('course')
                     .populate('createdBy')
                     .lean();
             },
@@ -77,6 +78,7 @@ export default {
                 },
                 courses: courses,
                 questions: questions,
+                courseId: courseId,
                 newId: newId,
             },
         }));

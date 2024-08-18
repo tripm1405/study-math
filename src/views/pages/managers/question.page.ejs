@@ -22,6 +22,8 @@
                     <th style="width: 80px; text-align: center;">STT</th>
                     <th>Mã</th>
                     <th>Tên</th>
+                    <th>Khóa học</th>
+                    <th>Bài học</th>
                     <th>Người tạo</th>
                     <th style="width: 160px;">Ngày tạo</th>
                     <th style="width: 50px;"></th>
@@ -33,6 +35,8 @@
                         <td style="text-align: right;"><%= question.index %></td>
                         <td><%= question?.code %></td>
                         <td><%= question?.name %></td>
+                        <td><%= question?.lesson?.course?.name %></td>
+                        <td><%= question?.lesson?.name %></td>
                         <td><%= question?.createdBy?.fullName %></td>
                         <td style="text-align: center;">
                             <%- include(partialPath + '/datetime.partial.ejs', { datetime: question?.createdAt, }) %>

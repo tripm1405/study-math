@@ -4,6 +4,9 @@
 <div style="display: flex; justify-content: space-between;">
     <h1>Quản lí khối</h1>
     <div>
+        <% if (data?.questionId) { %>
+            <a class="btn btn-primary" href="/questions/<%= data?.questionId %>">Bài toán</a>
+        <% } %>
         <button class="btn btn-primary" onClick="upsert('<%= data?.newId %>')">Tạo mới</button>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import-modal">Import</button>
         <button class="btn btn-primary" onClick="onExport()">Export</button>
@@ -51,8 +54,6 @@
     <%- include(partialPath + '/pagination.partial.ejs', { ...data?.blocks, model: 'blocks', }) %>
 </div>
 
-<input name="questionId" type="hidden" value="<%= data?.questionId %>"/>
-
 <div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -80,6 +81,8 @@
         </div>
     </div>
 </div>
+
+<input name="questionId" type="hidden" value="<%= data?.questionId %>"/>
 
 <script>
     function upsert(id) {
