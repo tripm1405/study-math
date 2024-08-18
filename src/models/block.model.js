@@ -22,11 +22,6 @@ const schema = new mongoose.Schema({
     color: {
         type: String,
     },
-    input: {
-        type: String,
-        default: ConnectSpecifyType.Empty,
-        required: true,
-    },
     output: {
         type: String,
         default: ConnectSpecifyType.Empty,
