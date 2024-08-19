@@ -37,7 +37,6 @@
         <div class="modal-content">
             <form onsubmit="onTransferAnswer(event)">
                 <div class="modal-body">
-                    <form>
                         <div class="form-group">
                             <label for="name">Tên:</label>
                             <input id="name" name="name" type="text" class="form-control" placeholder="Nhập tên" style="width:100%"/>
@@ -60,7 +59,6 @@
                             <label for="note">Ghi chú:</label>
                             <input id="note" name="note" type="text" class="form-control" placeholder="Nhập ghi chú" style="width:100%"/>
                         </div>
-                    </form>
                 </div>
                                 
                 <div class="modal-footer" style="border-top: none;">
@@ -131,10 +129,20 @@
 
         const id = document.querySelector('input[name="id"]')?.value;
 
-        const formData = new FormData(event.target);
-        await axios.put(`/api/resolutions/${id}/transfer-answer`, formData);
+        try {
+            const formData = new FormData(event.target);
+            const res = await axios.put(`/api/resolutions/${id}/transfer-answer`, formData);
 
-        window.location.href = `/resolutions`;
+            if (!res?.data?.success) {
+                K.Toast.showError({res: res});
+                return;
+            }
+
+            window.location.href = `/resolutions`;
+        }
+        catch {
+            K.Toast.showServerError();
+        }
     }
 
     async function initBlocks() {

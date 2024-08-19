@@ -52,7 +52,7 @@
     async function markByAnswer() {
         try {
             const res = await axios.put('/api/resolutions/mark-by-answer', {});
-            if (!res?.data?.result?.success) {
+            if (!res?.data?.success) {
                 return;
             }
             window.location.reload();

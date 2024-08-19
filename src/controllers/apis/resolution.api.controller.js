@@ -114,6 +114,7 @@ export default {
         };
 
         const resolution = await ResolutionModel.findByIdAndUpdate(id, {
+            markedBy: res?.locals?.currentUser?._id,
             score: score,
         });
 
@@ -127,6 +128,7 @@ export default {
             score: score,
             note: note,
             question: resolution?.question,
+            createdBy: res?.locals?.currentUser?._id,
         });
 
         res.json(ApiUtil.JsonRes());
