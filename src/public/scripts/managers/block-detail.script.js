@@ -273,8 +273,9 @@ function genPropertiesNode(props) {
             const node = cloneNode.querySelector('.k-block-content-arg-properties-type-image').cloneNode(true);
 
             for (const key of Object.keys(values)) {
-                if (values[key]) {
-                    node.querySelector(`[name="${key}"]`).value = values[key];
+                const fieldNode = node.querySelector(`[name="${key}"]`);
+                if (values[key] && fieldNode) {
+                    fieldNode.value = values[key];
                 }
             }
 

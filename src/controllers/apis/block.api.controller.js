@@ -109,6 +109,7 @@ const controller = {
 
         const imageFiles = await FileService.create({
             files: req.files?.filter(file => file.fieldname === 'images'),
+            destination: Destination.BLOCKLY,
         });
 
         const block = (() => {
@@ -150,6 +151,7 @@ const controller = {
 
         const imageFiles = await FileService.create({
             files: req.files?.filter(file => file.fieldname === 'images'),
+            destination: Destination.BLOCKLY,
         });
 
         const filter = {
