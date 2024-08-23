@@ -227,9 +227,10 @@ const controller = {
             questionId,
         } = req?.query;
 
-        const filter = {
-            question: questionId,
-        };
+        const filter = {};
+        if (questionId) {
+            filter.question = questionId;
+        }
 
         const blocks = await BlockModel.find(filter).lean();
         const blockFormats = blocks?.map(block => {
